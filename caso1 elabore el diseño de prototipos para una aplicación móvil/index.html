@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CiberEscudo 2.0 – Prototipo Móvil Next-Gen</title>
+  <!-- Google Fonts: Space Grotesk, Outfit, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="cyber">
+  <!-- Background Glow Backdrop -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="matrix-grid-bg"></div>
+
+  <!-- Contenedor Maqueta Móvil -->
+  <main class="phone-frame">
+    <!-- Dynamic Island / Cámara & Parlante -->
+    <div class="phone-notch">
+      <div class="dynamic-island" id="dynamicIsland">
+        <div class="island-content">
+          <span class="island-icon" id="islandIcon">🛡️</span>
+          <span class="island-text" id="islandText">CiberEscudo Activo</span>
+          <span class="island-pulse"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barra de Estado Móvil -->
+    <div class="status-bar">
+      <span class="status-time" id="liveClock">12:00</span>
+      <div class="status-icons">
+        <span class="cyber-signal">5G <i></i></span>
+        <span class="cyber-wifi">📶</span>
+        <span class="cyber-battery"><b id="batteryLevel">98%</b> <i></i></span>
+      </div>
+    </div>
+
+    <!-- PANTALLA 1: BOOT & RECONOCIMIENTO BIOMÉTRICO -->
+    <section id="boot" class="screen on">
+      <div class="boot-container">
+        <div class="cyber-badge-top"><span>PROTOCOL V2.8 // QUANTUM DEFENSE</span></div>
+        
+        <div class="biometric-hud">
+          <canvas id="bioCanvas" width="180" height="180"></canvas>
+          <div class="scan-reticle">
+            <span class="corner tl"></span><span class="corner tr"></span>
+            <span class="corner bl"></span><span class="corner br"></span>
+            <div class="laser-beam"></div>
+          </div>
+          <div class="core-holo-orb" id="orbBoot">
+            <div class="holo-ring r1"></div>
+            <div class="holo-ring r2"></div>
+            <div class="holo-ring r3"></div>
+          </div>
+        </div>
+
+        <div class="boot-header">
+          <h1 class="glitch-title" data-text="CIBER ESCUDO">CIBER ESCUDO</h1>
+          <p class="boot-sub">Asistente Táctico de Ciberseguridad & IA</p>
+        </div>
+
+        <form id="bootForm" onsubmit="return false">
+          <div class="input-cyber-wrap">
+            <label for="nameIn">IDENTIFICACIÓN DEL OPERADOR</label>
+            <div class="input-box">
+              <span class="input-icon">👤</span>
+              <input id="nameIn" maxlength="20" autocomplete="off" placeholder="Ingresa tu nombre o alias" required>
+            </div>
+          </div>
+
+          <div class="role-selector">
+            <label>NIVEL DE ACCESO</label>
+            <div class="role-chips">
+              <button type="button" class="role-chip on" data-role="Sentinel">🛡️ Sentinel</button>
+              <button type="button" class="role-chip" data-role="Ethical Hacker">⚡ NetSec</button>
+              <button type="button" class="role-chip" data-role="Admin Corp">🏢 Director</button>
+            </div>
+          </div>
+
+          <button id="go" type="button" class="btn-cyber-primary">
+            <span class="btn-glow"></span>
+            <span class="btn-txt">INICIAR ESCANEO BIOMÉTRICO</span>
+            <span class="btn-icon">⚡</span>
+          </button>
+          
+          <div class="boot-hints">
+            <span>🔊 Audio y voz cuántica integrados</span>
+          </div>
+        </form>
+
+        <div id="scanBox" hidden>
+          <div class="telemetry-box">
+            <div class="telem-row"><span>BIOMETRÍA:</span><b id="bioStatus">ANALIZANDO...</b></div>
+            <div class="telem-row"><span>RED QUANTUM:</span><b id="netStatus">ENCRIPTANDO</b></div>
+            <div class="telem-row"><span>FIREWALL:</span><b id="fwStatus">ESTABLECIENDO</b></div>
+          </div>
+          <p id="scanTxt" class="cyber-pulse-txt">Iniciando reconocimiento neural…</p>
+          <div class="barwrap-cyber">
+            <div id="bar" class="bar-fill"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANTALLA 2: APLICACIÓN PRINCIPAL -->
+    <section id="app" class="screen">
+      <!-- Header Superior -->
+      <header class="app-header">
+        <div class="user-meta">
+          <div class="user-avatar" id="avatarBtn">
+            <span id="avatarIcon">👤</span>
+            <span class="online-indicator"></span>
+          </div>
+          <div>
+            <div class="operator-badge"><span id="userRoleBadge">SENTINEL</span> • LIMA, PE</div>
+            <h2 id="hello">Hola, Agente</h2>
+          </div>
+        </div>
+
+        <!-- Score Ring HUD -->
+        <div class="shield-score-wrap" id="scoreWrapBtn" title="Ver Diagnóstico de Salud">
+          <svg class="ring" viewBox="0 0 54 54" aria-label="Puntaje de seguridad">
+            <defs>
+              <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00f0ff" />
+                <stop offset="100%" stop-color="#39ff7a" />
+              </linearGradient>
+            </defs>
+            <circle cx="27" cy="27" r="22" class="bg"/>
+            <circle cx="27" cy="27" r="22" id="ringFg"/>
+            <text x="27" y="32" id="scoreTxt">100</text>
+          </svg>
+          <span class="score-label">DEFENSA</span>
+        </div>
+      </header>
+
+      <!-- Quick Metrics Ribbon -->
+      <div class="metrics-ribbon">
+        <div class="metric-pill" id="pillThreatLevel">
+          <span class="pill-dot ok" id="lvlDot"></span>
+          <span id="lvl">Amenaza Baja</span>
+        </div>
+        <div class="metric-pill" id="pillVpnQuick">
+          <span class="pill-icon">🌐</span>
+          <span id="vpnPillText">VPN Off</span>
+        </div>
+        <div class="metric-pill" id="pillShieldMode">
+          <span class="pill-icon">🛡️</span>
+          <span>Escudo Auto</span>
+        </div>
+        <button class="panic-btn-quick" id="panicBtn" title="Protocolo de Emergencia Lockdown">
+          <span>🚨 LOCKDOWN</span>
+        </button>
+      </div>
+
+      <!-- Vistas Principales -->
+      <div id="views" class="views-scroll">
+
+        <!-- 1. VISTA: MAPA TÁCTICO DE AMENAZAS -->
+        <div class="view on" id="v-map">
+          <div class="tactical-card">
+            <div class="card-glass-header">
+              <div class="tactical-title">
+                <span class="radar-dot"></span>
+                <b>MAPA GLOBAL DE CIBERATAQUES</b>
+              </div>
+              <span class="tactical-badge live">INTERCEPTOR ACTIVO</span>
+            </div>
+
+            <div class="mapcard-inner">
+              <canvas id="map"></canvas>
+              
+              <!-- Interceptor UI Overlay -->
+              <div class="map-hud-top">
+                <div class="hud-stat">
+                  <span class="label">BLOQUEADOS</span>
+                  <b id="nBlocked" class="val ok">0</b>
+                </div>
+                <div class="hud-stat">
+                  <span class="label">EN CURSO</span>
+                  <b id="nLive" class="val amber">0</b>
+                </div>
+                <div class="hud-stat">
+                  <span class="label">INTERCEPCIÓN</span>
+                  <b id="defenseCombo" class="val cian">100%</b>
+                </div>
+              </div>
+
+              <div class="map-interactive-hint">
+                <span>💡 Toca los misiles rojos o ciudades para interceptar amenazas manualmente</span>
+              </div>
+            </div>
+
+            <!-- Interceptor Controls -->
+            <div class="map-action-grid">
+              <button class="tactical-btn" id="btnSpawnAttack">
+                <span class="icon">⚡</span>
+                <div class="btn-text">
+                  <b>Simular Ataque</b>
+                  <small>Lanza vector aleatorio</small>
+                </div>
+              </button>
+              <button class="tactical-btn" id="btnEmpPulse">
+                <span class="icon">💥</span>
+                <div class="btn-text">
+                  <b>Pulso EMP Defensivo</b>
+                  <small>Limpia todas las amenazas</small>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Feed de Eventos -->
+          <div class="section-title-wrap">
+            <h3>TELEMETRÍA EN VIVO</h3>
+            <span class="badge-count" id="feedCountBadge">0 eventos</span>
+          </div>
+          <ul id="miniFeed" class="cyber-list"></ul>
+        </div>
+
+        <!-- 2. VISTA: DISPOSITIVOS & TOPOLOGÍA DE RED -->
+        <div class="view" id="v-dev">
+          <div class="network-overview-card">
+            <div class="net-stat-box">
+              <span class="net-stat-num" id="devCountSafe">0</span>
+              <span class="net-stat-lbl">Seguros</span>
+            </div>
+            <div class="net-stat-box warn">
+              <span class="net-stat-num" id="devCountRisk">0</span>
+              <span class="net-stat-lbl">Vulnerables</span>
+            </div>
+            <div class="net-stat-box">
+              <span class="net-stat-num" id="netSpeedVal">940 Mbps</span>
+              <span class="net-stat-lbl">Ancho de Banda</span>
+            </div>
+          </div>
+
+          <div class="row-flex-center">
+            <h3>TOPOLOGÍA DE EQUIPOS CONECTADOS</h3>
+            <button class="btn-neon-small" id="btnDevScan" data-act="scan">
+              <span>📡 Escaneo Deep</span>
+            </button>
+          </div>
+
+          <div class="barwrap-cyber">
+            <div id="devBar" class="bar-fill"></div>
+          </div>
+
+          <ul id="devList" class="cyber-list"></ul>
+        </div>
+
+        <!-- 3. VISTA: ALERTAS & LOGS DE DEFENSA -->
+        <div class="view" id="v-alert">
+          <div class="row-flex-center">
+            <h3>REGISTRO TÁCTICO DE INCIDENTES</h3>
+            <button class="btn-neon-small" id="btnClearLogs">Limpiar</button>
+          </div>
+          <p class="view-desc">Historial forense de intentos de intrusión bloqueados por el motor cuántico.</p>
+          <ul id="alertList" class="cyber-list"></ul>
+        </div>
+
+        <!-- 4. VISTA: CIBER-ACADEMIA & DESAFÍO TÁCTICO -->
+        <div class="view" id="v-tips">
+          <div class="quiz-banner-card" id="quizBannerCard">
+            <div class="quiz-glow"></div>
+            <div class="quiz-info">
+              <span class="quiz-tag">🎮 DESAFÍO CIBER-DEFENSOR</span>
+              <h4>Pon a prueba tus reflejos de seguridad</h4>
+              <p>Resuelve situaciones reales de phishing y gana medallas de rango.</p>
+            </div>
+            <button class="btn-cyber-primary quiz-btn" id="startQuizBtn">JUGAR TEST</button>
+          </div>
+
+          <h3>PROTOCOLOS & CONSEJOS ESENCIALES</h3>
+          <ul id="tipList" class="cyber-list"></ul>
+        </div>
+
+        <!-- 5. VISTA: CIBER-LABORATORIO & HERRAMIENTAS -->
+        <div class="view" id="v-more">
+          <h3>CIBER-LABORATORIO</h3>
+          <ul class="cyber-list">
+
+            <li data-tool="link">
+              <span class="ic">🔍</span>
+              <div class="tx">
+                <b>Escáner IA de Enlaces & SMS</b>
+                <span>Analiza URLs, mensajes y correos sospechosos</span>
+              </div>
+              <span class="arrow-tag">PRO</span>
+            </li>
+            <li data-tool="pass">
+              <span class="ic">🔐</span>
+              <div class="tx">
+                <b>Bóveda & Entropía Cuántica</b>
+                <span>Mide tiempo de hackeo y genera claves militares</span>
+              </div>
+              <span class="arrow-tag">PRO</span>
+            </li>
+            <li data-tool="darkweb">
+              <span class="ic">🕵️</span>
+              <div class="tx">
+                <b>Radar de Filtraciones Dark Web</b>
+                <span>Comprueba si tus cuentas han sido hackeadas</span>
+              </div>
+              <span class="arrow-tag new">NUEVO</span>
+            </li>
+            <li data-tool="stats">
+              <span class="ic">📊</span>
+              <div class="tx">
+                <b>Telemetría & Gráficos Cuánticos</b>
+                <span>Vectores de ataque y evolución de score</span>
+              </div>
+              <span class="arrow-tag">LIVE</span>
+            </li>
+            <li data-tool="report">
+              <span class="ic">📑</span>
+              <div class="tx">
+                <b>Informe Forense Descargable</b>
+                <span>Genera informe ejecutivo de ciberseguridad</span>
+              </div>
+              <span class="arrow-tag">PDF/TXT</span>
+            </li>
+          </ul>
+
+          <h3>AJUSTES & PROTOCOLOS</h3>
+          <ul class="cyber-list">
+            <li class="nopt">
+              <div class="tx">
+                <b>VPN Cuántica Multi-Salto</b>
+                <span id="vpnTx">Desactivada • IP Expuesta</span>
+              </div>
+              <button class="sw" id="swVpn" aria-pressed="false" aria-label="VPN"></button>
+            </li>
+            <li class="nopt">
+              <div class="tx">
+                <b>Sintetizador de Voz Jarvis</b>
+                <span>Velocidad de habla</span>
+                <input type="range" id="rate" min="0.7" max="1.4" step="0.1" value="1">
+              </div>
+              <button class="sw on" id="swVoice" aria-pressed="true" aria-label="Voz"></button>
+            </li>
+            <li class="nopt">
+              <div class="tx">
+                <b>Efectos de Sonido Tácticos (SFX)</b>
+                <span>Beeps y láseres sintetizados Web Audio</span>
+              </div>
+              <button class="sw on" id="swSfx" aria-pressed="true" aria-label="Efectos de sonido"></button>
+            </li>
+            <li class="nopt">
+              <div class="tx">
+                <b>Tráfico de Amenazas Automático</b>
+                <span>Simulación continua en mapa táctico</span>
+              </div>
+              <button class="sw on" id="swAuto" aria-pressed="true" aria-label="Ataques automáticos"></button>
+            </li>
+            <li class="nopt">
+              <div class="tx">
+                <b>Tema Visual & HUD</b>
+                <div class="themes">
+                  <button data-t="cyber" class="th-btn active" style="background:#00f0ff" title="Ciberpunk Cian"></button>
+                  <button data-t="neon" class="th-btn" style="background:#b026ff" title="Neon Violeta"></button>
+                  <button data-t="matrix" class="th-btn" style="background:#39ff7a" title="Matrix Hacker"></button>
+                  <button data-t="solar" class="th-btn" style="background:#ffb43b" title="Solar Ámbar"></button>
+                  <button data-t="crimson" class="th-btn" style="background:#ff2a6d" title="Crimson Red"></button>
+                </div>
+              </div>
+            </li>
+            <li class="nopt">
+              <div class="tx">
+                <b>Identidad del Operador</b>
+                <span>Cambiar alias registrado</span>
+              </div>
+              <button class="btn-neon-small" id="rename">Editar</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- JARVIS AI COPILOT FLOTANTE -->
+      <div class="jarvis-holopod">
+        <!-- Floating AI Orb Reactor -->
+        <div class="orb-reactor-wrap" id="orbReactorBtn" title="Toca para interactuar con Jarvis">
+          <div id="orb" class="holo-reactor">
+            <div class="orb-core"></div>
+            <div class="orb-wave w1"></div>
+            <div class="orb-wave w2"></div>
+            <div class="orb-wave w3"></div>
+          </div>
+          <span class="ai-status-pulse"></span>
+        </div>
+
+        <!-- Dialogue & Command Bubble -->
+        <div class="holo-bubble">
+          <div class="bubble-header">
+            <span class="ai-label">🤖 JARVIS AI COPILOT</span>
+            <span class="ai-mode" id="aiVoiceIndicator">AUDIO ON</span>
+          </div>
+          <p id="bubble" class="bubble-speech">Sistemas listos. ¿En qué puedo asistirte, Agente?</p>
+          
+          <div class="cmd-bar">
+            <input id="cmdIn" placeholder="Comando de voz o texto (ej: escanear, phishing...)" autocomplete="off">
+            <button id="mic" class="cmd-icon-btn" title="Hablar por micrófono">🎙️</button>
+            <button id="chatBtn" class="cmd-icon-btn" title="Chat completo con IA">💬</button>
+            <button id="voiceBtn" class="cmd-icon-btn" title="Silenciar / Activar voz">🔊</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MENÚ DE ACCESO RÁPIDO (FAB EXPANDIBLE) -->
+      <div class="fabwrap" id="fabwrap">
+        <button class="fabi" data-act="sim" style="--i:1" title="Simular ataque">
+          ⚡<em>Simular Ataque</em>
+        </button>
+        <button class="fabi" data-act="scan" style="--i:2" title="Escanear">
+          📡<em>Escanear Red</em>
+        </button>
+        <button class="fabi" data-act="quiz" style="--i:3" title="Test de Ciberseguridad">
+          🎯<em>Ciber Test</em>
+        </button>
+        <button class="fabi" data-act="status" style="--i:4" title="Estado">
+          🛡️<em>Diagnóstico</em>
+        </button>
+        <button class="fabi" data-act="report" style="--i:5" title="Informe">
+          📄<em>Informe PDF</em>
+        </button>
+        <button class="fab" id="fab" aria-label="Menú de acción rápida">
+          <span class="fab-icon">✦</span>
+        </button>
+      </div>
+
+      <!-- BARRA DE NAVEGACIÓN INFERIOR ESTILO CYBER-DOCK -->
+      <nav class="cyber-tabs">
+        <button data-view="map" class="tab-btn on">
+          <span class="tab-icon">🌐</span>
+          <span class="tab-txt">Mapa</span>
+        </button>
+        <button data-view="dev" class="tab-btn">
+          <span class="tab-icon">📱</span>
+          <span class="tab-txt">Equipos</span>
+        </button>
+        <button data-view="alert" class="tab-btn">
+          <span class="tab-icon">🔔</span>
+          <span class="tab-txt">Alertas</span>
+        </button>
+        <button data-view="tips" class="tab-btn">
+          <span class="tab-icon">💡</span>
+          <span class="tab-txt">Academia</span>
+        </button>
+        <button data-view="more" class="tab-btn">
+          <span class="tab-icon">⚙️</span>
+          <span class="tab-txt">Lab & Más</span>
+        </button>
+      </nav>
+
+      <!-- MODAL / SHEET FLOTANTE INFERIOR -->
+      <div id="sheetBg" class="sheetbg"></div>
+      <div id="sheet" class="sheet">
+        <div class="sheet-drag-handle">
+          <i class="grab"></i>
+        </div>
+        <div class="sheet-header">
+          <h3 id="shT">Detalle</h3>
+          <button class="sheet-close-btn" onclick="closeSheet()">✕</button>
+        </div>
+        <div id="shB" class="sheet-body"></div>
+      </div>
+
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
