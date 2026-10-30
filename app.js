@@ -340,12 +340,38 @@ function startBootSequence() {
   }, 800);
 }
 
+function seedInitialTelemetry() {
+  if (LOG.length > 0) return;
+  const initialThreats = [
+    { typeIdx: 7, cityIdx: 0, manual: false, crit: true, minsAgo: 1 },   // Zero-Day Moscú
+    { typeIdx: 0, cityIdx: 5, manual: true, crit: false, minsAgo: 2 },   // Phishing NY
+    { typeIdx: 5, cityIdx: 1, manual: false, crit: true, minsAgo: 4 },   // SQLi Pekín
+    { typeIdx: 9, cityIdx: 6, manual: false, crit: false, minsAgo: 6 },  // Cryptojacking Fráncfort
+    { typeIdx: 6, cityIdx: 9, manual: true, crit: false, minsAgo: 8 },   // MitM Londres
+    { typeIdx: 8, cityIdx: 11, manual: false, crit: false, minsAgo: 11 }, // Spyware Seúl
+    { typeIdx: 1, cityIdx: 3, manual: false, crit: true, minsAgo: 14 },  // Ransomware São Paulo
+    { typeIdx: 2, cityIdx: 4, manual: true, crit: false, minsAgo: 16 },  // DDoS Teherán
+    { typeIdx: 10, cityIdx: 7, manual: false, crit: false, minsAgo: 19 }, // XSS Tokio
+    { typeIdx: 11, cityIdx: 8, manual: false, crit: false, minsAgo: 22 }  // DNS Spoofing Sídney
+  ];
+  const now = Date.now();
+  initialThreats.forEach(item => {
+    const k = THREAT_TYPES[item.typeIdx % THREAT_TYPES.length];
+    const o = CITIES[item.cityIdx % CITIES.length];
+    const t = new Date(now - item.minsAgo * 60000).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    LOG.push({ id: ++attackId, o, k, crit: item.crit, manual: item.manual, t });
+    S.blocked++;
+  });
+  if ($('#nBlocked')) $('#nBlocked').textContent = S.blocked;
+}
+
 function enterApp() {
   $('#boot').classList.remove('on');
   $('#app').classList.add('on');
   $('#hello').textContent = `Hola, ${S.name}`;
   $('#userRoleBadge').textContent = S.role.toUpperCase();
   
+  seedInitialTelemetry();
   sizeCanvas();
   renderDevices();
   renderTips();
@@ -601,17 +627,159 @@ const LAND = [
 const CITIES = [
   { c: 'Moscú', la: 55.7, lo: 37.6 }, { c: 'Pekín', la: 39.9, lo: 116.4 }, { c: 'Lagos', la: 6.5, lo: 3.4 },
   { c: 'São Paulo', la: -23.5, lo: -46.6 }, { c: 'Teherán', la: 35.7, lo: 51.4 }, { c: 'Nueva York', la: 40.7, lo: -74 },
-  { c: 'Fráncfort', la: 50.1, lo: 8.7 }, { c: 'Tokio', la: 35.6, lo: 139.6 }, { c: 'Sídney', la: -33.9, lo: 151.2 }
+  { c: 'Fráncfort', la: 50.1, lo: 8.7 }, { c: 'Tokio', la: 35.6, lo: 139.6 }, { c: 'Sídney', la: -33.9, lo: 151.2 },
+  { c: 'Londres', la: 51.5, lo: -0.1 }, { c: 'Singapur', la: 1.35, lo: 103.8 }, { c: 'Seúl', la: 37.5, lo: 126.9 },
+  { c: 'Ámsterdam', la: 52.3, lo: 4.9 }, { c: 'Buenos Aires', la: -34.6, lo: -58.3 }, { c: 'Toronto', la: 43.6, lo: -79.3 },
+  { c: 'Madrid', la: 40.4, lo: -3.7 }, { c: 'Dubái', la: 25.2, lo: 55.2 }
 ];
 
 const DEFENSE_TARGET = { c: 'Lima (Base)', la: -12, lo: -77 };
 
 const THREAT_TYPES = [
-  { n: 'Phishing', col: '#ffb43b', ic: '🎣', tip: 'Correos que suplantan identidad para robar contraseñas.', cve: 'CVE-2025-0144' },
-  { n: 'Ransomware', col: '#ff2a6d', ic: '🔒', tip: 'Intento de secuestro y cifrado de datos locales.', cve: 'CVE-2025-8812' },
-  { n: 'DDoS', col: '#b026ff', ic: '🌊', tip: 'Bombardeo de paquetes para saturar ancho de banda.', cve: 'CVE-2024-9901' },
-  { n: 'Troyano', col: '#00f0ff', ic: '🦠', tip: 'Inyección de software espía camuflado.', cve: 'CVE-2025-1033' },
-  { n: 'Fuerza Bruta', col: '#ff5500', ic: '🔨', tip: 'Diccionario de contraseñas contra puerto SSH.', cve: 'CVE-2024-3401' }
+  {
+    n: 'Phishing',
+    col: '#ffb43b',
+    ic: '🎣',
+    tip: 'Correos y SMS que suplantan identidad institucional para robar contraseñas.',
+    cve: 'CVE-2025-0144',
+    fix: 'Verifica remitentes y URLs oficiales, nunca ingreses credenciales por enlaces urgentes y activa 2FA con llaves físicas o apps autenticadoras.'
+  },
+  {
+    n: 'Ransomware',
+    col: '#ff2a6d',
+    ic: '🔒',
+    tip: 'Intento de secuestro y cifrado malicioso de archivos locales con extorsión.',
+    cve: 'CVE-2025-8812',
+    fix: 'Aísla el equipo de la red al instante, no pagues el rescate y restaura respaldos inmutables desconectados (estrategia 3-2-1).'
+  },
+  {
+    n: 'DDoS Masivo',
+    col: '#b026ff',
+    ic: '🌊',
+    tip: 'Bombardeo volumétrico de paquetes SYN/UDP para saturar ancho de banda.',
+    cve: 'CVE-2024-9901',
+    fix: 'Activa protección Anycast/CDN (Cloudflare/AWS Shield), configura rate limiting en el reverse proxy y descarta tráfico malicioso con SYN Cookies.'
+  },
+  {
+    n: 'Troyano Espía',
+    col: '#00f0ff',
+    ic: '🦠',
+    tip: 'Inyección de software espía camuflado en instaladores o adjuntos.',
+    cve: 'CVE-2025-1033',
+    fix: 'Inicia en modo seguro, realiza un análisis EDR profundo, remueve llaves de persistencia en el registro y descarga software solo de fuentes verificadas.'
+  },
+  {
+    n: 'Fuerza Bruta SSH',
+    col: '#ff5500',
+    ic: '🔨',
+    tip: 'Diccionario automatizado de alta frecuencia contra puertos de acceso remoto.',
+    cve: 'CVE-2024-3401',
+    fix: 'Deshabilita acceso root por contraseña, cambia el puerto 22, exige autenticación por llaves ed25519 e instala fail2ban para bloqueo automático tras 3 intentos.'
+  },
+  {
+    n: 'Inyección SQL (SQLi)',
+    col: '#ff0055',
+    ic: '💉',
+    tip: 'Inyección de sentencias SQL maliciosas para extraer bases de datos sensibles.',
+    cve: 'CVE-2025-2401',
+    fix: 'Usa consultas parametrizadas (Prepared Statements / ORM), sanitiza entradas en el backend y asigna al usuario de BD privilegios mínimos.'
+  },
+  {
+    n: 'Man-in-the-Middle (MitM)',
+    col: '#e040fb',
+    ic: '📡',
+    tip: 'Intercepción no autorizada de paquetes y tráfico sin cifrar en redes Wi-Fi.',
+    cve: 'CVE-2025-4190',
+    fix: 'Fuerza HTTPS estricto con directiva HSTS, navega siempre con VPN cifrada en redes públicas y desconfía de certificados SSL inválidos.'
+  },
+  {
+    n: 'Exploit Zero-Day',
+    col: '#ff0033',
+    ic: '⚡',
+    tip: 'Ataque que aprovecha una vulnerabilidad crítica sin parche disponible.',
+    cve: 'CVE-2026-0019',
+    fix: 'Aplica segmentación de red estricta (VLANs), activa análisis de comportamiento en el EDR y mitiga deshabilitando temporalmente el servicio afectado.'
+  },
+  {
+    n: 'Spyware / Keylogger',
+    col: '#00e5ff',
+    ic: '👁️',
+    tip: 'Monitoreo clandestino de pulsaciones del teclado, pantalla y credenciales.',
+    cve: 'CVE-2025-6310',
+    fix: 'Audita extensiones del navegador y programas de inicio, ejecuta análisis anti-rootkit y rota contraseñas desde otro dispositivo no comprometido.'
+  },
+  {
+    n: 'Cryptojacking',
+    col: '#ffd600',
+    ic: '⛏️',
+    tip: 'Secuestro del procesador y GPU para minar criptomonedas en segundo plano.',
+    cve: 'CVE-2024-7714',
+    fix: 'Inspecciona procesos con alto consumo de CPU/GPU en el Administrador de Tareas, bloquea scripts de minería en el navegador y filtra dominios de pools mineros en el firewall.'
+  },
+  {
+    n: 'Cross-Site Scripting (XSS)',
+    col: '#76ff03',
+    ic: '📜',
+    tip: 'Inyección de scripts en navegadores de usuarios para robar cookies de sesión.',
+    cve: 'CVE-2025-1829',
+    fix: 'Implementa encabezados Content Security Policy (CSP) estrictos, codifica caracteres HTML especiales en el renderizado y marca cookies con HttpOnly y SameSite.'
+  },
+  {
+    n: 'Spoofing DNS',
+    col: '#2979ff',
+    ic: '🌐',
+    tip: 'Envenenamiento de caché DNS para redirigir tráfico a sitios web fraudulentos.',
+    cve: 'CVE-2024-9012',
+    fix: 'Habilita DNS over HTTPS (DoH) o DNSSEC en el router, limpia la caché local con ipconfig /flushdns y utiliza servidores DNS seguros (1.1.1.1 o 9.9.9.9).'
+  },
+  {
+    n: 'Secuestro de Sesión',
+    col: '#ff6d00',
+    ic: '🍪',
+    tip: 'Robo y reutilización de tokens JWT o cookies activas para suplantar identidad.',
+    cve: 'CVE-2025-5022',
+    fix: 'Configura tiempos de vida cortos para tokens, rota identificadores de sesión al autenticar y cierra sesiones activas desde el panel de seguridad.'
+  },
+  {
+    n: 'Fuga de Credencial API',
+    col: '#ff1744',
+    ic: '🔑',
+    tip: 'Exfiltración de llaves secretas y credenciales maestras de la nube.',
+    cve: 'CVE-2025-3388',
+    fix: 'Revoca y regenera la clave API de inmediato en tu consola cloud, audita llamadas recientes y almacena secretos en variables de entorno o almacén seguro (Vault).'
+  },
+  {
+    n: 'Cadena de Suministro',
+    col: '#c51162',
+    ic: '📦',
+    tip: 'Compromiso de dependencias de código abierto de terceros para infiltrar malware.',
+    cve: 'CVE-2025-7140',
+    fix: 'Fija versiones exactas con checksums de integridad (lockfiles), analiza dependencias con herramientas SCA (npm audit, Snyk) y no uses paquetes no verificados.'
+  },
+  {
+    n: 'Botnet Zombie C2',
+    col: '#a855f7',
+    ic: '🤖',
+    tip: 'Intento de reclutamiento del nodo para una red de ataque teledirigida.',
+    cve: 'CVE-2025-4509',
+    fix: 'Bloquea puertos de comunicación saliente hacia IPs de mando y control (C2), actualiza el firmware de routers e IoT y cambia claves predeterminadas.'
+  },
+  {
+    n: 'Ataque Pass-the-Hash',
+    col: '#ff9100',
+    ic: '🎫',
+    tip: 'Movimiento lateral utilizando hashes de autenticación sin requerir la clave.',
+    cve: 'CVE-2024-8120',
+    fix: 'Habilita Windows Defender Credential Guard, desactiva NTLM a favor de Kerberos moderno y limita los derechos de administradores locales en la red.'
+  },
+  {
+    n: 'Inyección Comandos OS',
+    col: '#d50000',
+    ic: '💻',
+    tip: 'Ejecución remota de comandos del sistema operativo a través de sockets web.',
+    cve: 'CVE-2025-9921',
+    fix: 'Evita ejecutar comandos del sistema directamente desde código, usa APIs nativas seguras, valida con lista blanca estricta y ejecuta en un contenedor sin privilegios.'
+  }
 ];
 
 let A = [];
@@ -847,7 +1015,7 @@ function renderLog() {
 
   const mini = $('#miniFeed');
   if (mini) {
-    mini.innerHTML = LOG.slice(0, 4).map(formatLi).join('') || '<li><div class="tx"><span>Esperando telemetría...</span></div></li>';
+    mini.innerHTML = LOG.slice(0, 10).map(formatLi).join('') || '<li><div class="tx"><span>Esperando telemetría...</span></div></li>';
   }
   const full = $('#alertList');
   if (full) {
@@ -860,13 +1028,47 @@ function renderLog() {
       const e = LOG[+li.dataset.k];
       if (!e) return;
       sheet(`${e.k.ic} ${e.k.n}`, `
-        <p><b>Origen:</b> ${e.o.c}<br><b>Hora:</b> ${e.t}<br><b>Firma:</b> <code>${e.k.cve}</code><br><b>Estado:</b> Neutralizado</p>
-        <p>${e.k.tip}</p>
-        <button class="btn" id="btnAudioExplain">Explicación por Voz</button>
-        <button class="btn alt" onclick="closeSheet()">Cerrar</button>
+        <div class="threat-modal-content">
+          <div class="threat-meta-grid">
+            <div class="t-meta-item">
+              <span class="m-lbl">ORIGEN</span>
+              <b class="m-val">${e.o.c}</b>
+            </div>
+            <div class="t-meta-item">
+              <span class="m-lbl">HORA</span>
+              <b class="m-val">${e.t}</b>
+            </div>
+            <div class="t-meta-item">
+              <span class="m-lbl">FIRMA</span>
+              <b class="m-val"><code>${e.k.cve}</code></b>
+            </div>
+            <div class="t-meta-item">
+              <span class="m-lbl">ESTADO</span>
+              <b class="m-val ok">Neutralizado</b>
+            </div>
+          </div>
+
+          <div class="threat-info-box">
+            <div class="box-badge">VECTOR DE ATAQUE</div>
+            <p>${e.k.tip}</p>
+          </div>
+
+          <div class="threat-solution-box">
+            <div class="solution-header">
+              <span class="sol-icon">🛠️</span>
+              <b>¿CÓMO SOLUCIONARLO / PROTOCOLO DE MITIGACIÓN?</b>
+            </div>
+            <p>${e.k.fix}</p>
+          </div>
+
+          <div class="modal-actions-row">
+            <button class="btn" id="btnAudioExplain">🔊 Explicación por Voz</button>
+            <button class="btn alt" onclick="closeSheet()">Cerrar</button>
+          </div>
+        </div>
       `);
       say(`Ataque ${e.k.n} neutralizado.`);
-      $('#btnAudioExplain').onclick = () => say(`${e.k.n}. ${e.k.tip}`);
+      $('#btnAudioExplain').onclick = () => say(`${e.k.n}. ${e.k.tip}. Para solucionarlo: ${e.k.fix}`);
     };
   });
 }
@@ -1319,6 +1521,13 @@ const KB = [
   [/ransomware|secuestro|cifrado/, 'El ransomware cifra tus archivos. Mantén siempre copias de seguridad desconectadas.'],
   [/ddos|denegaci/, 'Un DDoS satura los servidores con tráfico basura para tirar el servicio.'],
   [/fuerza bruta|diccionario/, 'La fuerza bruta prueba miles de contraseñas. Usa claves largas de 16 caracteres.'],
+  [/sql|inyecci[oó]n sql|sqli/, 'La inyección SQL busca insertar comandos maliciosos en formularios para robar o destruir bases de datos.'],
+  [/zero-?day|dia cero|cero d[ií]as/, 'Un Zero-Day es una vulnerabilidad desconocida y sin parche de seguridad disponible que los atacantes explotan.'],
+  [/mitm|man-in-the-middle|hombre en el medio/, 'El ataque Man-in-the-Middle intercepta paquetes de red en redes públicas no seguras.'],
+  [/spyware|keylogger|esp[ií]a/, 'El spyware graba tus teclas y pantallas para recopilar contraseñas y datos bancarios.'],
+  [/cryptojack|miner[ií]a|cripto/, 'El cryptojacking secuestra tu CPU y GPU para minar criptomonedas en secreto.'],
+  [/xss|cross-site/, 'XSS inyecta scripts en sitios confiables para robar cookies de sesión de los navegadores.'],
+  [/dns|spoofing/, 'El spoofing de DNS falsea la resolución de nombres para llevarte a páginas clonadas idénticas.'],
   [/vpn|t[uú]nel/, 'Una VPN cifra tu conexión para proteger tu privacidad en redes públicas.'],
   [/jarvis|qui[eé]n eres/, 'Soy Jarvis 2.0, tu copiloto de ciberseguridad. Te ayudo a monitorear y proteger tus dispositivos.']
 ];

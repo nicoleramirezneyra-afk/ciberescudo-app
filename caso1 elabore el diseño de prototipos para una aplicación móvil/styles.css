@@ -903,6 +903,26 @@ h3 {
   background: var(--primary);
 }
 
+#miniFeed {
+  gap: 6px;
+}
+#miniFeed li {
+  padding: 8px 12px;
+  gap: 10px;
+  border-radius: 12px;
+}
+#miniFeed .ic {
+  font-size: 17px;
+  width: 28px;
+  height: 28px;
+}
+#miniFeed .tx b {
+  font-size: 12px;
+}
+#miniFeed .tx span {
+  font-size: 10px;
+}
+
 .cyber-list .ic {
   font-size: 20px;
   width: 32px;
@@ -1430,6 +1450,102 @@ h3 {
   color: var(--text-main);
   border: 1px solid var(--border-subtle);
   box-shadow: none;
+}
+
+.threat-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.threat-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.t-meta-item {
+  display: flex;
+  flex-direction: column;
+}
+.t-meta-item .m-lbl {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+.t-meta-item .m-val {
+  font-size: 13px;
+  color: var(--text-main);
+}
+.t-meta-item .m-val code {
+  color: var(--primary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.t-meta-item .m-val.ok {
+  color: var(--accent);
+}
+
+.threat-info-box {
+  background: rgba(0, 240, 255, 0.05);
+  border-left: 3px solid var(--primary);
+  border-radius: 0 10px 10px 0;
+  padding: 8px 12px;
+}
+.threat-info-box .box-badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+.threat-info-box p {
+  font-size: 12px;
+  color: var(--text-main);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.threat-solution-box {
+  background: linear-gradient(135deg, rgba(57, 255, 122, 0.1) 0%, rgba(0, 240, 255, 0.04) 100%);
+  border: 1px solid rgba(57, 255, 122, 0.4);
+  border-radius: 12px;
+  padding: 11px 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+.solution-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 6px;
+}
+.solution-header .sol-icon {
+  font-size: 16px;
+}
+.solution-header b {
+  font-family: var(--font-tech);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+}
+.threat-solution-box p {
+  font-size: 12px;
+  color: #e0f2fe;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.modal-actions-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+.modal-actions-row .btn {
+  margin: 0;
 }
 
 .nopt {
