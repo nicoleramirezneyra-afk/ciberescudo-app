@@ -1,5 +1,5 @@
-/* ==========================================================================
-   CIBERESCUDO 2.0 – MOTOR PRINCIPAL & TÁCTICAS DE CIBERSEGURIDAD
+﻿/* ==========================================================================
+   CIBERESCUDO 2.0 â€“ MOTOR PRINCIPAL & TÃCTICAS DE CIBERSEGURIDAD
    Sistema de voz fluido, conciso y sin interrupciones abruptas
    ========================================================================== */
 
@@ -119,7 +119,7 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-function notifyIsland(text, icon = '🛡️', duration = 3000) {
+function notifyIsland(text, icon = 'ðŸ›¡ï¸', duration = 3000) {
   const island = $('#dynamicIsland');
   if (!island) return;
   $('#islandText').textContent = text;
@@ -186,16 +186,16 @@ function processSpeechQueue() {
 }
 
 /**
- * Función principal para hablar:
+ * FunciÃ³n principal para hablar:
  * @param {string} text - Texto a pronunciar
- * @param {boolean} urgent - Si es true, cancela lo anterior limpiamente para atender la acción inmediata del usuario
+ * @param {boolean} urgent - Si es true, cancela lo anterior limpiamente para atender la acciÃ³n inmediata del usuario
  */
 function say(text, urgent = true) {
   if (!text) return;
   if ($('#bubble')) $('#bubble').textContent = text;
 
   if (urgent) {
-    // Si el usuario tocó un botón explícitamente, cancelamos la cola y hablamos esto inmediatamente
+    // Si el usuario tocÃ³ un botÃ³n explÃ­citamente, cancelamos la cola y hablamos esto inmediatamente
     speechQueue = [{ text }];
     if ('speechSynthesis' in window) {
       try { speechSynthesis.cancel(); } catch (e) {}
@@ -203,7 +203,7 @@ function say(text, urgent = true) {
     isSpeaking = false;
     processSpeechQueue();
   } else {
-    // Si no es urgente, lo agregamos a la cola para que termine lo que está diciendo
+    // Si no es urgente, lo agregamos a la cola para que termine lo que estÃ¡ diciendo
     speechQueue.push({ text });
     if (!isSpeaking) {
       processSpeechQueue();
@@ -218,7 +218,7 @@ if ('speechSynthesis' in window) {
 $('#voiceBtn').onclick = () => {
   initAudio();
   S.voice = !S.voice;
-  $('#voiceBtn').textContent = S.voice ? '🔊' : '🔇';
+  $('#voiceBtn').textContent = S.voice ? 'ðŸ”Š' : 'ðŸ”‡';
   $('#aiVoiceIndicator').textContent = S.voice ? 'AUDIO ON' : 'MUTED';
   if (!S.voice) {
     speechQueue = [];
@@ -279,11 +279,11 @@ function drawBioParticles() {
 }
 drawBioParticles();
 
-// Roles en Boot con locución concisa
+// Roles en Boot con locuciÃ³n concisa
 const ROLE_VOICES = {
-  'Sentinel': 'Rol Sentinel. Defensa y mitigación de amenazas.',
-  'Ethical Hacker': 'Rol NetSec. Auditoría y escaneo de vulnerabilidades.',
-  'Admin Corp': 'Rol Director. Supervisión de métricas ejecutivas.'
+  'Sentinel': 'Rol Sentinel. Defensa y mitigaciÃ³n de amenazas.',
+  'Ethical Hacker': 'Rol NetSec. AuditorÃ­a y escaneo de vulnerabilidades.',
+  'Admin Corp': 'Rol Director. SupervisiÃ³n de mÃ©tricas ejecutivas.'
 };
 
 $$('.role-chip').forEach(btn => {
@@ -314,12 +314,12 @@ function startBootSequence() {
   $('#bootForm').hidden = true;
   $('#scanBox').hidden = false;
   SFX.success();
-  say(`Iniciando escaneo biométrico para ${S.role} ${S.name}.`);
+  say(`Iniciando escaneo biomÃ©trico para ${S.role} ${S.name}.`);
 
   const steps = [
-    { t: 'Mapeando rostro…', bio: 'CORRECTO (99.8%)', net: 'GENERANDO LLAVES' },
-    { t: 'Cifrado cuántico de canal…', bio: 'VALIDADO', net: 'CANAL SHA-512 OK' },
-    { t: 'Sincronizando satélites…', bio: 'VALIDADO', fw: 'DEFENSA ACTIVA' },
+    { t: 'Mapeando rostroâ€¦', bio: 'CORRECTO (99.8%)', net: 'GENERANDO LLAVES' },
+    { t: 'Cifrado cuÃ¡ntico de canalâ€¦', bio: 'VALIDADO', net: 'CANAL SHA-512 OK' },
+    { t: 'Sincronizando satÃ©litesâ€¦', bio: 'VALIDADO', fw: 'DEFENSA ACTIVA' },
     { t: `Acceso concedido a ${S.role} ${S.name}`, bio: 'COMPLETADO', fw: 'NIVEL QUANTUM' }
   ];
 
@@ -343,16 +343,16 @@ function startBootSequence() {
 function seedInitialTelemetry() {
   if (LOG.length > 0) return;
   const initialThreats = [
-    { typeIdx: 7, cityIdx: 0, manual: false, crit: true, minsAgo: 1 },   // Zero-Day Moscú
+    { typeIdx: 7, cityIdx: 0, manual: false, crit: true, minsAgo: 1 },   // Zero-Day MoscÃº
     { typeIdx: 0, cityIdx: 5, manual: true, crit: false, minsAgo: 2 },   // Phishing NY
-    { typeIdx: 5, cityIdx: 1, manual: false, crit: true, minsAgo: 4 },   // SQLi Pekín
-    { typeIdx: 9, cityIdx: 6, manual: false, crit: false, minsAgo: 6 },  // Cryptojacking Fráncfort
+    { typeIdx: 5, cityIdx: 1, manual: false, crit: true, minsAgo: 4 },   // SQLi PekÃ­n
+    { typeIdx: 9, cityIdx: 6, manual: false, crit: false, minsAgo: 6 },  // Cryptojacking FrÃ¡ncfort
     { typeIdx: 6, cityIdx: 9, manual: true, crit: false, minsAgo: 8 },   // MitM Londres
-    { typeIdx: 8, cityIdx: 11, manual: false, crit: false, minsAgo: 11 }, // Spyware Seúl
-    { typeIdx: 1, cityIdx: 3, manual: false, crit: true, minsAgo: 14 },  // Ransomware São Paulo
-    { typeIdx: 2, cityIdx: 4, manual: true, crit: false, minsAgo: 16 },  // DDoS Teherán
+    { typeIdx: 8, cityIdx: 11, manual: false, crit: false, minsAgo: 11 }, // Spyware SeÃºl
+    { typeIdx: 1, cityIdx: 3, manual: false, crit: true, minsAgo: 14 },  // Ransomware SÃ£o Paulo
+    { typeIdx: 2, cityIdx: 4, manual: true, crit: false, minsAgo: 16 },  // DDoS TeherÃ¡n
     { typeIdx: 10, cityIdx: 7, manual: false, crit: false, minsAgo: 19 }, // XSS Tokio
-    { typeIdx: 11, cityIdx: 8, manual: false, crit: false, minsAgo: 22 }  // DNS Spoofing Sídney
+    { typeIdx: 11, cityIdx: 8, manual: false, crit: false, minsAgo: 22 }  // DNS Spoofing SÃ­dney
   ];
   const now = Date.now();
   initialThreats.forEach(item => {
@@ -378,10 +378,10 @@ function enterApp() {
   calcScore();
   renderLog();
 
-  notifyIsland(`Bienvenido ${S.role} ${S.name}`, '🛡️', 3500);
+  notifyIsland(`Bienvenido ${S.role} ${S.name}`, 'ðŸ›¡ï¸', 3500);
   say(`Bienvenido ${S.role} ${S.name}. Escudo activo.`);
 
-  // Simulación continua de tráfico en segundo plano
+  // SimulaciÃ³n continua de trÃ¡fico en segundo plano
   setInterval(() => {
     if (S.auto && A.length < 5) spawnAttack(false);
   }, 2600);
@@ -390,13 +390,13 @@ function enterApp() {
 }
 
 // ==========================================================================
-// 5. NAVEGACIÓN ENTRE TABS CON NARRACIÓN CONCISA
+// 5. NAVEGACIÃ“N ENTRE TABS CON NARRACIÃ“N CONCISA
 // ==========================================================================
 const TAB_NARRATIONS = {
   'map': 'Mapa global de amenazas en vivo.',
-  'dev': 'Topología de equipos de la red.',
+  'dev': 'TopologÃ­a de equipos de la red.',
   'alert': 'Historial de alertas e incidentes.',
-  'tips': 'Academia y desafíos de ciberseguridad.',
+  'tips': 'Academia y desafÃ­os de ciberseguridad.',
   'more': 'Ciber-Laboratorio y herramientas.'
 };
 
@@ -418,7 +418,7 @@ $('#fab').onclick = () => {
   initAudio();
   const isOpen = $('#fabwrap').classList.toggle('open');
   SFX.beep(isOpen ? 650 : 450, 'sine', 0.06);
-  say(isOpen ? 'Menú de opciones abierto.' : 'Menú cerrado.');
+  say(isOpen ? 'MenÃº de opciones abierto.' : 'MenÃº cerrado.');
 };
 
 document.addEventListener('click', e => {
@@ -452,7 +452,7 @@ function closeSheet() {
 $('#sheetBg').onclick = closeSheet;
 
 // ==========================================================================
-// 7. PUNTAJE, SALUD Y TELEMETRÍA
+// 7. PUNTAJE, SALUD Y TELEMETRÃA
 // ==========================================================================
 function setScoreVisual(score) {
   const s = Math.max(0, Math.min(100, score));
@@ -473,7 +473,7 @@ function setScoreVisual(score) {
     lvlTxt.textContent = 'Riesgo Moderado';
   } else {
     lvlDot.className = 'pill-dot hi';
-    lvlTxt.textContent = 'Amenaza Crítica';
+    lvlTxt.textContent = 'Amenaza CrÃ­tica';
   }
 }
 
@@ -493,72 +493,72 @@ function calcScore() {
 }
 
 // ==========================================================================
-// 8. DISPOSITIVOS & TOPOLOGÍA DE RED
+// 8. DISPOSITIVOS & TOPOLOGÃA DE RED
 // ==========================================================================
 const D = [
   {
     n: 'Smartphone Operador',
-    i: '📱',
+    i: 'ðŸ“±',
     ip: '192.168.1.12',
     port: '8080 (TLS)',
     mac: 'E4:5F:01:28:C2:11',
-    os: 'Android 15 · Sandbox',
+    os: 'Android 15 Â· Sandbox',
     r: 0,
     state: 'done',
-    m: 'Protegido con clave biométrica, sandbox activo y cifrado en reposo.',
-    fix: 'Validación de integridad OK'
+    m: 'Protegido con clave biomÃ©trica, sandbox activo y cifrado en reposo.',
+    fix: 'ValidaciÃ³n de integridad OK'
   },
   {
-    n: 'Estación Laptop Pro',
-    i: '💻',
+    n: 'EstaciÃ³n Laptop Pro',
+    i: 'ðŸ’»',
     ip: '192.168.1.20',
     port: '443 (HTTPS)',
     mac: '3C:22:FB:8A:44:90',
-    os: 'Windows 11 Pro · EDR',
+    os: 'Windows 11 Pro Â· EDR',
     r: 0,
     state: 'done',
-    m: 'EDR y firewall cuántico activos. Firmware TPM 2.0 validado.',
-    fix: 'Protección Endpoint activa'
+    m: 'EDR y firewall cuÃ¡ntico activos. Firmware TPM 2.0 validado.',
+    fix: 'ProtecciÃ³n Endpoint activa'
   },
   {
     n: 'Gateway Wi-Fi 6',
-    i: '📡',
+    i: 'ðŸ“¡',
     ip: '192.168.1.1',
     port: '80 (HTTP Inseguro)',
     mac: '00:1A:2B:6C:88:12',
     os: 'OpenWrt 23.05',
     r: 1,
     state: 'done',
-    m: 'Panel de administración en HTTP sin cifrar y parche pendiente CVE-2025-4109.',
-    fix: 'Inyectar Parche Cuántico y Forzar HTTPS'
+    m: 'Panel de administraciÃ³n en HTTP sin cifrar y parche pendiente CVE-2025-4109.',
+    fix: 'Inyectar Parche CuÃ¡ntico y Forzar HTTPS'
   },
   {
     n: 'Smart TV QLED',
-    i: '📺',
+    i: 'ðŸ“º',
     ip: '192.168.1.31',
     port: '8008 (Cast)',
     mac: '74:D0:2B:F1:09:A5',
     os: 'Tizen OS 7.0',
     r: 0,
     state: 'done',
-    m: 'Tráfico multimedia aislado en VLAN de invitados sin acceso a la LAN privada.',
+    m: 'TrÃ¡fico multimedia aislado en VLAN de invitados sin acceso a la LAN privada.',
     fix: 'Aislamiento VLAN verificado'
   },
   {
-    n: 'Cámara IP Perímetro',
-    i: '📷',
+    n: 'CÃ¡mara IP PerÃ­metro',
+    i: 'ðŸ“·',
     ip: '192.168.1.45',
     port: '554 (RTSP Abierto)',
     mac: 'A0:B1:C2:D3:E4:F5',
     os: 'Embedded Linux 4.9',
     r: 2,
     state: 'done',
-    m: 'Credencial por defecto de fábrica «admin/1234» detectada. Riesgo crítico de botnet Mirai.',
+    m: 'Credencial por defecto de fÃ¡brica Â«admin/1234Â» detectada. Riesgo crÃ­tico de botnet Mirai.',
     fix: 'Rotar Credencial a SHA-256 y Cifrar RTSP'
   },
   {
     n: 'Smartwatch Ultra',
-    i: '⌚',
+    i: 'âŒš',
     ip: '192.168.1.52',
     port: 'BLE Encrypted v5.3',
     mac: '58:CB:52:80:11:F2',
@@ -570,7 +570,7 @@ const D = [
   },
   {
     n: 'Servidor NAS Backup',
-    i: '💾',
+    i: 'ðŸ’¾',
     ip: '192.168.1.80',
     port: '445 (SMBv1 Legado)',
     mac: '90:09:D0:33:66:BB',
@@ -581,20 +581,20 @@ const D = [
     fix: 'Migrar a SMBv3 Cifrado con Firma Digital'
   },
   {
-    n: 'Asistente IoT Domótico',
-    i: '🎙️',
+    n: 'Asistente IoT DomÃ³tico',
+    i: 'ðŸŽ™ï¸',
     ip: '192.168.1.95',
     port: '1883 (MQTT Abierto)',
     mac: '60:01:94:4A:2C:19',
     os: 'ESP32 FreeRTOS v4',
     r: 1,
     state: 'done',
-    m: 'Broker MQTT escuchando sin autenticación TLS en la red interna.',
+    m: 'Broker MQTT escuchando sin autenticaciÃ³n TLS en la red interna.',
     fix: 'Habilitar MQTTS con Certificados X.509'
   }
 ];
 
-const RISK_TEXTS = ['SEGURO', 'VULNERABILIDAD MEDIA', 'RIESGO CRÍTICO'];
+const RISK_TEXTS = ['SEGURO', 'VULNERABILIDAD MEDIA', 'RIESGO CRÃTICO'];
 let isScanningDevs = false;
 
 function renderDevices() {
@@ -606,11 +606,11 @@ function renderDevices() {
       <span class="ic">${d.i}</span>
       <div class="tx">
         <b>${d.n}</b>
-        <span>${d.ip} · ${d.port} · ${d.os}</span>
+        <span>${d.ip} Â· ${d.port} Â· ${d.os}</span>
       </div>
       <div class="dev-status-wrap">
         <span class="dev-status-pill ${d.state === 'sc' ? 'sc' : d.r === 0 ? 'ok' : d.r === 1 ? 'mid' : 'hi'}">
-          ${d.state === 'sc' ? 'Escaneando…' : RISK_TEXTS[d.r]}
+          ${d.state === 'sc' ? 'Escaneandoâ€¦' : RISK_TEXTS[d.r]}
         </span>
       </div>
     </li>
@@ -629,7 +629,7 @@ function scanDevices() {
   renderDevices();
   $('#devBar').style.width = '0%';
   say('Escaneando dispositivos de la red.');
-  notifyIsland('Escaneando Red Local...', '📡');
+  notifyIsland('Escaneando Red Local...', 'ðŸ“¡');
 
   let k = 0;
   const step = () => {
@@ -649,11 +649,11 @@ function scanDevices() {
       if (vulns > 0) {
         SFX.alarm();
         say(`Escaneo listo. Se detectaron ${vulns} equipos con riesgo.`);
-        notifyIsland(`${vulns} Vulnerabilidades`, '⚠️');
+        notifyIsland(`${vulns} Vulnerabilidades`, 'âš ï¸');
       } else {
         SFX.success();
-        say('Escaneo completo. Todos los dispositivos están seguros.');
-        notifyIsland('Red 100% Blindada', '🛡️');
+        say('Escaneo completo. Todos los dispositivos estÃ¡n seguros.');
+        notifyIsland('Red 100% Blindada', 'ðŸ›¡ï¸');
       }
     }
   };
@@ -666,7 +666,7 @@ function showDeviceDetail(k) {
     <div class="threat-modal-content">
       <div class="threat-meta-grid">
         <div class="t-meta-item">
-          <span class="m-lbl">DIRECCIÓN IP</span>
+          <span class="m-lbl">DIRECCIÃ“N IP</span>
           <b class="m-val"><code>${d.ip}</code></b>
         </div>
         <div class="t-meta-item">
@@ -674,7 +674,7 @@ function showDeviceDetail(k) {
           <b class="m-val">${d.port}</b>
         </div>
         <div class="t-meta-item">
-          <span class="m-lbl">DIRECCIÓN MAC</span>
+          <span class="m-lbl">DIRECCIÃ“N MAC</span>
           <b class="m-val"><code>${d.mac}</code></b>
         </div>
         <div class="t-meta-item">
@@ -684,22 +684,22 @@ function showDeviceDetail(k) {
       </div>
 
       <div class="threat-info-box">
-        <div class="box-badge">DIAGNÓSTICO TÁCTICO</div>
+        <div class="box-badge">DIAGNÃ“STICO TÃCTICO</div>
         <p>${d.m}</p>
       </div>
 
       <div class="threat-solution-box" style="border-color: var(--${d.r === 0 ? 'accent' : d.r === 1 ? 'warn' : 'danger'})">
         <div class="solution-header">
-          <span class="sol-icon">${d.r === 0 ? '🛡️' : '⚠️'}</span>
+          <span class="sol-icon">${d.r === 0 ? 'ðŸ›¡ï¸' : 'âš ï¸'}</span>
           <b style="color: var(--${d.r === 0 ? 'accent' : d.r === 1 ? 'warn' : 'danger'})">
             ESTADO: ${RISK_TEXTS[d.r]}
           </b>
         </div>
-        <p>${d.r === 0 ? 'Este dispositivo cumple con las directivas de blindaje y cifrado activo.' : 'Vulnerabilidad detectada. Aplica el parche táctico a continuación para mitigar vectores de intrusión.'}</p>
+        <p>${d.r === 0 ? 'Este dispositivo cumple con las directivas de blindaje y cifrado activo.' : 'Vulnerabilidad detectada. Aplica el parche tÃ¡ctico a continuaciÃ³n para mitigar vectores de intrusiÃ³n.'}</p>
       </div>
 
       <div class="modal-actions-row">
-        ${d.r > 0 ? `<button class="btn" id="btnPatchDev">🛠️ ${d.fix}</button>` : `<button class="btn" id="btnDevAudio">🔊 Diagnóstico por Voz</button>`}
+        ${d.r > 0 ? `<button class="btn" id="btnPatchDev">ðŸ› ï¸ ${d.fix}</button>` : `<button class="btn" id="btnDevAudio">ðŸ”Š DiagnÃ³stico por Voz</button>`}
         <button class="btn alt" onclick="closeSheet()">Cerrar</button>
       </div>
     </div>
@@ -709,13 +709,13 @@ function showDeviceDetail(k) {
     say(`${d.n}. Estado: ${RISK_TEXTS[d.r]}. ${d.m}`);
     $('#btnPatchDev').onclick = () => {
       d.r = 0;
-      d.m = 'Vulnerabilidad mitigada con éxito. Puerto protegido y cifrado activo.';
+      d.m = 'Vulnerabilidad mitigada con Ã©xito. Puerto protegido y cifrado activo.';
       renderDevices();
       calcScore();
       closeSheet();
       SFX.success();
       say(`Parche aplicado a ${d.n}. Dispositivo blindado.`);
-      notifyIsland(`${d.n} Reparado`, '✅');
+      notifyIsland(`${d.n} Reparado`, 'âœ…');
     };
   } else {
     say(`${d.n}. Dispositivo seguro.`);
@@ -728,7 +728,7 @@ function showDeviceDetail(k) {
 $('#btnDevScan').onclick = () => scanDevices();
 
 // ==========================================================================
-// 9. MAPA GLOBAL TÁCTICO & INTERCEPTOR DE AMENAZAS
+// 9. MAPA GLOBAL TÃCTICO & INTERCEPTOR DE AMENAZAS
 // ==========================================================================
 const mapCv = $('#map'), mapCx = mapCv ? mapCv.getContext('2d') : null;
 let mW = 0, mH = 0;
@@ -758,12 +758,12 @@ const LAND = [
 ];
 
 const CITIES = [
-  { c: 'Moscú', la: 55.7, lo: 37.6 }, { c: 'Pekín', la: 39.9, lo: 116.4 }, { c: 'Lagos', la: 6.5, lo: 3.4 },
-  { c: 'São Paulo', la: -23.5, lo: -46.6 }, { c: 'Teherán', la: 35.7, lo: 51.4 }, { c: 'Nueva York', la: 40.7, lo: -74 },
-  { c: 'Fráncfort', la: 50.1, lo: 8.7 }, { c: 'Tokio', la: 35.6, lo: 139.6 }, { c: 'Sídney', la: -33.9, lo: 151.2 },
-  { c: 'Londres', la: 51.5, lo: -0.1 }, { c: 'Singapur', la: 1.35, lo: 103.8 }, { c: 'Seúl', la: 37.5, lo: 126.9 },
-  { c: 'Ámsterdam', la: 52.3, lo: 4.9 }, { c: 'Buenos Aires', la: -34.6, lo: -58.3 }, { c: 'Toronto', la: 43.6, lo: -79.3 },
-  { c: 'Madrid', la: 40.4, lo: -3.7 }, { c: 'Dubái', la: 25.2, lo: 55.2 }
+  { c: 'MoscÃº', la: 55.7, lo: 37.6 }, { c: 'PekÃ­n', la: 39.9, lo: 116.4 }, { c: 'Lagos', la: 6.5, lo: 3.4 },
+  { c: 'SÃ£o Paulo', la: -23.5, lo: -46.6 }, { c: 'TeherÃ¡n', la: 35.7, lo: 51.4 }, { c: 'Nueva York', la: 40.7, lo: -74 },
+  { c: 'FrÃ¡ncfort', la: 50.1, lo: 8.7 }, { c: 'Tokio', la: 35.6, lo: 139.6 }, { c: 'SÃ­dney', la: -33.9, lo: 151.2 },
+  { c: 'Londres', la: 51.5, lo: -0.1 }, { c: 'Singapur', la: 1.35, lo: 103.8 }, { c: 'SeÃºl', la: 37.5, lo: 126.9 },
+  { c: 'Ãmsterdam', la: 52.3, lo: 4.9 }, { c: 'Buenos Aires', la: -34.6, lo: -58.3 }, { c: 'Toronto', la: 43.6, lo: -79.3 },
+  { c: 'Madrid', la: 40.4, lo: -3.7 }, { c: 'DubÃ¡i', la: 25.2, lo: 55.2 }
 ];
 
 const DEFENSE_TARGET = { c: 'Lima (Base)', la: -12, lo: -77 };
@@ -772,146 +772,146 @@ const THREAT_TYPES = [
   {
     n: 'Phishing',
     col: '#ffb43b',
-    ic: '🎣',
-    tip: 'Correos y SMS que suplantan identidad institucional para robar contraseñas.',
+    ic: 'ðŸŽ£',
+    tip: 'Correos y SMS que suplantan identidad institucional para robar contraseÃ±as.',
     cve: 'CVE-2025-0144',
-    fix: 'Verifica remitentes y URLs oficiales, nunca ingreses credenciales por enlaces urgentes y activa 2FA con llaves físicas o apps autenticadoras.'
+    fix: 'Verifica remitentes y URLs oficiales, nunca ingreses credenciales por enlaces urgentes y activa 2FA con llaves fÃ­sicas o apps autenticadoras.'
   },
   {
     n: 'Ransomware',
     col: '#ff2a6d',
-    ic: '🔒',
-    tip: 'Intento de secuestro y cifrado malicioso de archivos locales con extorsión.',
+    ic: 'ðŸ”’',
+    tip: 'Intento de secuestro y cifrado malicioso de archivos locales con extorsiÃ³n.',
     cve: 'CVE-2025-8812',
-    fix: 'Aísla el equipo de la red al instante, no pagues el rescate y restaura respaldos inmutables desconectados (estrategia 3-2-1).'
+    fix: 'AÃ­sla el equipo de la red al instante, no pagues el rescate y restaura respaldos inmutables desconectados (estrategia 3-2-1).'
   },
   {
     n: 'DDoS Masivo',
     col: '#b026ff',
-    ic: '🌊',
-    tip: 'Bombardeo volumétrico de paquetes SYN/UDP para saturar ancho de banda.',
+    ic: 'ðŸŒŠ',
+    tip: 'Bombardeo volumÃ©trico de paquetes SYN/UDP para saturar ancho de banda.',
     cve: 'CVE-2024-9901',
-    fix: 'Activa protección Anycast/CDN (Cloudflare/AWS Shield), configura rate limiting en el reverse proxy y descarta tráfico malicioso con SYN Cookies.'
+    fix: 'Activa protecciÃ³n Anycast/CDN (Cloudflare/AWS Shield), configura rate limiting en el reverse proxy y descarta trÃ¡fico malicioso con SYN Cookies.'
   },
   {
-    n: 'Troyano Espía',
+    n: 'Troyano EspÃ­a',
     col: '#00f0ff',
-    ic: '🦠',
-    tip: 'Inyección de software espía camuflado en instaladores o adjuntos.',
+    ic: 'ðŸ¦ ',
+    tip: 'InyecciÃ³n de software espÃ­a camuflado en instaladores o adjuntos.',
     cve: 'CVE-2025-1033',
-    fix: 'Inicia en modo seguro, realiza un análisis EDR profundo, remueve llaves de persistencia en el registro y descarga software solo de fuentes verificadas.'
+    fix: 'Inicia en modo seguro, realiza un anÃ¡lisis EDR profundo, remueve llaves de persistencia en el registro y descarga software solo de fuentes verificadas.'
   },
   {
     n: 'Fuerza Bruta SSH',
     col: '#ff5500',
-    ic: '🔨',
+    ic: 'ðŸ”¨',
     tip: 'Diccionario automatizado de alta frecuencia contra puertos de acceso remoto.',
     cve: 'CVE-2024-3401',
-    fix: 'Deshabilita acceso root por contraseña, cambia el puerto 22, exige autenticación por llaves ed25519 e instala fail2ban para bloqueo automático tras 3 intentos.'
+    fix: 'Deshabilita acceso root por contraseÃ±a, cambia el puerto 22, exige autenticaciÃ³n por llaves ed25519 e instala fail2ban para bloqueo automÃ¡tico tras 3 intentos.'
   },
   {
-    n: 'Inyección SQL (SQLi)',
+    n: 'InyecciÃ³n SQL (SQLi)',
     col: '#ff0055',
-    ic: '💉',
-    tip: 'Inyección de sentencias SQL maliciosas para extraer bases de datos sensibles.',
+    ic: 'ðŸ’‰',
+    tip: 'InyecciÃ³n de sentencias SQL maliciosas para extraer bases de datos sensibles.',
     cve: 'CVE-2025-2401',
-    fix: 'Usa consultas parametrizadas (Prepared Statements / ORM), sanitiza entradas en el backend y asigna al usuario de BD privilegios mínimos.'
+    fix: 'Usa consultas parametrizadas (Prepared Statements / ORM), sanitiza entradas en el backend y asigna al usuario de BD privilegios mÃ­nimos.'
   },
   {
     n: 'Man-in-the-Middle (MitM)',
     col: '#e040fb',
-    ic: '📡',
-    tip: 'Intercepción no autorizada de paquetes y tráfico sin cifrar en redes Wi-Fi.',
+    ic: 'ðŸ“¡',
+    tip: 'IntercepciÃ³n no autorizada de paquetes y trÃ¡fico sin cifrar en redes Wi-Fi.',
     cve: 'CVE-2025-4190',
-    fix: 'Fuerza HTTPS estricto con directiva HSTS, navega siempre con VPN cifrada en redes públicas y desconfía de certificados SSL inválidos.'
+    fix: 'Fuerza HTTPS estricto con directiva HSTS, navega siempre con VPN cifrada en redes pÃºblicas y desconfÃ­a de certificados SSL invÃ¡lidos.'
   },
   {
     n: 'Exploit Zero-Day',
     col: '#ff0033',
-    ic: '⚡',
-    tip: 'Ataque que aprovecha una vulnerabilidad crítica sin parche disponible.',
+    ic: 'âš¡',
+    tip: 'Ataque que aprovecha una vulnerabilidad crÃ­tica sin parche disponible.',
     cve: 'CVE-2026-0019',
-    fix: 'Aplica segmentación de red estricta (VLANs), activa análisis de comportamiento en el EDR y mitiga deshabilitando temporalmente el servicio afectado.'
+    fix: 'Aplica segmentaciÃ³n de red estricta (VLANs), activa anÃ¡lisis de comportamiento en el EDR y mitiga deshabilitando temporalmente el servicio afectado.'
   },
   {
     n: 'Spyware / Keylogger',
     col: '#00e5ff',
-    ic: '👁️',
+    ic: 'ðŸ‘ï¸',
     tip: 'Monitoreo clandestino de pulsaciones del teclado, pantalla y credenciales.',
     cve: 'CVE-2025-6310',
-    fix: 'Audita extensiones del navegador y programas de inicio, ejecuta análisis anti-rootkit y rota contraseñas desde otro dispositivo no comprometido.'
+    fix: 'Audita extensiones del navegador y programas de inicio, ejecuta anÃ¡lisis anti-rootkit y rota contraseÃ±as desde otro dispositivo no comprometido.'
   },
   {
     n: 'Cryptojacking',
     col: '#ffd600',
-    ic: '⛏️',
+    ic: 'â›ï¸',
     tip: 'Secuestro del procesador y GPU para minar criptomonedas en segundo plano.',
     cve: 'CVE-2024-7714',
-    fix: 'Inspecciona procesos con alto consumo de CPU/GPU en el Administrador de Tareas, bloquea scripts de minería en el navegador y filtra dominios de pools mineros en el firewall.'
+    fix: 'Inspecciona procesos con alto consumo de CPU/GPU en el Administrador de Tareas, bloquea scripts de minerÃ­a en el navegador y filtra dominios de pools mineros en el firewall.'
   },
   {
     n: 'Cross-Site Scripting (XSS)',
     col: '#76ff03',
-    ic: '📜',
-    tip: 'Inyección de scripts en navegadores de usuarios para robar cookies de sesión.',
+    ic: 'ðŸ“œ',
+    tip: 'InyecciÃ³n de scripts en navegadores de usuarios para robar cookies de sesiÃ³n.',
     cve: 'CVE-2025-1829',
     fix: 'Implementa encabezados Content Security Policy (CSP) estrictos, codifica caracteres HTML especiales en el renderizado y marca cookies con HttpOnly y SameSite.'
   },
   {
     n: 'Spoofing DNS',
     col: '#2979ff',
-    ic: '🌐',
-    tip: 'Envenenamiento de caché DNS para redirigir tráfico a sitios web fraudulentos.',
+    ic: 'ðŸŒ',
+    tip: 'Envenenamiento de cachÃ© DNS para redirigir trÃ¡fico a sitios web fraudulentos.',
     cve: 'CVE-2024-9012',
-    fix: 'Habilita DNS over HTTPS (DoH) o DNSSEC en el router, limpia la caché local con ipconfig /flushdns y utiliza servidores DNS seguros (1.1.1.1 o 9.9.9.9).'
+    fix: 'Habilita DNS over HTTPS (DoH) o DNSSEC en el router, limpia la cachÃ© local con ipconfig /flushdns y utiliza servidores DNS seguros (1.1.1.1 o 9.9.9.9).'
   },
   {
-    n: 'Secuestro de Sesión',
+    n: 'Secuestro de SesiÃ³n',
     col: '#ff6d00',
-    ic: '🍪',
-    tip: 'Robo y reutilización de tokens JWT o cookies activas para suplantar identidad.',
+    ic: 'ðŸª',
+    tip: 'Robo y reutilizaciÃ³n de tokens JWT o cookies activas para suplantar identidad.',
     cve: 'CVE-2025-5022',
-    fix: 'Configura tiempos de vida cortos para tokens, rota identificadores de sesión al autenticar y cierra sesiones activas desde el panel de seguridad.'
+    fix: 'Configura tiempos de vida cortos para tokens, rota identificadores de sesiÃ³n al autenticar y cierra sesiones activas desde el panel de seguridad.'
   },
   {
     n: 'Fuga de Credencial API',
     col: '#ff1744',
-    ic: '🔑',
-    tip: 'Exfiltración de llaves secretas y credenciales maestras de la nube.',
+    ic: 'ðŸ”‘',
+    tip: 'ExfiltraciÃ³n de llaves secretas y credenciales maestras de la nube.',
     cve: 'CVE-2025-3388',
-    fix: 'Revoca y regenera la clave API de inmediato en tu consola cloud, audita llamadas recientes y almacena secretos en variables de entorno o almacén seguro (Vault).'
+    fix: 'Revoca y regenera la clave API de inmediato en tu consola cloud, audita llamadas recientes y almacena secretos en variables de entorno o almacÃ©n seguro (Vault).'
   },
   {
     n: 'Cadena de Suministro',
     col: '#c51162',
-    ic: '📦',
-    tip: 'Compromiso de dependencias de código abierto de terceros para infiltrar malware.',
+    ic: 'ðŸ“¦',
+    tip: 'Compromiso de dependencias de cÃ³digo abierto de terceros para infiltrar malware.',
     cve: 'CVE-2025-7140',
     fix: 'Fija versiones exactas con checksums de integridad (lockfiles), analiza dependencias con herramientas SCA (npm audit, Snyk) y no uses paquetes no verificados.'
   },
   {
     n: 'Botnet Zombie C2',
     col: '#a855f7',
-    ic: '🤖',
+    ic: 'ðŸ¤–',
     tip: 'Intento de reclutamiento del nodo para una red de ataque teledirigida.',
     cve: 'CVE-2025-4509',
-    fix: 'Bloquea puertos de comunicación saliente hacia IPs de mando y control (C2), actualiza el firmware de routers e IoT y cambia claves predeterminadas.'
+    fix: 'Bloquea puertos de comunicaciÃ³n saliente hacia IPs de mando y control (C2), actualiza el firmware de routers e IoT y cambia claves predeterminadas.'
   },
   {
     n: 'Ataque Pass-the-Hash',
     col: '#ff9100',
-    ic: '🎫',
-    tip: 'Movimiento lateral utilizando hashes de autenticación sin requerir la clave.',
+    ic: 'ðŸŽ«',
+    tip: 'Movimiento lateral utilizando hashes de autenticaciÃ³n sin requerir la clave.',
     cve: 'CVE-2024-8120',
     fix: 'Habilita Windows Defender Credential Guard, desactiva NTLM a favor de Kerberos moderno y limita los derechos de administradores locales en la red.'
   },
   {
-    n: 'Inyección Comandos OS',
+    n: 'InyecciÃ³n Comandos OS',
     col: '#d50000',
-    ic: '💻',
-    tip: 'Ejecución remota de comandos del sistema operativo a través de sockets web.',
+    ic: 'ðŸ’»',
+    tip: 'EjecuciÃ³n remota de comandos del sistema operativo a travÃ©s de sockets web.',
     cve: 'CVE-2025-9921',
-    fix: 'Evita ejecutar comandos del sistema directamente desde código, usa APIs nativas seguras, valida con lista blanca estricta y ejecuta en un contenedor sin privilegios.'
+    fix: 'Evita ejecutar comandos del sistema directamente desde cÃ³digo, usa APIs nativas seguras, valida con lista blanca estricta y ejecuta en un contenedor sin privilegios.'
   }
 ];
 
@@ -929,7 +929,7 @@ function spawnAttack(forced = false) {
   if (forced) {
     SFX.alarm();
     say(`Simulando ataque ${k.n} desde ${o.c}.`);
-    notifyIsland(`Ataque ${k.n}`, '⚡');
+    notifyIsland(`Ataque ${k.n}`, 'âš¡');
   }
 }
 
@@ -949,7 +949,7 @@ function drawMap() {
   if (mW && mapCx) {
     mapCx.clearRect(0, 0, mW, mH);
 
-    // Rejilla táctica
+    // Rejilla tÃ¡ctica
     mapCx.strokeStyle = 'rgba(0, 240, 255, 0.06)';
     mapCx.lineWidth = 1;
     for (let i = 1; i < 10; i++) {
@@ -996,7 +996,7 @@ function drawMap() {
     mapCx.arc(tx, ty, 3.5, 0, Math.PI * 2);
     mapCx.fill();
 
-    // Animación de Ataques
+    // AnimaciÃ³n de Ataques
     A.forEach(a => {
       a.p += a.speed;
       mapCx.strokeStyle = a.k.col;
@@ -1026,7 +1026,7 @@ function drawMap() {
 
     A = A.filter(a => !a.done);
 
-    // Ondas de Impacto / Deflexión
+    // Ondas de Impacto / DeflexiÃ³n
     R.forEach(r => {
       r.r += 1.2;
       mapCx.strokeStyle = r.col;
@@ -1050,10 +1050,10 @@ function handleAttackBlocked(a, manual = false) {
     S.combo++;
     S.xp += 25;
     SFX.shieldZap();
-    notifyIsland(`¡Interceptado! +25 XP (x${S.combo})`, '💥', 1800);
-    say(`¡Ataque ${a.k.n} interceptado!`);
+    notifyIsland(`Â¡Interceptado! +25 XP (x${S.combo})`, 'ðŸ’¥', 1800);
+    say(`Â¡Ataque ${a.k.n} interceptado!`);
   } else {
-    // Los bloqueos automáticos solo hacen SFX sutil, NUNCA cortan la voz del usuario
+    // Los bloqueos automÃ¡ticos solo hacen SFX sutil, NUNCA cortan la voz del usuario
     SFX.beep(250, 'square', 0.06);
   }
 
@@ -1072,7 +1072,7 @@ function handleAttackBlocked(a, manual = false) {
   renderLog();
 }
 
-// Intercepción táctica interactiva en mapa
+// IntercepciÃ³n tÃ¡ctica interactiva en mapa
 if (mapCv) {
   mapCv.addEventListener('click', ev => {
     initAudio();
@@ -1095,7 +1095,7 @@ if (mapCv) {
 
     if (touchedCity) {
       const count = LOG.filter(l => l.o.c === touchedCity.c).length;
-      sheet(`📍 Nodo ${touchedCity.c}`, `
+      sheet(`ðŸ“ Nodo ${touchedCity.c}`, `
         <p>Ataques originados desde este nodo: <b>${count}</b></p>
         <button class="btn" id="btnBlockCity">Aislar Nodo en Firewall</button>
         <button class="btn alt" onclick="closeSheet()">Cerrar</button>
@@ -1105,13 +1105,13 @@ if (mapCv) {
         closeSheet();
         SFX.success();
         say(`Nodo ${touchedCity.c} aislado en firewall.`);
-        notifyIsland(`Nodo ${touchedCity.c} Aislado`, '🔒');
+        notifyIsland(`Nodo ${touchedCity.c} Aislado`, 'ðŸ”’');
       };
     }
   });
 }
 
-// Botones de acción del mapa
+// Botones de acciÃ³n del mapa
 $('#btnSpawnAttack').onclick = () => {
   initAudio();
   spawnAttack(true);
@@ -1127,12 +1127,12 @@ $('#btnEmpPulse').onclick = () => {
     R.push({ x: a.curX || mW / 2, y: a.curY || mH / 2, r: 8, col: '#00f0ff' });
     handleAttackBlocked(a, true);
   });
-  say('Pulso electromagnético detonado.');
-  notifyIsland('Pulso EMP Detonado', '💥', 3000);
+  say('Pulso electromagnÃ©tico detonado.');
+  notifyIsland('Pulso EMP Detonado', 'ðŸ’¥', 3000);
 };
 
 // ==========================================================================
-// 10. REGISTRO & LOGS TÁCTICOS
+// 10. REGISTRO & LOGS TÃCTICOS
 // ==========================================================================
 function renderLog() {
   const formatLi = (e, k) => `
@@ -1141,7 +1141,7 @@ function renderLog() {
       <span class="ic">${e.k.ic}</span>
       <div class="tx">
         <b>${e.k.n} (${e.o.c})</b>
-        <span>${e.t} · ${e.manual ? '⚡ Interceptado' : '🛡️ Escudo'} · ${e.k.cve}</span>
+        <span>${e.t} Â· ${e.manual ? 'âš¡ Interceptado' : 'ðŸ›¡ï¸ Escudo'} Â· ${e.k.cve}</span>
       </div>
       <i class="dot ${e.crit ? 'hi' : 'ok'}"></i>
     </li>
@@ -1149,11 +1149,11 @@ function renderLog() {
 
   const mini = $('#miniFeed');
   if (mini) {
-    mini.innerHTML = LOG.slice(0, 10).map(formatLi).join('') || '<li><div class="tx"><span>Esperando telemetría...</span></div></li>';
+    mini.innerHTML = LOG.slice(0, 10).map(formatLi).join('') || '<li><div class="tx"><span>Esperando telemetrÃ­a...</span></div></li>';
   }
   const full = $('#alertList');
   if (full) {
-    full.innerHTML = LOG.map(formatLi).join('') || '<li><div class="tx"><span>No hay incidentes registrados. Usa ⚡ para simular uno.</span></div></li>';
+    full.innerHTML = LOG.map(formatLi).join('') || '<li><div class="tx"><span>No hay incidentes registrados. Usa âš¡ para simular uno.</span></div></li>';
   }
   if ($('#feedCountBadge')) $('#feedCountBadge').textContent = `${LOG.length} eventos`;
 
@@ -1189,14 +1189,14 @@ function renderLog() {
 
           <div class="threat-solution-box">
             <div class="solution-header">
-              <span class="sol-icon">🛠️</span>
-              <b>¿CÓMO SOLUCIONARLO / PROTOCOLO DE MITIGACIÓN?</b>
+              <span class="sol-icon">ðŸ› ï¸</span>
+              <b>Â¿CÃ“MO SOLUCIONARLO / PROTOCOLO DE MITIGACIÃ“N?</b>
             </div>
             <p>${e.k.fix}</p>
           </div>
 
           <div class="modal-actions-row">
-            <button class="btn" id="btnAudioExplain">🔊 Explicación por Voz</button>
+            <button class="btn" id="btnAudioExplain">ðŸ”Š ExplicaciÃ³n por Voz</button>
             <button class="btn alt" onclick="closeSheet()">Cerrar</button>
           </div>
         </div>
@@ -1215,112 +1215,112 @@ $('#btnClearLogs').onclick = () => {
 };
 
 // ==========================================================================
-// 11. CIBER-ACADEMIA & DESAFÍO INTERACTIVO
+// 11. CIBER-ACADEMIA & DESAFÃO INTERACTIVO
 // ==========================================================================
 const TIPS = [
   {
-    icon: '🔑',
-    title: 'Claves de Alta Entropía',
-    desc: 'Crea contraseñas de mínimo 16 caracteres combinando mayúsculas, minúsculas, números y símbolos. Nunca repitas la misma clave en distintos servicios.',
-    tag: 'CONTRASEÑAS',
+    icon: 'ðŸ”‘',
+    title: 'Claves de Alta EntropÃ­a',
+    desc: 'Crea contraseÃ±as de mÃ­nimo 16 caracteres combinando mayÃºsculas, minÃºsculas, nÃºmeros y sÃ­mbolos. Nunca repitas la misma clave en distintos servicios.',
+    tag: 'CONTRASEÃ‘AS',
     examples: [
-      { bad: true,  text: '"carlos123" — Solo 8 chars, nombre común → se crackea en segundos' },
-      { bad: false, text: '"Tr0nador_Azul#2026!Galaxia" — 26 chars, mixto → imposible por fuerza bruta' },
+      { bad: true,  text: '"carlos123" â€” Solo 8 chars, nombre comÃºn â†’ se crackea en segundos' },
+      { bad: false, text: '"Tr0nador_Azul#2026!Galaxia" â€” 26 chars, mixto â†’ imposible por fuerza bruta' },
       { bad: false, text: 'Usa un gestor como Bitwarden o 1Password para no memorizar nada' },
-      { bad: true,  text: 'Anotar contraseñas en un papel o bloc de notas del PC → riesgo físico' }
+      { bad: true,  text: 'Anotar contraseÃ±as en un papel o bloc de notas del PC â†’ riesgo fÃ­sico' }
     ],
-    voice: 'Claves de alta entropía. Usa mínimo 16 caracteres con mayúsculas, números y símbolos. Nunca repitas contraseñas.'
+    voice: 'Claves de alta entropÃ­a. Usa mÃ­nimo 16 caracteres con mayÃºsculas, nÃºmeros y sÃ­mbolos. Nunca repitas contraseÃ±as.'
   },
   {
-    icon: '🛡️',
+    icon: 'ðŸ›¡ï¸',
     title: '2FA Seguro',
-    desc: 'La autenticación de dos factores añade una segunda capa de seguridad. Aunque roben tu contraseña, no podrán entrar sin el segundo factor.',
+    desc: 'La autenticaciÃ³n de dos factores aÃ±ade una segunda capa de seguridad. Aunque roben tu contraseÃ±a, no podrÃ¡n entrar sin el segundo factor.',
     tag: '2FA',
     examples: [
-      { bad: true,  text: '2FA por SMS → vulnerable a SIM-Swapping (clonan tu número)' },
-      { bad: false, text: 'Google Authenticator / Authy → código temporal cada 30 seg, sin internet' },
-      { bad: false, text: 'Llave física YubiKey → el método más seguro disponible hoy' },
+      { bad: true,  text: '2FA por SMS â†’ vulnerable a SIM-Swapping (clonan tu nÃºmero)' },
+      { bad: false, text: 'Google Authenticator / Authy â†’ cÃ³digo temporal cada 30 seg, sin internet' },
+      { bad: false, text: 'Llave fÃ­sica YubiKey â†’ el mÃ©todo mÃ¡s seguro disponible hoy' },
       { bad: false, text: 'Activa 2FA en: Gmail, Instagram, banco online, GitHub, WhatsApp' }
     ],
-    voice: 'Autenticación de dos factores. Usa apps autenticadoras en lugar de SMS para evitar ataques de clonación de SIM.'
+    voice: 'AutenticaciÃ³n de dos factores. Usa apps autenticadoras en lugar de SMS para evitar ataques de clonaciÃ³n de SIM.'
   },
   {
-    icon: '🎣',
-    title: 'Detección de Phishing',
+    icon: 'ðŸŽ£',
+    title: 'DetecciÃ³n de Phishing',
     desc: 'El phishing suplanta identidades de empresas o personas de confianza para robar tus datos. Aprende a identificarlo antes de hacer clic.',
     tag: 'PHISHING',
     examples: [
-      { bad: true,  text: '"Tu cuenta fue SUSPENDIDA, verifica ahora: http://banco-alerta.xyz" → URL falsa + urgencia' },
-      { bad: true,  text: 'Correo de soporte@paypa1.com (con el número 1) → dominio falso' },
+      { bad: true,  text: '"Tu cuenta fue SUSPENDIDA, verifica ahora: http://banco-alerta.xyz" â†’ URL falsa + urgencia' },
+      { bad: true,  text: 'Correo de soporte@paypa1.com (con el nÃºmero 1) â†’ dominio falso' },
       { bad: false, text: 'Verifica siempre el remitente completo, no solo el nombre visible' },
       { bad: false, text: 'Ante dudas, entra directamente al sitio oficial escribiendo la URL a mano' }
     ],
-    voice: 'Detección de phishing. Desconfía siempre de la urgencia y verifica el remitente real del correo antes de hacer clic en cualquier enlace.'
+    voice: 'DetecciÃ³n de phishing. DesconfÃ­a siempre de la urgencia y verifica el remitente real del correo antes de hacer clic en cualquier enlace.'
   },
   {
-    icon: '📶',
-    title: 'Wi-Fi Público Seguro',
-    desc: 'Las redes públicas (cafeterías, aeropuertos, centros comerciales) no están cifradas. Un atacante en la misma red puede interceptar tu tráfico.',
+    icon: 'ðŸ“¶',
+    title: 'Wi-Fi PÃºblico Seguro',
+    desc: 'Las redes pÃºblicas (cafeterÃ­as, aeropuertos, centros comerciales) no estÃ¡n cifradas. Un atacante en la misma red puede interceptar tu trÃ¡fico.',
     tag: 'WI-FI',
     examples: [
       { bad: true,  text: 'Conectarse al Wi-Fi "CafeteriaLibre" y entrar al banco sin VPN' },
       { bad: true,  text: '"Airport_Free_WiFi" puede ser un punto de acceso falso (Evil Twin Attack)' },
-      { bad: false, text: 'Activa tu VPN antes de conectarte a cualquier red pública' },
-      { bad: false, text: 'Usa datos móviles para transacciones bancarias o trabajo sensible' }
+      { bad: false, text: 'Activa tu VPN antes de conectarte a cualquier red pÃºblica' },
+      { bad: false, text: 'Usa datos mÃ³viles para transacciones bancarias o trabajo sensible' }
     ],
-    voice: 'Wi-Fi público. Activa siempre una VPN antes de conectarte a redes públicas. Nunca hagas operaciones bancarias sin VPN activa.'
+    voice: 'Wi-Fi pÃºblico. Activa siempre una VPN antes de conectarte a redes pÃºblicas. Nunca hagas operaciones bancarias sin VPN activa.'
   },
   {
-    icon: '🔄',
+    icon: 'ðŸ”„',
     title: 'Parcheo de Zero-Days',
-    desc: 'Los Zero-Days son vulnerabilidades explotadas antes de que exista un parche. Mantener el software actualizado reduce drásticamente la superficie de ataque.',
+    desc: 'Los Zero-Days son vulnerabilidades explotadas antes de que exista un parche. Mantener el software actualizado reduce drÃ¡sticamente la superficie de ataque.',
     tag: 'ACTUALIZACIONES',
     examples: [
-      { bad: true,  text: 'Windows sin actualizar desde hace 6 meses → expuesto a EternalBlue (WannaCry)' },
-      { bad: true,  text: 'Ignorar la actualización del router → acceso remoto sin autorización' },
-      { bad: false, text: 'Activa actualizaciones automáticas en tu OS, navegador y apps' },
+      { bad: true,  text: 'Windows sin actualizar desde hace 6 meses â†’ expuesto a EternalBlue (WannaCry)' },
+      { bad: true,  text: 'Ignorar la actualizaciÃ³n del router â†’ acceso remoto sin autorizaciÃ³n' },
+      { bad: false, text: 'Activa actualizaciones automÃ¡ticas en tu OS, navegador y apps' },
       { bad: false, text: 'Revisa CVE mitre.org para conocer vulnerabilidades recientes de tus apps' }
     ],
-    voice: 'Parcheo de Zero-Days. Mantén siempre actualizados tu sistema operativo, navegador y aplicaciones. Las actualizaciones corrigen vulnerabilidades críticas.'
+    voice: 'Parcheo de Zero-Days. MantÃ©n siempre actualizados tu sistema operativo, navegador y aplicaciones. Las actualizaciones corrigen vulnerabilidades crÃ­ticas.'
   },
   {
-    icon: '💾',
+    icon: 'ðŸ’¾',
     title: 'Copias de Seguridad',
     desc: 'Un backup correcto es tu mejor defensa ante ransomware, fallos de hardware o borrado accidental. Sigue la regla 3-2-1.',
     tag: 'BACKUPS',
     examples: [
       { bad: false, text: 'Regla 3-2-1: 3 copias, en 2 soportes distintos, 1 fuera de casa/oficina' },
-      { bad: false, text: 'Google Drive / OneDrive para documentos de trabajo (nube automática)' },
+      { bad: false, text: 'Google Drive / OneDrive para documentos de trabajo (nube automÃ¡tica)' },
       { bad: false, text: 'Disco duro externo cifrado con VeraCrypt para datos sensibles' },
-      { bad: true,  text: 'Backup conectado siempre al PC → el ransomware también lo cifra' }
+      { bad: true,  text: 'Backup conectado siempre al PC â†’ el ransomware tambiÃ©n lo cifra' }
     ],
     voice: 'Copias de seguridad. Aplica la regla 3-2-1: tres copias en dos soportes distintos, con una copia fuera de casa. Un backup offline resiste el ransomware.'
   },
   {
-    icon: '🔒',
+    icon: 'ðŸ”’',
     title: 'Cifrado de Dispositivos',
-    desc: 'Cifrar tu disco duro o móvil garantiza que nadie pueda acceder a tus datos si te roban el dispositivo, aunque lo conecten a otro equipo.',
+    desc: 'Cifrar tu disco duro o mÃ³vil garantiza que nadie pueda acceder a tus datos si te roban el dispositivo, aunque lo conecten a otro equipo.',
     tag: 'CIFRADO',
     examples: [
-      { bad: false, text: 'Windows: activa BitLocker (Panel de Control → Cifrado de unidad)' },
-      { bad: false, text: 'Mac: activa FileVault (Preferencias → Seguridad → FileVault)' },
-      { bad: false, text: 'Android / iOS: el cifrado está activo por defecto con pantalla de bloqueo activada' },
-      { bad: true,  text: 'PC sin cifrar robado → los datos son accesibles conectando el disco a otro equipo' }
+      { bad: false, text: 'Windows: activa BitLocker (Panel de Control â†’ Cifrado de unidad)' },
+      { bad: false, text: 'Mac: activa FileVault (Preferencias â†’ Seguridad â†’ FileVault)' },
+      { bad: false, text: 'Android / iOS: el cifrado estÃ¡ activo por defecto con pantalla de bloqueo activada' },
+      { bad: true,  text: 'PC sin cifrar robado â†’ los datos son accesibles conectando el disco a otro equipo' }
     ],
-    voice: 'Cifrado de dispositivos. Activa BitLocker en Windows o FileVault en Mac para proteger tus datos ante robo físico.'
+    voice: 'Cifrado de dispositivos. Activa BitLocker en Windows o FileVault en Mac para proteger tus datos ante robo fÃ­sico.'
   },
   {
-    icon: '🕵️',
+    icon: 'ðŸ•µï¸',
     title: 'Privacidad en Redes Sociales',
-    desc: 'La sobreexposición en redes sociales facilita ataques de ingeniería social, spear-phishing y robo de identidad.',
+    desc: 'La sobreexposiciÃ³n en redes sociales facilita ataques de ingenierÃ­a social, spear-phishing y robo de identidad.',
     tag: 'PRIVACIDAD',
     examples: [
-      { bad: true,  text: 'Publicar foto del pasaporte, ticket de viaje o tarjeta de crédito → robo de identidad directo' },
-      { bad: true,  text: 'Perfil público con fecha de nacimiento, teléfono y ciudad → datos para hackear cuentas' },
-      { bad: false, text: 'Configura tus perfiles como privados y revisa quién te sigue' },
+      { bad: true,  text: 'Publicar foto del pasaporte, ticket de viaje o tarjeta de crÃ©dito â†’ robo de identidad directo' },
+      { bad: true,  text: 'Perfil pÃºblico con fecha de nacimiento, telÃ©fono y ciudad â†’ datos para hackear cuentas' },
+      { bad: false, text: 'Configura tus perfiles como privados y revisa quiÃ©n te sigue' },
       { bad: false, text: 'Usa correos alias (SimpleLogin, AnonAddy) para registros en webs de terceros' }
     ],
-    voice: 'Privacidad en redes sociales. No publiques información personal sensible. Configura tus perfiles como privados y usa alias de correo para registros.'
+    voice: 'Privacidad en redes sociales. No publiques informaciÃ³n personal sensible. Configura tus perfiles como privados y usa alias de correo para registros.'
   }
 ];
 
@@ -1332,7 +1332,7 @@ function renderTips() {
       <span class="ic">${t.icon}</span>
       <div class="tx">
         <b>${t.title}</b>
-        <span>${t.desc.substring(0, 52)}…</span>
+        <span>${t.desc.substring(0, 52)}â€¦</span>
       </div>
       <span class="arrow-tag">${t.tag}</span>
     </li>
@@ -1345,7 +1345,7 @@ function renderTips() {
         <div style="display:flex; gap:10px; align-items:flex-start; padding:8px 10px; border-radius:8px; margin-bottom:6px;
           background:${ex.bad ? 'rgba(255,42,109,0.1)' : 'rgba(57,255,122,0.1)'};
           border-left:3px solid ${ex.bad ? 'var(--danger)' : 'var(--accent)'}">
-          <span style="font-size:15px; flex-shrink:0">${ex.bad ? '❌' : '✅'}</span>
+          <span style="font-size:15px; flex-shrink:0">${ex.bad ? 'âŒ' : 'âœ…'}</span>
           <span style="font-size:12px; color:var(--text-muted); line-height:1.4">${ex.text}</span>
         </div>
       `).join('');
@@ -1357,11 +1357,11 @@ function renderTips() {
             <p style="font-size:13px; line-height:1.5; color:var(--text-muted)">${item.desc}</p>
           </div>
           <div style="margin-bottom:14px">
-            <b style="font-size:12px; color:var(--primary); text-transform:uppercase; letter-spacing:1px">⚡ Ejemplos Prácticos</b>
+            <b style="font-size:12px; color:var(--primary); text-transform:uppercase; letter-spacing:1px">âš¡ Ejemplos PrÃ¡cticos</b>
             <div style="margin-top:8px">${examplesHtml}</div>
           </div>
           <div class="modal-actions-row">
-            <button class="btn" id="tipVoiceBtn">🔊 Escuchar a Jarvis</button>
+            <button class="btn" id="tipVoiceBtn">ðŸ”Š Escuchar a Jarvis</button>
             <button class="btn alt" onclick="closeSheet()">Cerrar</button>
           </div>
         </div>
@@ -1375,203 +1375,203 @@ function renderTips() {
 // Ciber-Quiz Gamificado por Niveles
 const QUIZ_LEVELS = {
   basico: {
-    label: '🟢 Básico',
+    label: 'ðŸŸ¢ BÃ¡sico',
     color: '#39ff7a',
     desc: 'Conceptos esenciales de ciberseguridad para principiantes.',
     questions: [
       {
-        q: 'Recibes un SMS urgente del banco pidiendo verificar tu clave. ¿Qué haces?',
-        opts: ['Hago clic en el enlace', 'Entro por la app oficial del banco', 'Reenvío el mensaje a mis contactos'],
+        q: 'Recibes un SMS urgente del banco pidiendo verificar tu clave. Â¿QuÃ© haces?',
+        opts: ['Hago clic en el enlace', 'Entro por la app oficial del banco', 'ReenvÃ­o el mensaje a mis contactos'],
         ans: 1,
         exp: 'Nunca abras enlaces de mensajes urgentes. Siempre usa la app oficial o llama al banco directamente.'
       },
       {
-        q: '¿Cuál de estas contraseñas es la más segura?',
+        q: 'Â¿CuÃ¡l de estas contraseÃ±as es la mÃ¡s segura?',
         opts: ['123456', 'MiPerro2020', 'Xk#9!mQ@rL2'],
         ans: 2,
-        exp: 'Una contraseña segura combina mayúsculas, minúsculas, números y símbolos especiales.'
+        exp: 'Una contraseÃ±a segura combina mayÃºsculas, minÃºsculas, nÃºmeros y sÃ­mbolos especiales.'
       },
       {
-        q: '¿Qué significa HTTPS en una dirección web?',
-        opts: ['El sitio es famoso', 'La conexión está cifrada y es más segura', 'El sitio tiene publicidad'],
+        q: 'Â¿QuÃ© significa HTTPS en una direcciÃ³n web?',
+        opts: ['El sitio es famoso', 'La conexiÃ³n estÃ¡ cifrada y es mÃ¡s segura', 'El sitio tiene publicidad'],
         ans: 1,
-        exp: 'HTTPS cifra la comunicación entre tu navegador y el servidor, protegiendo tus datos.'
+        exp: 'HTTPS cifra la comunicaciÃ³n entre tu navegador y el servidor, protegiendo tus datos.'
       },
       {
-        q: '¿Qué es el phishing?',
+        q: 'Â¿QuÃ© es el phishing?',
         opts: ['Un tipo de antivirus', 'Un ataque que suplanta identidades para robar datos', 'Un protocolo de red'],
         ans: 1,
-        exp: 'El phishing engaña a las víctimas haciéndose pasar por entidades confiables para robar información.'
+        exp: 'El phishing engaÃ±a a las vÃ­ctimas haciÃ©ndose pasar por entidades confiables para robar informaciÃ³n.'
       },
       {
-        q: 'Usas la misma contraseña en todos tus servicios. ¿Esto es?',
-        opts: ['Práctico y seguro', 'Muy peligroso: si roban una, todas quedan expuestas', 'Normal y aceptado'],
+        q: 'Usas la misma contraseÃ±a en todos tus servicios. Â¿Esto es?',
+        opts: ['PrÃ¡ctico y seguro', 'Muy peligroso: si roban una, todas quedan expuestas', 'Normal y aceptado'],
         ans: 1,
-        exp: 'Reutilizar contraseñas es una vulnerabilidad crítica. Usa un gestor de contraseñas.'
+        exp: 'Reutilizar contraseÃ±as es una vulnerabilidad crÃ­tica. Usa un gestor de contraseÃ±as.'
       },
       {
-        q: '¿Qué debes hacer si encuentras un USB en la calle?',
-        opts: ['Conectarlo para ver qué contiene', 'No conectarlo: puede contener malware', 'Dárselo a un compañero'],
+        q: 'Â¿QuÃ© debes hacer si encuentras un USB en la calle?',
+        opts: ['Conectarlo para ver quÃ© contiene', 'No conectarlo: puede contener malware', 'DÃ¡rselo a un compaÃ±ero'],
         ans: 1,
-        exp: 'Los USB abandonados son un vector clásico de ataque. Pueden ejecutar código malicioso al conectarse.'
+        exp: 'Los USB abandonados son un vector clÃ¡sico de ataque. Pueden ejecutar cÃ³digo malicioso al conectarse.'
       },
       {
-        q: '¿Cuál es la mejor práctica para las actualizaciones de software?',
+        q: 'Â¿CuÃ¡l es la mejor prÃ¡ctica para las actualizaciones de software?',
         opts: ['Ignorarlas para no perder tiempo', 'Instalarlas cuando puedas, no son urgentes', 'Instalarlas cuanto antes: corrigen vulnerabilidades'],
         ans: 2,
         exp: 'Las actualizaciones parchean vulnerabilidades conocidas que los atacantes explotan activamente.'
       },
       {
-        q: '¿Qué es un antivirus?',
+        q: 'Â¿QuÃ© es un antivirus?',
         opts: ['Un programa que detecta y elimina malware', 'Una app de limpieza de archivos', 'Un firewall de red'],
         ans: 0,
         exp: 'Un antivirus monitorea, detecta y elimina software malicioso de tu dispositivo.'
       },
       {
-        q: 'Recibes un email de un desconocido con un archivo adjunto. ¿Qué haces?',
-        opts: ['Abro el adjunto para ver de qué trata', 'Lo elimino sin abrirlo', 'Lo reenvío a mis contactos'],
+        q: 'Recibes un email de un desconocido con un archivo adjunto. Â¿QuÃ© haces?',
+        opts: ['Abro el adjunto para ver de quÃ© trata', 'Lo elimino sin abrirlo', 'Lo reenvÃ­o a mis contactos'],
         ans: 1,
         exp: 'Los adjuntos de desconocidos pueden contener ransomware, troyanos u otro malware peligroso.'
       },
       {
-        q: '¿Qué es la autenticación de dos factores (2FA)?',
-        opts: ['Usar dos contraseñas distintas', 'Verificar tu identidad con un segundo método además de la contraseña', 'Tener dos cuentas de correo'],
+        q: 'Â¿QuÃ© es la autenticaciÃ³n de dos factores (2FA)?',
+        opts: ['Usar dos contraseÃ±as distintas', 'Verificar tu identidad con un segundo mÃ©todo ademÃ¡s de la contraseÃ±a', 'Tener dos cuentas de correo'],
         ans: 1,
-        exp: '2FA añade una capa extra de seguridad: aunque roben tu contraseña, necesitan el segundo factor.'
+        exp: '2FA aÃ±ade una capa extra de seguridad: aunque roben tu contraseÃ±a, necesitan el segundo factor.'
       }
     ]
   },
   intermedio: {
-    label: '🟡 Intermedio',
+    label: 'ðŸŸ¡ Intermedio',
     color: '#ffb43b',
-    desc: 'Vectores de ataque, protocolos y defensa táctica.',
+    desc: 'Vectores de ataque, protocolos y defensa tÃ¡ctica.',
     questions: [
       {
-        q: '¿Qué tipo de ataque intercepta la comunicación entre dos partes sin que lo sepan?',
+        q: 'Â¿QuÃ© tipo de ataque intercepta la comunicaciÃ³n entre dos partes sin que lo sepan?',
         opts: ['DDoS', 'Man-in-the-Middle (MitM)', 'SQL Injection'],
         ans: 1,
-        exp: 'Un ataque MitM intercepta y puede modificar la comunicación entre dos partes en tiempo real.'
+        exp: 'Un ataque MitM intercepta y puede modificar la comunicaciÃ³n entre dos partes en tiempo real.'
       },
       {
-        q: '¿Cuál método de 2FA es el más seguro frente a un ataque de SIM-Swapping?',
-        opts: ['Código por SMS', 'Llamada telefónica', 'App autenticadora o llave física FIDO2'],
+        q: 'Â¿CuÃ¡l mÃ©todo de 2FA es el mÃ¡s seguro frente a un ataque de SIM-Swapping?',
+        opts: ['CÃ³digo por SMS', 'Llamada telefÃ³nica', 'App autenticadora o llave fÃ­sica FIDO2'],
         ans: 2,
-        exp: 'Las apps autenticadoras y llaves físicas no dependen de la línea celular, evitando el SIM-Swapping.'
+        exp: 'Las apps autenticadoras y llaves fÃ­sicas no dependen de la lÃ­nea celular, evitando el SIM-Swapping.'
       },
       {
-        q: 'Un atacante inyecta código SQL en un formulario web. ¿Cuál es la mejor defensa?',
+        q: 'Un atacante inyecta cÃ³digo SQL en un formulario web. Â¿CuÃ¡l es la mejor defensa?',
         opts: ['Usar HTTPS', 'Validar y sanitizar todas las entradas del usuario', 'Cambiar el puerto del servidor'],
         ans: 1,
-        exp: 'La validación de entradas y el uso de consultas parametrizadas son las defensas clave contra SQL Injection.'
+        exp: 'La validaciÃ³n de entradas y el uso de consultas parametrizadas son las defensas clave contra SQL Injection.'
       },
       {
-        q: '¿Qué es un ataque de fuerza bruta?',
-        opts: ['Un ataque físico al servidor', 'Probar millones de contraseñas hasta dar con la correcta', 'Infectar la red con ransomware'],
+        q: 'Â¿QuÃ© es un ataque de fuerza bruta?',
+        opts: ['Un ataque fÃ­sico al servidor', 'Probar millones de contraseÃ±as hasta dar con la correcta', 'Infectar la red con ransomware'],
         ans: 1,
-        exp: 'Los ataques de fuerza bruta prueban combinaciones masivas de credenciales. La 2FA y límites de intentos los mitigan.'
+        exp: 'Los ataques de fuerza bruta prueban combinaciones masivas de credenciales. La 2FA y lÃ­mites de intentos los mitigan.'
       },
       {
-        q: '¿Qué es el cifrado de extremo a extremo (E2EE)?',
+        q: 'Â¿QuÃ© es el cifrado de extremo a extremo (E2EE)?',
         opts: ['Cifrar solo el disco duro', 'Solo el emisor y receptor pueden leer los mensajes', 'Cifrar el correo pero no los archivos'],
         ans: 1,
         exp: 'El E2EE garantiza que ni el proveedor del servicio puede leer el contenido de los mensajes.'
       },
       {
-        q: '¿Cuál es el puerto predeterminado de HTTPS?',
+        q: 'Â¿CuÃ¡l es el puerto predeterminado de HTTPS?',
         opts: ['80', '443', '8080'],
         ans: 1,
-        exp: 'El puerto 443 es el estándar para HTTPS (TLS/SSL). El 80 es HTTP sin cifrar.'
+        exp: 'El puerto 443 es el estÃ¡ndar para HTTPS (TLS/SSL). El 80 es HTTP sin cifrar.'
       },
       {
-        q: '¿Qué es un CVE?',
-        opts: ['Un tipo de virus informático', 'Identificador único para vulnerabilidades públicamente conocidas', 'Un certificado de seguridad web'],
+        q: 'Â¿QuÃ© es un CVE?',
+        opts: ['Un tipo de virus informÃ¡tico', 'Identificador Ãºnico para vulnerabilidades pÃºblicamente conocidas', 'Un certificado de seguridad web'],
         ans: 1,
-        exp: 'CVE (Common Vulnerabilities and Exposures) es un sistema estándar para identificar vulnerabilidades de seguridad.'
+        exp: 'CVE (Common Vulnerabilities and Exposures) es un sistema estÃ¡ndar para identificar vulnerabilidades de seguridad.'
       },
       {
-        q: '¿Qué hace un firewall de capa de aplicación (WAF)?',
-        opts: ['Bloquea el tráfico de red a nivel de puertos', 'Filtra y monitorea tráfico HTTP/S analizando el contenido', 'Cifra las comunicaciones de la red'],
+        q: 'Â¿QuÃ© hace un firewall de capa de aplicaciÃ³n (WAF)?',
+        opts: ['Bloquea el trÃ¡fico de red a nivel de puertos', 'Filtra y monitorea trÃ¡fico HTTP/S analizando el contenido', 'Cifra las comunicaciones de la red'],
         ans: 1,
         exp: 'Un WAF inspecciona el contenido HTTP para bloquear ataques como XSS, SQLi y CSRF.'
       },
       {
-        q: 'Encuentras que tu red WiFi usa cifrado WEP. ¿Cuál es el riesgo?',
-        opts: ['Ninguno, WEP es moderno', 'WEP es obsoleto y se crackea en minutos', 'Solo afecta velocidad de conexión'],
+        q: 'Encuentras que tu red WiFi usa cifrado WEP. Â¿CuÃ¡l es el riesgo?',
+        opts: ['Ninguno, WEP es moderno', 'WEP es obsoleto y se crackea en minutos', 'Solo afecta velocidad de conexiÃ³n'],
         ans: 1,
-        exp: 'WEP tiene vulnerabilidades críticas. Debes migrar a WPA3 o mínimo WPA2-AES.'
+        exp: 'WEP tiene vulnerabilidades crÃ­ticas. Debes migrar a WPA3 o mÃ­nimo WPA2-AES.'
       },
       {
-        q: '¿Qué es un certificado digital SSL/TLS?',
-        opts: ['Un programa antivirus', 'Documento que autentica la identidad de un sitio web y cifra la conexión', 'Una contraseña del servidor'],
+        q: 'Â¿QuÃ© es un certificado digital SSL/TLS?',
+        opts: ['Un programa antivirus', 'Documento que autentica la identidad de un sitio web y cifra la conexiÃ³n', 'Una contraseÃ±a del servidor'],
         ans: 1,
-        exp: 'Los certificados SSL/TLS verifican que el servidor es quien dice ser y establecen una conexión cifrada.'
+        exp: 'Los certificados SSL/TLS verifican que el servidor es quien dice ser y establecen una conexiÃ³n cifrada.'
       }
     ]
   },
   avanzado: {
-    label: '🔴 Avanzado',
+    label: 'ðŸ”´ Avanzado',
     color: '#ff2a6d',
     desc: 'Exploits, forense digital, APT y defensa en profundidad.',
     questions: [
       {
-        q: '¿Qué técnica usa un atacante APT para mantener acceso persistente sin ser detectado?',
-        opts: ['Spam masivo de correos', 'Implantación de rootkits y backdoors a nivel kernel', 'Ataques DDoS volumétricos'],
+        q: 'Â¿QuÃ© tÃ©cnica usa un atacante APT para mantener acceso persistente sin ser detectado?',
+        opts: ['Spam masivo de correos', 'ImplantaciÃ³n de rootkits y backdoors a nivel kernel', 'Ataques DDoS volumÃ©tricos'],
         ans: 1,
-        exp: 'Los APTs utilizan rootkits de kernel y backdoors cifradas para mantener acceso silencioso por meses o años.'
+        exp: 'Los APTs utilizan rootkits de kernel y backdoors cifradas para mantener acceso silencioso por meses o aÃ±os.'
       },
       {
-        q: '¿Qué describe mejor un ataque de "Zero-Day"?',
-        opts: ['Un ataque que ocurre a medianoche', 'Explotación de una vulnerabilidad desconocida para el proveedor y sin parche disponible', 'Un virus que borra datos al instalar'],
+        q: 'Â¿QuÃ© describe mejor un ataque de "Zero-Day"?',
+        opts: ['Un ataque que ocurre a medianoche', 'ExplotaciÃ³n de una vulnerabilidad desconocida para el proveedor y sin parche disponible', 'Un virus que borra datos al instalar'],
         ans: 1,
-        exp: 'Un Zero-Day explota fallos desconocidos. Entre CVE publicado y parche aplicado existe una ventana crítica de exposición.'
+        exp: 'Un Zero-Day explota fallos desconocidos. Entre CVE publicado y parche aplicado existe una ventana crÃ­tica de exposiciÃ³n.'
       },
       {
-        q: '¿Cuál es la diferencia entre un IDS y un IPS?',
-        opts: ['No hay diferencia, son sinónimos', 'El IDS solo detecta; el IPS detecta y bloquea activamente', 'El IPS es solo para redes WiFi'],
+        q: 'Â¿CuÃ¡l es la diferencia entre un IDS y un IPS?',
+        opts: ['No hay diferencia, son sinÃ³nimos', 'El IDS solo detecta; el IPS detecta y bloquea activamente', 'El IPS es solo para redes WiFi'],
         ans: 1,
-        exp: 'IDS (Intrusion Detection System) alerta. IPS (Intrusion Prevention System) además bloquea el tráfico malicioso automáticamente.'
+        exp: 'IDS (Intrusion Detection System) alerta. IPS (Intrusion Prevention System) ademÃ¡s bloquea el trÃ¡fico malicioso automÃ¡ticamente.'
       },
       {
-        q: 'En forense digital, ¿qué es la cadena de custodia?',
-        opts: ['Una red de cibercriminales', 'Registro documentado de quién accede a la evidencia digital y cuándo', 'El historial del navegador del atacante'],
+        q: 'En forense digital, Â¿quÃ© es la cadena de custodia?',
+        opts: ['Una red de cibercriminales', 'Registro documentado de quiÃ©n accede a la evidencia digital y cuÃ¡ndo', 'El historial del navegador del atacante'],
         ans: 1,
         exp: 'La cadena de custodia garantiza la integridad de la evidencia digital para que sea admisible en procesos legales.'
       },
       {
-        q: '¿Qué es un ataque de "Pass-the-Hash" en entornos Windows?',
-        opts: ['Enviar spam con archivos hash', 'Usar el hash NTLM de una contraseña para autenticarse sin conocer la contraseña real', 'Crackear contraseñas con rainbow tables'],
+        q: 'Â¿QuÃ© es un ataque de "Pass-the-Hash" en entornos Windows?',
+        opts: ['Enviar spam con archivos hash', 'Usar el hash NTLM de una contraseÃ±a para autenticarse sin conocer la contraseÃ±a real', 'Crackear contraseÃ±as con rainbow tables'],
         ans: 1,
-        exp: 'Pass-the-Hash reutiliza el hash NTLM capturado para autenticarse lateralmente en la red sin necesitar la contraseña en texto claro.'
+        exp: 'Pass-the-Hash reutiliza el hash NTLM capturado para autenticarse lateralmente en la red sin necesitar la contraseÃ±a en texto claro.'
       },
       {
-        q: '¿Qué es el "lateral movement" en un ciberataque?',
-        opts: ['Atacar desde distintos países simultáneamente', 'Moverse de sistema en sistema dentro de la red comprometida para escalar privilegios', 'Actualizar el malware durante el ataque'],
+        q: 'Â¿QuÃ© es el "lateral movement" en un ciberataque?',
+        opts: ['Atacar desde distintos paÃ­ses simultÃ¡neamente', 'Moverse de sistema en sistema dentro de la red comprometida para escalar privilegios', 'Actualizar el malware durante el ataque'],
         ans: 1,
         exp: 'El movimiento lateral permite al atacante expandirse dentro de la red comprometida hacia sistemas de mayor valor.'
       },
       {
-        q: '¿Qué protocolo es más vulnerable a ataques de intercepción si no está cifrado?',
+        q: 'Â¿QuÃ© protocolo es mÃ¡s vulnerable a ataques de intercepciÃ³n si no estÃ¡ cifrado?',
         opts: ['HTTPS', 'SSH', 'Telnet'],
         ans: 2,
         exp: 'Telnet transmite datos en texto plano, incluyendo credenciales. Debe reemplazarse siempre por SSH.'
       },
       {
-        q: '¿Qué es el "OSINT" en ciberseguridad ofensiva?',
-        opts: ['Un tipo de malware avanzado', 'Recopilación de inteligencia desde fuentes públicas para reconocimiento del objetivo', 'Un protocolo de cifrado gubernamental'],
+        q: 'Â¿QuÃ© es el "OSINT" en ciberseguridad ofensiva?',
+        opts: ['Un tipo de malware avanzado', 'RecopilaciÃ³n de inteligencia desde fuentes pÃºblicas para reconocimiento del objetivo', 'Un protocolo de cifrado gubernamental'],
         ans: 1,
-        exp: 'OSINT (Open Source Intelligence) reúne información pública sobre el objetivo: redes sociales, DNS, WHOIS, etc.'
+        exp: 'OSINT (Open Source Intelligence) reÃºne informaciÃ³n pÃºblica sobre el objetivo: redes sociales, DNS, WHOIS, etc.'
       },
       {
-        q: '¿Cuál ataque busca saturar el ancho de banda con tráfico SYN/UDP masivo?',
-        opts: ['SQL Injection', 'Cross-Site Scripting (XSS)', 'DDoS Volumétrico'],
+        q: 'Â¿CuÃ¡l ataque busca saturar el ancho de banda con trÃ¡fico SYN/UDP masivo?',
+        opts: ['SQL Injection', 'Cross-Site Scripting (XSS)', 'DDoS VolumÃ©trico'],
         ans: 2,
-        exp: 'Los DDoS volumétricos inundan la red con paquetes SYN/UDP para agotar el ancho de banda y tumbar servicios.'
+        exp: 'Los DDoS volumÃ©tricos inundan la red con paquetes SYN/UDP para agotar el ancho de banda y tumbar servicios.'
       },
       {
-        q: '¿Qué framework estándar se usa para mapear tácticas y técnicas de atacantes reales?',
+        q: 'Â¿QuÃ© framework estÃ¡ndar se usa para mapear tÃ¡cticas y tÃ©cnicas de atacantes reales?',
         opts: ['ISO 27001', 'MITRE ATT&CK', 'OWASP Top 10'],
         ans: 1,
-        exp: 'MITRE ATT&CK es una base de conocimiento global con tácticas, técnicas y procedimientos (TTPs) de actores de amenaza reales.'
+        exp: 'MITRE ATT&CK es una base de conocimiento global con tÃ¡cticas, tÃ©cnicas y procedimientos (TTPs) de actores de amenaza reales.'
       }
     ]
   }
@@ -1580,25 +1580,25 @@ const QUIZ_LEVELS = {
 function startQuiz() {
   initAudio();
   say('Selecciona el nivel del test de ciberseguridad.');
-  sheet('🎮 DESAFÍO CIBER-DEFENSOR', `
+  sheet('ðŸŽ® DESAFÃO CIBER-DEFENSOR', `
     <p style="text-align:center; color:var(--text-muted); font-size:13px; margin-bottom:16px">Elige tu nivel de dificultad. Cada nivel tiene 10 preguntas.</p>
     <div style="display:flex; flex-direction:column; gap:10px">
       <button class="btn quiz-level-btn" data-level="basico" style="border-color:#39ff7a; background:rgba(57,255,122,0.1); text-align:left; padding:14px">
-        <span style="font-size:18px">🟢</span>
+        <span style="font-size:18px">ðŸŸ¢</span>
         <div style="display:inline-block; margin-left:10px">
-          <b style="color:#39ff7a; font-size:14px">BÁSICO</b>
+          <b style="color:#39ff7a; font-size:14px">BÃSICO</b>
           <p style="margin:2px 0 0; font-size:12px; color:var(--text-muted)">Conceptos esenciales de ciberseguridad</p>
         </div>
       </button>
       <button class="btn quiz-level-btn" data-level="intermedio" style="border-color:#ffb43b; background:rgba(255,180,59,0.1); text-align:left; padding:14px">
-        <span style="font-size:18px">🟡</span>
+        <span style="font-size:18px">ðŸŸ¡</span>
         <div style="display:inline-block; margin-left:10px">
           <b style="color:#ffb43b; font-size:14px">INTERMEDIO</b>
-          <p style="margin:2px 0 0; font-size:12px; color:var(--text-muted)">Vectores de ataque, protocolos y defensa táctica</p>
+          <p style="margin:2px 0 0; font-size:12px; color:var(--text-muted)">Vectores de ataque, protocolos y defensa tÃ¡ctica</p>
         </div>
       </button>
       <button class="btn quiz-level-btn" data-level="avanzado" style="border-color:#ff2a6d; background:rgba(255,42,109,0.1); text-align:left; padding:14px">
-        <span style="font-size:18px">🔴</span>
+        <span style="font-size:18px">ðŸ”´</span>
         <div style="display:inline-block; margin-left:10px">
           <b style="color:#ff2a6d; font-size:14px">AVANZADO</b>
           <p style="margin:2px 0 0; font-size:12px; color:var(--text-muted)">Exploits, forense digital, APT y MITRE ATT&CK</p>
@@ -1619,18 +1619,18 @@ function runQuizLevel(levelKey) {
   const level = QUIZ_LEVELS[levelKey];
   const questions = level.questions;
   initAudio();
-  say(`Nivel ${levelKey}. ${questions.length} preguntas. ¡Comienza!`);
+  say(`Nivel ${levelKey}. ${questions.length} preguntas. Â¡Comienza!`);
   let curQ = 0, scoreQuiz = 0;
 
   function renderQ() {
     const q = questions[curQ];
     const progress = Math.round(((curQ) / questions.length) * 100);
-    sheet(`${level.label} · Pregunta ${curQ + 1}/${questions.length}`, `
+    sheet(`${level.label} Â· Pregunta ${curQ + 1}/${questions.length}`, `
       <div style="margin-bottom:10px">
         <div style="background:rgba(255,255,255,0.08); border-radius:6px; height:5px; overflow:hidden">
           <div style="height:100%; width:${progress}%; background:${level.color}; border-radius:6px; transition:width 0.4s"></div>
         </div>
-        <span style="font-size:11px; color:var(--text-muted)">${progress}% completado · ${scoreQuiz} correctas</span>
+        <span style="font-size:11px; color:var(--text-muted)">${progress}% completado Â· ${scoreQuiz} correctas</span>
       </div>
       <p style="font-size:14px; color:#fff; font-weight:600; line-height:1.4; margin-bottom:14px">${q.q}</p>
       ${q.opts.map((opt, i) => `
@@ -1647,13 +1647,13 @@ function runQuizLevel(levelKey) {
           SFX.success();
           btn.style.borderColor = '#39ff7a';
           btn.style.background = 'rgba(57,255,122,0.2)';
-          btn.innerHTML = '✅ ' + btn.innerHTML;
+          btn.innerHTML = 'âœ… ' + btn.innerHTML;
           say(q.exp);
         } else {
           SFX.alarm();
           btn.style.borderColor = '#ff2a6d';
           btn.style.background = 'rgba(255,42,109,0.2)';
-          btn.innerHTML = '❌ ' + btn.innerHTML;
+          btn.innerHTML = 'âŒ ' + btn.innerHTML;
           // highlight correct
           const correctBtn = $$('.opt-btn')[q.ans];
           if (correctBtn) {
@@ -1682,16 +1682,16 @@ function showQuizResult(score, total, level) {
   const pct = Math.round((score / total) * 100);
   const isPerfect = score === total;
   const rankMap = [
-    { min: 90, rank: '🏆 Ciber-Defensor Legendario', color: '#ffd700' },
-    { min: 70, rank: '🥇 Experto en Seguridad', color: '#39ff7a' },
-    { min: 50, rank: '🥈 Analista Táctico', color: '#00f0ff' },
-    { min: 30, rank: '🥉 Aprendiz Ciber', color: '#ffb43b' },
-    { min: 0,  rank: '📚 Novato — ¡Sigue Aprendiendo!', color: '#ff2a6d' }
+    { min: 90, rank: 'ðŸ† Ciber-Defensor Legendario', color: '#ffd700' },
+    { min: 70, rank: 'ðŸ¥‡ Experto en Seguridad', color: '#39ff7a' },
+    { min: 50, rank: 'ðŸ¥ˆ Analista TÃ¡ctico', color: '#00f0ff' },
+    { min: 30, rank: 'ðŸ¥‰ Aprendiz Ciber', color: '#ffb43b' },
+    { min: 0,  rank: 'ðŸ“š Novato â€” Â¡Sigue Aprendiendo!', color: '#ff2a6d' }
   ];
   const rankData = rankMap.find(r => pct >= r.min);
-  const emoji = isPerfect ? '🎉' : pct >= 70 ? '💪' : '📖';
+  const emoji = isPerfect ? 'ðŸŽ‰' : pct >= 70 ? 'ðŸ’ª' : 'ðŸ“–';
 
-  sheet(`🏆 Resultado — ${level.label}`, `
+  sheet(`ðŸ† Resultado â€” ${level.label}`, `
     <div style="text-align:center; padding:10px 0">
       <div style="font-size:48px; margin-bottom:8px">${emoji}</div>
       <p style="font-size:28px; font-weight:800; color:${rankData.color}; margin:0">${score} / ${total}</p>
@@ -1701,17 +1701,17 @@ function showQuizResult(score, total, level) {
       </div>
       <b style="color:${rankData.color}; font-size:15px">${rankData.rank}</b>
       <p style="font-size:12px; color:var(--text-muted); margin:10px 0 16px">
-        ${isPerfect ? '¡Perfecto! Has dominado este nivel. Intenta el siguiente reto.' : pct >= 70 ? 'Excelente desempeño. Revisa las preguntas falladas en Academia.' : '¡Sigue practicando! La ciberseguridad se aprende con repetición.'}
+        ${isPerfect ? 'Â¡Perfecto! Has dominado este nivel. Intenta el siguiente reto.' : pct >= 70 ? 'Excelente desempeÃ±o. Revisa las preguntas falladas en Academia.' : 'Â¡Sigue practicando! La ciberseguridad se aprende con repeticiÃ³n.'}
       </p>
       <div style="display:flex; gap:8px; justify-content:center">
-        <button class="btn" onclick="startQuiz()">🔄 Otro Nivel</button>
+        <button class="btn" onclick="startQuiz()">ðŸ”„ Otro Nivel</button>
         <button class="btn alt" onclick="closeSheet()">Cerrar</button>
       </div>
     </div>
   `);
   if (isPerfect) {
     SFX.success();
-    say(`¡Puntaje perfecto en nivel ${level.label}! ${score} de ${total}. Rango: ${rankData.rank.replace(/[^\w\s]/g, '')}.`);
+    say(`Â¡Puntaje perfecto en nivel ${level.label}! ${score} de ${total}. Rango: ${rankData.rank.replace(/[^\w\s]/g, '')}.`);
   } else {
     say(`Test completado. ${score} de ${total} aciertos. ${rankData.rank.replace(/[^\w\s]/g, '')}.`);
   }
@@ -1731,10 +1731,10 @@ $$('[data-tool]').forEach(li => {
   };
 });
 
-// A. Escáner IA de Phishing & SMS
+// A. EscÃ¡ner IA de Phishing & SMS
 function linkScannerSheet() {
-  say('Escáner de Phishing y SMS abierto.');
-  sheet('🔍 Escáner IA de Phishing & SMS', `
+  say('EscÃ¡ner de Phishing y SMS abierto.');
+  sheet('ðŸ” EscÃ¡ner IA de Phishing & SMS', `
     <p>Pega cualquier enlace o mensaje para analizar riesgos.</p>
     <textarea id="phishInput" placeholder="Ej: Tu cuenta fue suspendida, ingresa a http://banco-alerta.com"></textarea>
     <button class="btn" id="btnRunPhish">Analizar</button>
@@ -1751,10 +1751,10 @@ function linkScannerSheet() {
     let risk = 10;
     const lower = txt.toLowerCase();
 
-    if (lower.includes('http://')) { risk += 30; issues.push('Conexión HTTP no cifrada.'); }
-    if (/\d+\.\d+\.\d+\.\d+/.test(txt)) { risk += 35; issues.push('Apunta a una dirección IP directa.'); }
+    if (lower.includes('http://')) { risk += 30; issues.push('ConexiÃ³n HTTP no cifrada.'); }
+    if (/\d+\.\d+\.\d+\.\d+/.test(txt)) { risk += 35; issues.push('Apunta a una direcciÃ³n IP directa.'); }
     if (lower.includes('urgente') || lower.includes('inmediato') || lower.includes('suspend') || lower.includes('bloqueo')) {
-      risk += 25; issues.push('Patrón de urgencia psicológica.');
+      risk += 25; issues.push('PatrÃ³n de urgencia psicolÃ³gica.');
     }
     if (lower.includes('premio') || lower.includes('ganador') || lower.includes('gratis') || lower.includes('paquete')) {
       risk += 20; issues.push('Gancho de premio o entrega falso.');
@@ -1773,19 +1773,19 @@ function linkScannerSheet() {
         </ul>
       </div>
     `;
-    say(`Análisis: ${tag}. Riesgo ${risk} sobre 100.`);
+    say(`AnÃ¡lisis: ${tag}. Riesgo ${risk} sobre 100.`);
   };
 }
 
-// B. Bóveda & Entropía Cuántica de Claves
+// B. BÃ³veda & EntropÃ­a CuÃ¡ntica de Claves
 function passVaultSheet() {
-  say('Bóveda de contraseñas.');
-  sheet('🔐 Bóveda & Entropía Cuántica', `
+  say('BÃ³veda de contraseÃ±as.');
+  sheet('ðŸ” BÃ³veda & EntropÃ­a CuÃ¡ntica', `
     <p>Mide la fuerza de tu clave o genera una militar.</p>
     <input id="pwdIn" placeholder="Escribe tu clave" type="text" autocomplete="off">
     <div class="barwrap-cyber"><div id="pwdBar" class="bar-fill"></div></div>
     <div id="pwdMeta" style="font-size:12px; margin-bottom:10px; color:var(--text-muted)">Escribe para calcular fuerza...</div>
-    <button class="btn" id="btnGenPass">⚡ Generar Clave Militar</button>
+    <button class="btn" id="btnGenPass">âš¡ Generar Clave Militar</button>
     <button class="btn alt" id="btnCopyPass">Copiar</button>
   `);
 
@@ -1801,11 +1801,11 @@ function passVaultSheet() {
 
     const bar = $('#pwdBar');
     bar.style.width = score + '%';
-    const timeCrack = score > 80 ? '3.8 mil millones de años' : score > 50 ? '4 meses' : '3 segundos';
+    const timeCrack = score > 80 ? '3.8 mil millones de aÃ±os' : score > 50 ? '4 meses' : '3 segundos';
     const col = score > 80 ? 'var(--accent)' : score > 50 ? 'var(--warn)' : 'var(--danger)';
     bar.style.background = col;
 
-    $('#pwdMeta').innerHTML = `Fuerza: <b style="color:${col}">${score}%</b> · Tiempo de hackeo: <b style="color:#fff">${timeCrack}</b>`;
+    $('#pwdMeta').innerHTML = `Fuerza: <b style="color:${col}">${score}%</b> Â· Tiempo de hackeo: <b style="color:#fff">${timeCrack}</b>`;
   };
 
   $('#pwdIn').oninput = analyzePass;
@@ -1816,11 +1816,11 @@ function passVaultSheet() {
     $('#pwdIn').value = [...rand].map(n => chars[n % chars.length]).join('');
     analyzePass();
     SFX.success();
-    say('Contraseña militar de 24 caracteres generada.');
+    say('ContraseÃ±a militar de 24 caracteres generada.');
   };
   $('#btnCopyPass').onclick = () => {
     navigator.clipboard.writeText($('#pwdIn').value);
-    notifyIsland('Clave Copiada', '📋');
+    notifyIsland('Clave Copiada', 'ðŸ“‹');
     SFX.beep(800, 'sine', 0.05);
     say('Copiada al portapapeles.');
   };
@@ -1829,7 +1829,7 @@ function passVaultSheet() {
 // C. Dark Web Breach Simulator
 function darkWebSheet() {
   say('Radar de filtraciones Dark Web.');
-  sheet('🕵️ Radar de Filtraciones Dark Web', `
+  sheet('ðŸ•µï¸ Radar de Filtraciones Dark Web', `
     <p>Ingresa tu correo para buscar filtraciones en la red.</p>
     <input id="dwEmail" placeholder="tu-correo@ejemplo.com" type="email">
     <button class="btn" id="btnDwScan">Buscar Filtraciones</button>
@@ -1847,10 +1847,10 @@ function darkWebSheet() {
       $('#dwResults').innerHTML = `
         <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px">
           <div style="background:rgba(255,42,109,0.15); border:1px solid var(--danger); padding:10px; border-radius:10px">
-            <b style="color:var(--danger)">⚠️ Filtración Histórica Detectada</b>
-            <p style="font-size:11px; margin:2px 0 0; color:var(--text-muted)">Datos expuestos: Contraseñas cifradas y correos.</p>
+            <b style="color:var(--danger)">âš ï¸ FiltraciÃ³n HistÃ³rica Detectada</b>
+            <p style="font-size:11px; margin:2px 0 0; color:var(--text-muted)">Datos expuestos: ContraseÃ±as cifradas y correos.</p>
           </div>
-          <p style="font-size:11px; color:var(--accent)">💡 Recomendación: Activa 2FA y renueva tus claves.</p>
+          <p style="font-size:11px; color:var(--accent)">ðŸ’¡ RecomendaciÃ³n: Activa 2FA y renueva tus claves.</p>
         </div>
       `;
       SFX.alarm();
@@ -1859,305 +1859,329 @@ function darkWebSheet() {
   };
 }
 
-// D. Telemetría & Estadísticas
+// D. TelemetrÃ­a & EstadÃ­sticas
 function statsSheet() {
-  say(`Telemetría cuántica. ${S.blocked} ataques bloqueados. Selecciona el tipo de gráfico.`);
+  say(`TelemetrÃ­a cuÃ¡ntica. ${S.blocked} ataques bloqueados. Selecciona el tipo de grÃ¡fico.`);
 
-  // Build stats data from LOG
-  const typeCounts = THREAT_TYPES.map(k => ({
-    name: k.n, icon: k.ic, color: k.col,
+  // Build stats data â€” take top 8 by count for readability
+  const allCounts = THREAT_TYPES.map(k => ({
+    name: k.n, color: k.col,
     count: LOG.filter(l => l.k && l.k.n === k.n).length
-  }));
-  const total = typeCounts.reduce((s, t) => s + t.count, 0) || 1;
+  })).sort((a, b) => b.count - a.count);
+  const typeCounts = allCounts.slice(0, 8);
+  const totalAttacks = allCounts.reduce((s, t) => s + t.count, 0) || 1;
 
-  // Build time-series: last 12 slots of ~30s each from LOG timestamps
+  // Show all for pie â€” use display counts or 1-based if all zero
+  const pieData = allCounts.some(t => t.count > 0)
+    ? allCounts : allCounts.map((t, i) => ({ ...t, count: i + 1 }));
+  const pieTotal = pieData.reduce((s, t) => s + t.count, 0);
+
+  // Time-series for line chart
   const now = Date.now();
   const SLOTS = 10;
-  const slotMs = 60000; // 1 min per slot
-  const timeSeries = Array.from({ length: SLOTS }, (_, i) => {
-    const slotEnd = now - (SLOTS - 1 - i) * slotMs;
-    const slotStart = slotEnd - slotMs;
-    return LOG.filter(l => {
-      if (!l.ts) return false;
-      return l.ts >= slotStart && l.ts < slotEnd;
-    }).length;
-  });
-  // If LOG has no timestamps, fake a curve from S.blocked
+  const slotMs = 60000;
   const hasTs = LOG.some(l => l.ts);
-  const lineData = hasTs ? timeSeries : Array.from({ length: SLOTS }, (_, i) =>
-    Math.max(0, Math.round(Math.sin(i * 0.7) * 3 + S.blocked / SLOTS + Math.random() * 2))
-  );
+  const lineData = hasTs
+    ? Array.from({ length: SLOTS }, (_, i) => {
+        const slotEnd = now - (SLOTS - 1 - i) * slotMs;
+        return LOG.filter(l => l.ts && l.ts >= slotEnd - slotMs && l.ts < slotEnd).length;
+      })
+    : Array.from({ length: SLOTS }, (_, i) =>
+        Math.max(0, Math.round(Math.sin(i * 0.8 + 0.5) * 3 + S.blocked / SLOTS + (i % 3)))
+      );
 
-  sheet('📊 Telemetría & Gráficos Cuánticos', `
-    <div style="text-align:center; margin-bottom:12px">
-      <div style="display:inline-flex; gap:4px; background:rgba(255,255,255,0.06); border-radius:10px; padding:4px">
-        <button class="chart-tab-btn on" data-chart="bar"  style="padding:6px 14px; border-radius:7px; font-size:12px; font-weight:700; border:none; cursor:pointer; background:var(--accent); color:#000">📊 Barras</button>
-        <button class="chart-tab-btn"     data-chart="pie"  style="padding:6px 14px; border-radius:7px; font-size:12px; font-weight:700; border:none; cursor:pointer; background:transparent; color:var(--text-muted)">🥧 Pastel</button>
-        <button class="chart-tab-btn"     data-chart="line" style="padding:6px 14px; border-radius:7px; font-size:12px; font-weight:700; border:none; cursor:pointer; background:transparent; color:var(--text-muted)">📈 Línea</button>
+  sheet('ðŸ“Š TelemetrÃ­a & GrÃ¡ficos CuÃ¡nticos', `
+    <!-- Tab selector -->
+    <div style="display:flex; gap:4px; background:rgba(255,255,255,0.05); border-radius:10px; padding:3px; margin-bottom:12px">
+      <button class="chart-tab-btn" data-chart="bar"
+        style="flex:1; padding:7px 0; border-radius:8px; font-size:11px; font-weight:700; border:none; cursor:pointer; background:var(--accent); color:#000; letter-spacing:.5px">
+        â–Œâ–Œ BARRAS
+      </button>
+      <button class="chart-tab-btn" data-chart="pie"
+        style="flex:1; padding:7px 0; border-radius:8px; font-size:11px; font-weight:700; border:none; cursor:pointer; background:transparent; color:var(--text-muted); letter-spacing:.5px">
+        â—‰ PASTEL
+      </button>
+      <button class="chart-tab-btn" data-chart="line"
+        style="flex:1; padding:7px 0; border-radius:8px; font-size:11px; font-weight:700; border:none; cursor:pointer; background:transparent; color:var(--text-muted); letter-spacing:.5px">
+        âˆ¿ LÃNEA
+      </button>
+    </div>
+
+    <!-- KPI pills -->
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:12px">
+      <div style="background:rgba(0,240,255,0.08); border:1px solid rgba(0,240,255,0.3); border-radius:10px; padding:8px 4px; text-align:center">
+        <div style="font-size:20px; font-weight:800; color:#00f0ff; line-height:1">${S.blocked}</div>
+        <div style="font-size:9px; color:rgba(255,255,255,0.4); margin-top:2px; letter-spacing:.5px">BLOQUEADOS</div>
+      </div>
+      <div style="background:rgba(57,255,122,0.08); border:1px solid rgba(57,255,122,0.3); border-radius:10px; padding:8px 4px; text-align:center">
+        <div style="font-size:20px; font-weight:800; color:#39ff7a; line-height:1">${S.score}</div>
+        <div style="font-size:9px; color:rgba(255,255,255,0.4); margin-top:2px; letter-spacing:.5px">SCORE</div>
+      </div>
+      <div style="background:rgba(255,180,59,0.08); border:1px solid rgba(255,180,59,0.3); border-radius:10px; padding:8px 4px; text-align:center">
+        <div style="font-size:20px; font-weight:800; color:#ffb43b; line-height:1">${THREAT_TYPES.length}</div>
+        <div style="font-size:9px; color:rgba(255,255,255,0.4); margin-top:2px; letter-spacing:.5px">VECTORES</div>
       </div>
     </div>
 
-    <!-- Summary pills -->
-    <div style="display:flex; gap:8px; margin-bottom:14px; justify-content:center">
-      <div style="background:rgba(0,240,255,0.12); border:1px solid var(--accent); border-radius:8px; padding:6px 12px; text-align:center">
-        <b style="font-size:18px; color:var(--accent)">${S.blocked}</b>
-        <p style="font-size:10px; color:var(--text-muted); margin:0">BLOQUEADOS</p>
-      </div>
-      <div style="background:rgba(57,255,122,0.12); border:1px solid #39ff7a; border-radius:8px; padding:6px 12px; text-align:center">
-        <b style="font-size:18px; color:#39ff7a">${S.score}</b>
-        <p style="font-size:10px; color:var(--text-muted); margin:0">SCORE</p>
-      </div>
-      <div style="background:rgba(255,180,59,0.12); border:1px solid var(--warn); border-radius:8px; padding:6px 12px; text-align:center">
-        <b style="font-size:18px; color:var(--warn)">${THREAT_TYPES.length}</b>
-        <p style="font-size:10px; color:var(--text-muted); margin:0">VECTORES</p>
-      </div>
-    </div>
-
-    <canvas id="statsCanvas" width="300" height="220" style="width:100%; border-radius:10px; background:rgba(0,0,0,0.3)"></canvas>
+    <canvas id="statsCanvas" style="width:100%; border-radius:12px; background:rgba(0,0,0,0.25); display:block"></canvas>
     <div id="chartLegend" style="margin-top:10px"></div>
-    <button class="btn alt" onclick="closeSheet()" style="margin-top:12px">Cerrar</button>
+    <button class="btn alt" onclick="closeSheet()" style="margin-top:14px; width:100%">Cerrar</button>
   `);
 
   const canvas = document.getElementById('statsCanvas');
   const ctx = canvas.getContext('2d');
-  let currentChart = 'bar';
 
-  function setCanvasSize() {
+  function setSize(h) {
     const w = canvas.parentElement.offsetWidth - 32;
-    canvas.width = w;
-    canvas.height = 220;
+    canvas.width = w * (window.devicePixelRatio || 1);
+    canvas.height = h * (window.devicePixelRatio || 1);
+    canvas.style.height = h + 'px';
+    ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+    return { W: w, H: h };
   }
-  setCanvasSize();
 
+  /* â”€â”€ HORIZONTAL BAR CHART â”€â”€ */
   function drawBarChart() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const W = canvas.width, H = canvas.height;
-    const pad = { l: 30, r: 10, t: 16, b: 40 };
-    const chartW = W - pad.l - pad.r;
-    const chartH = H - pad.t - pad.b;
+    const { W, H } = setSize(typeCounts.length * 30 + 20);
+    ctx.clearRect(0, 0, W, H);
+    const labelW = 100, padR = 36, padT = 8, padB = 8;
+    const chartW = W - labelW - padR;
     const maxVal = Math.max(...typeCounts.map(t => t.count), 1);
-    const barW = (chartW / typeCounts.length) * 0.65;
-    const gap = (chartW / typeCounts.length) * 0.35;
-
-    // Grid lines
-    for (let i = 0; i <= 4; i++) {
-      const y = pad.t + chartH - (i / 4) * chartH;
-      ctx.strokeStyle = 'rgba(255,255,255,0.07)';
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
-      ctx.fillStyle = 'rgba(255,255,255,0.3)';
-      ctx.font = '9px monospace';
-      ctx.textAlign = 'right';
-      ctx.fillText(Math.round((i / 4) * maxVal), pad.l - 4, y + 3);
-    }
+    const rowH = (H - padT - padB) / typeCounts.length;
 
     typeCounts.forEach((t, i) => {
-      const x = pad.l + i * (barW + gap) + gap / 2;
-      const barH = (t.count / maxVal) * chartH;
-      const y = pad.t + chartH - barH;
+      const y = padT + i * rowH;
+      const barH = rowH * 0.52;
+      const bY = y + (rowH - barH) / 2;
+      const barLen = (t.count / maxVal) * chartW;
 
-      // Glow
-      const grd = ctx.createLinearGradient(x, y, x, pad.t + chartH);
-      grd.addColorStop(0, t.color);
-      grd.addColorStop(1, t.color + '33');
-      ctx.fillStyle = grd;
-      ctx.shadowColor = t.color;
-      ctx.shadowBlur = 10;
+      // Row bg on hover (subtle alternating)
+      if (i % 2 === 0) {
+        ctx.fillStyle = 'rgba(255,255,255,0.02)';
+        ctx.fillRect(0, y, W, rowH);
+      }
+
+      // Name label
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      const shortName = t.name.length > 14 ? t.name.slice(0, 13) + 'â€¦' : t.name;
+      ctx.fillText(shortName, labelW - 8, y + rowH / 2);
+
+      // Track (background rail)
+      ctx.fillStyle = 'rgba(255,255,255,0.05)';
       ctx.beginPath();
-      ctx.roundRect(x, y, barW, barH, [4, 4, 0, 0]);
+      ctx.roundRect(labelW, bY, chartW, barH, 4);
       ctx.fill();
-      ctx.shadowBlur = 0;
 
-      // Count on top
-      ctx.fillStyle = '#fff';
-      ctx.font = 'bold 10px monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(t.count, x + barW / 2, y - 4);
+      // Bar fill with gradient
+      if (barLen > 0) {
+        const grd = ctx.createLinearGradient(labelW, 0, labelW + barLen, 0);
+        grd.addColorStop(0, t.color);
+        grd.addColorStop(1, t.color + 'aa');
+        ctx.fillStyle = grd;
+        ctx.shadowColor = t.color;
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.roundRect(labelW, bY, Math.max(barLen, 4), barH, 4);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
 
-      // Icon + label below
-      ctx.font = '13px serif';
-      ctx.fillText(t.icon, x + barW / 2, pad.t + chartH + 14);
-      ctx.font = '8px monospace';
-      ctx.fillStyle = 'rgba(255,255,255,0.5)';
-      const shortName = t.name.split(' ').slice(-1)[0].substring(0, 6);
-      ctx.fillText(shortName, x + barW / 2, pad.t + chartH + 26);
+      // Count badge at end
+      ctx.fillStyle = t.count > 0 ? '#fff' : 'rgba(255,255,255,0.3)';
+      ctx.font = `bold 11px "JetBrains Mono", monospace`;
+      ctx.textAlign = 'left';
+      ctx.fillText(t.count, labelW + barLen + 6, y + rowH / 2);
     });
 
-    document.getElementById('chartLegend').innerHTML = typeCounts.map(t =>
-      `<span style="display:inline-flex;align-items:center;gap:4px;margin:3px 6px 3px 0;font-size:11px;color:var(--text-muted)">
-        <span style="width:8px;height:8px;border-radius:2px;background:${t.color};display:inline-block;box-shadow:0 0 4px ${t.color}"></span>
-        ${t.name}: <b style="color:#fff">${t.count}</b>
-      </span>`
-    ).join('');
+    document.getElementById('chartLegend').innerHTML = `
+      <p style="font-size:10px; color:rgba(255,255,255,0.35); text-align:center; margin:0">
+        Top ${typeCounts.length} vectores Â· Total ${totalAttacks} ataques interceptados
+      </p>`;
   }
 
+  /* â”€â”€ DONUT PIE CHART â”€â”€ */
   function drawPieChart() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const W = canvas.width, H = canvas.height;
-    const cx = W * 0.38, cy = H / 2, R = Math.min(cx, H / 2) - 14;
-    const dataWithDefault = total <= typeCounts.reduce((s,t)=>s+t.count,0) && typeCounts.some(t=>t.count>0)
-      ? typeCounts : typeCounts.map((t,i)=>({...t, count: i+1}));
-    const tot = dataWithDefault.reduce((s,t)=>s+t.count,0);
-
+    const { W, H } = setSize(200);
+    ctx.clearRect(0, 0, W, H);
+    const cx = W / 2, cy = H / 2, R = Math.min(W, H) / 2 - 16;
     let startAngle = -Math.PI / 2;
-    dataWithDefault.forEach(t => {
-      const slice = (t.count / tot) * 2 * Math.PI;
-      const mid = startAngle + slice / 2;
 
-      // Shadow/glow
+    pieData.forEach(t => {
+      const slice = (t.count / pieTotal) * 2 * Math.PI;
+      const mid = startAngle + slice / 2;
+      // Slight explode on hover feel
+      const ex = Math.cos(mid) * 2, ey = Math.sin(mid) * 2;
+
       ctx.shadowColor = t.color;
-      ctx.shadowBlur = 12;
+      ctx.shadowBlur = 14;
       ctx.fillStyle = t.color;
       ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.arc(cx, cy, R, startAngle, startAngle + slice);
+      ctx.moveTo(cx + ex, cy + ey);
+      ctx.arc(cx + ex, cy + ey, R, startAngle, startAngle + slice);
       ctx.closePath();
       ctx.fill();
       ctx.shadowBlur = 0;
 
-      // Separator
-      ctx.strokeStyle = 'rgba(0,0,0,0.8)';
-      ctx.lineWidth = 2;
+      // Thin separator
+      ctx.strokeStyle = 'rgba(8,8,20,0.9)';
+      ctx.lineWidth = 1.5;
       ctx.stroke();
 
-      // Label % if slice big enough
-      if (slice > 0.25) {
-        const lx = cx + Math.cos(mid) * R * 0.62;
-        const ly = cy + Math.sin(mid) * R * 0.62;
-        ctx.fillStyle = '#000';
-        ctx.font = 'bold 9px monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText(Math.round((t.count / tot) * 100) + '%', lx, ly + 3);
-      }
       startAngle += slice;
     });
 
     // Donut hole
-    ctx.fillStyle = '#0a0a14';
-    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#080814';
     ctx.beginPath();
-    ctx.arc(cx, cy, R * 0.42, 0, 2 * Math.PI);
+    ctx.arc(cx, cy, R * 0.5, 0, 2 * Math.PI);
     ctx.fill();
-    ctx.fillStyle = 'rgba(0,240,255,0.9)';
-    ctx.font = 'bold 13px monospace';
+
+    // Center text
     ctx.textAlign = 'center';
-    ctx.fillText(S.blocked, cx, cy + 1);
-    ctx.fillStyle = 'rgba(255,255,255,0.4)';
-    ctx.font = '8px monospace';
-    ctx.fillText('total', cx, cy + 11);
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#00f0ff';
+    ctx.font = `bold 18px "JetBrains Mono", monospace`;
+    ctx.fillText(S.blocked, cx, cy - 6);
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.font = `9px "JetBrains Mono", monospace`;
+    ctx.fillText('TOTAL', cx, cy + 10);
 
-    // Legend on right
-    const legX = W * 0.68;
-    dataWithDefault.forEach((t, i) => {
-      const ly = 20 + i * 22;
-      ctx.fillStyle = t.color;
-      ctx.shadowColor = t.color;
-      ctx.shadowBlur = 6;
-      ctx.beginPath();
-      ctx.roundRect(legX, ly, 8, 8, 3);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-      ctx.fillStyle = 'rgba(255,255,255,0.8)';
-      ctx.font = '9px monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(t.name.length > 12 ? t.name.slice(0,12)+'…' : t.name, legX + 12, ly + 8);
-      ctx.fillStyle = 'rgba(255,255,255,0.45)';
-      ctx.fillText(t.count + ' ataques', legX + 12, ly + 18);
-    });
+    // HTML legend â€” 2 column grid below
+    const legendItems = pieData.map(t => {
+      const pct = Math.round((t.count / pieTotal) * 100);
+      return `<div style="display:flex; align-items:center; gap:5px; font-size:10px; color:rgba(255,255,255,0.6)">
+        <span style="width:8px; height:8px; border-radius:2px; background:${t.color}; flex-shrink:0; box-shadow:0 0 5px ${t.color}"></span>
+        <span style="flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">${t.name}</span>
+        <b style="color:#fff; margin-left:auto">${pct}%</b>
+      </div>`;
+    }).join('');
 
-    document.getElementById('chartLegend').innerHTML = '';
+    document.getElementById('chartLegend').innerHTML = `
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px 12px; margin-top:4px">
+        ${legendItems}
+      </div>`;
   }
 
+  /* â”€â”€ SMOOTH LINE CHART â”€â”€ */
   function drawLineChart() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const W = canvas.width, H = canvas.height;
-    const pad = { l: 28, r: 12, t: 16, b: 36 };
+    const { W, H } = setSize(180);
+    ctx.clearRect(0, 0, W, H);
+    const pad = { l: 26, r: 12, t: 18, b: 28 };
     const chartW = W - pad.l - pad.r;
     const chartH = H - pad.t - pad.b;
     const maxVal = Math.max(...lineData, 1);
 
-    // Grid
+    // Horizontal grid lines
     for (let i = 0; i <= 4; i++) {
       const y = pad.t + chartH - (i / 4) * chartH;
-      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx.strokeStyle = i === 0 ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.05)';
       ctx.lineWidth = 1;
+      ctx.setLineDash(i === 0 ? [] : [4, 4]);
       ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
-      ctx.fillStyle = 'rgba(255,255,255,0.3)';
-      ctx.font = '9px monospace';
-      ctx.textAlign = 'right';
-      ctx.fillText(Math.round((i / 4) * maxVal), pad.l - 4, y + 3);
+      ctx.setLineDash([]);
+      if (i > 0) {
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.font = '8px monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(Math.round((i / 4) * maxVal), pad.l - 4, y);
+      }
     }
 
+    // Calculate points
     const pts = lineData.map((v, i) => ({
       x: pad.l + (i / (SLOTS - 1)) * chartW,
       y: pad.t + chartH - (v / maxVal) * chartH
     }));
 
-    // Fill area under line
-    const grad = ctx.createLinearGradient(0, pad.t, 0, pad.t + chartH);
-    grad.addColorStop(0, 'rgba(0,240,255,0.35)');
-    grad.addColorStop(1, 'rgba(0,240,255,0.0)');
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.moveTo(pts[0].x, pad.t + chartH);
-    pts.forEach(p => ctx.lineTo(p.x, p.y));
+    // Smooth bezier helper
+    function bezierPath(points) {
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      for (let i = 1; i < points.length; i++) {
+        const cp1x = (points[i - 1].x + points[i].x) / 2;
+        const cp1y = points[i - 1].y;
+        const cp2x = cp1x;
+        const cp2y = points[i].y;
+        ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, points[i].x, points[i].y);
+      }
+    }
+
+    // Gradient area fill
+    const areaGrad = ctx.createLinearGradient(0, pad.t, 0, pad.t + chartH);
+    areaGrad.addColorStop(0, 'rgba(0,240,255,0.28)');
+    areaGrad.addColorStop(1, 'rgba(0,240,255,0.0)');
+    ctx.fillStyle = areaGrad;
+    bezierPath(pts);
     ctx.lineTo(pts[pts.length - 1].x, pad.t + chartH);
+    ctx.lineTo(pts[0].x, pad.t + chartH);
     ctx.closePath();
     ctx.fill();
 
-    // Line
+    // Stroke line
     ctx.strokeStyle = '#00f0ff';
-    ctx.lineWidth = 2.5;
+    ctx.lineWidth = 2;
     ctx.shadowColor = '#00f0ff';
-    ctx.shadowBlur = 10;
+    ctx.shadowBlur = 12;
     ctx.lineJoin = 'round';
-    ctx.beginPath();
-    pts.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+    bezierPath(pts);
     ctx.stroke();
     ctx.shadowBlur = 0;
 
-    // Dots + values
+    // Dots
     pts.forEach((p, i) => {
+      // Outer glow ring
+      ctx.fillStyle = 'rgba(0,240,255,0.2)';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 6, 0, 2 * Math.PI);
+      ctx.fill();
+      // Inner dot
       ctx.fillStyle = '#00f0ff';
       ctx.shadowColor = '#00f0ff';
-      ctx.shadowBlur = 8;
+      ctx.shadowBlur = 6;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, 3.5, 0, 2 * Math.PI);
+      ctx.arc(p.x, p.y, 3, 0, 2 * Math.PI);
       ctx.fill();
       ctx.shadowBlur = 0;
+
+      // Value label above peak dots
       if (lineData[i] > 0) {
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = 'rgba(255,255,255,0.9)';
         ctx.font = 'bold 9px monospace';
         ctx.textAlign = 'center';
-        ctx.fillText(lineData[i], p.x, p.y - 7);
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(lineData[i], p.x, p.y - 8);
       }
-      // X label
-      ctx.fillStyle = 'rgba(255,255,255,0.35)';
+
+      // X-axis time label
+      ctx.fillStyle = 'rgba(255,255,255,0.25)';
       ctx.font = '8px monospace';
-      ctx.fillText('T-' + (SLOTS - i), p.x, pad.t + chartH + 14);
+      ctx.textBaseline = 'top';
+      ctx.fillText(`-${SLOTS - i}m`, p.x, pad.t + chartH + 6);
     });
 
-    document.getElementById('chartLegend').innerHTML =
-      `<p style="font-size:11px;color:var(--text-muted);text-align:center;margin:0">
-        Ataques bloqueados en los últimos ${SLOTS} minutos · ${S.blocked} total
+    document.getElementById('chartLegend').innerHTML = `
+      <p style="font-size:10px; color:rgba(255,255,255,0.35); text-align:center; margin:0">
+        Frecuencia de ataques Â· Ãºltimos ${SLOTS} minutos Â· ${S.blocked} bloqueados en total
       </p>`;
   }
 
   function drawChart(type) {
-    currentChart = type;
     if (type === 'bar') drawBarChart();
     else if (type === 'pie') drawPieChart();
     else if (type === 'line') drawLineChart();
 
-    // Update tab styles
     document.querySelectorAll('.chart-tab-btn').forEach(b => {
       const active = b.dataset.chart === type;
       b.style.background = active ? 'var(--accent)' : 'transparent';
       b.style.color = active ? '#000' : 'var(--text-muted)';
+      b.style.fontWeight = active ? '800' : '600';
     });
   }
 
-  // Wire up tab buttons
   document.querySelectorAll('.chart-tab-btn').forEach(btn => {
     btn.onclick = () => drawChart(btn.dataset.chart);
   });
@@ -2171,7 +2195,7 @@ function reportSheet() {
   const when = new Date().toLocaleString('es-PE');
   const safeCount = D.filter(d => d.r === 0).length;
   const reportText = `================================================
-INFORME FORENSE DE CIBERSEGURIDAD – CIBERESCUDO 2.0
+INFORME FORENSE DE CIBERSEGURIDAD â€“ CIBERESCUDO 2.0
 ================================================
 Operador: ${S.name} (${S.role})
 Fecha: ${when}
@@ -2184,9 +2208,9 @@ EVENTOS:
 ${LOG.slice(0, 10).map(l => `- [${l.t}] ${l.k.n} (${l.k.cve})`).join('\n') || '- Sin incidentes'}
 ================================================`;
 
-  sheet('📑 Informe Forense', `
-    <p><b>Operador:</b> ${S.name} · <b>Score:</b> ${S.score}%<br><b>Ataques Bloqueados:</b> ${S.blocked}</p>
-    <button class="btn" id="btnDlReport">📥 Descargar Archivo (.txt)</button>
+  sheet('ðŸ“‘ Informe Forense', `
+    <p><b>Operador:</b> ${S.name} Â· <b>Score:</b> ${S.score}%<br><b>Ataques Bloqueados:</b> ${S.blocked}</p>
+    <button class="btn" id="btnDlReport">ðŸ“¥ Descargar Archivo (.txt)</button>
     <button class="btn alt" onclick="closeSheet()">Cerrar</button>
   `);
 
@@ -2198,7 +2222,7 @@ ${LOG.slice(0, 10).map(l => `- [${l.t}] ${l.k.n} (${l.k.cve})`).join('\n') || '-
     a.click();
     SFX.success();
     say('Informe descargado.');
-    notifyIsland('Informe Descargado', '📄');
+    notifyIsland('Informe Descargado', 'ðŸ“„');
   };
 }
 
@@ -2214,12 +2238,12 @@ function toggleVpn() {
     swV.classList.toggle('on', S.vpn);
     swV.setAttribute('aria-pressed', S.vpn);
   }
-  $('#vpnTx').textContent = S.vpn ? 'Activa · Túnel AES-256' : 'Desactivada · IP Expuesta';
+  $('#vpnTx').textContent = S.vpn ? 'Activa Â· TÃºnel AES-256' : 'Desactivada Â· IP Expuesta';
   $('#vpnPillText').textContent = S.vpn ? 'VPN On' : 'VPN Off';
   calcScore();
   SFX.beep(S.vpn ? 800 : 400, 'sine', 0.08);
-  say(S.vpn ? 'VPN cuántica activada.' : 'VPN desactivada.');
-  notifyIsland(S.vpn ? 'VPN Conectada' : 'VPN Desconectada', '🌐');
+  say(S.vpn ? 'VPN cuÃ¡ntica activada.' : 'VPN desactivada.');
+  notifyIsland(S.vpn ? 'VPN Conectada' : 'VPN Desconectada', 'ðŸŒ');
 }
 $('#swVpn').onclick = toggleVpn;
 $('#pillVpnQuick').onclick = toggleVpn;
@@ -2244,15 +2268,15 @@ $('#swAuto').onclick = () => {
   S.auto = !S.auto;
   $('#swAuto').classList.toggle('on', S.auto);
   $('#swAuto').setAttribute('aria-pressed', S.auto);
-  say(S.auto ? 'Tráfico automático activado.' : 'Tráfico en pausa.');
+  say(S.auto ? 'TrÃ¡fico automÃ¡tico activado.' : 'TrÃ¡fico en pausa.');
 };
 
-// Themes con locución
+// Themes con locuciÃ³n
 const THEME_NAMES = {
   'cyber': 'Cian',
   'neon': 'Violeta',
   'matrix': 'Matrix',
-  'solar': 'Ámbar',
+  'solar': 'Ãmbar',
   'crimson': 'Rojo'
 };
 
@@ -2289,18 +2313,18 @@ $('#panicBtn').onclick = () => {
   if (S.lockdown) {
     SFX.alarm();
     if (!S.vpn) toggleVpn();
-    say('¡Protocolo Lockdown activado! Red aislada.');
-    notifyIsland('EMERGENCIA LOCKDOWN', '🚨', 4000);
+    say('Â¡Protocolo Lockdown activado! Red aislada.');
+    notifyIsland('EMERGENCIA LOCKDOWN', 'ðŸš¨', 4000);
   } else {
     SFX.success();
     say('Lockdown desactivado.');
-    notifyIsland('Lockdown Desactivado', '🛡️');
+    notifyIsland('Lockdown Desactivado', 'ðŸ›¡ï¸');
   }
 };
 
-// Diagnóstico General
+// DiagnÃ³stico General
 function showStatusDiagnostic() {
-  sheet('🛡️ Diagnóstico de Seguridad', `
+  sheet('ðŸ›¡ï¸ DiagnÃ³stico de Seguridad', `
     <p><b>Operador:</b> ${S.name} (${S.role})<br>
     <b>Nivel de Blindaje:</b> ${S.score}%<br>
     <b>Ataques Bloqueados:</b> ${S.blocked}<br>
@@ -2308,7 +2332,7 @@ function showStatusDiagnostic() {
     <button class="btn" onclick="scanDevices(); closeSheet()">Escanear Red</button>
     <button class="btn alt" onclick="closeSheet()">Cerrar</button>
   `);
-  say(`Diagnóstico: Blindaje al ${S.score} por ciento. ${S.blocked} ataques bloqueados.`);
+  say(`DiagnÃ³stico: Blindaje al ${S.score} por ciento. ${S.blocked} ataques bloqueados.`);
 }
 $('#scoreWrapBtn').onclick = showStatusDiagnostic;
 
@@ -2317,18 +2341,18 @@ $('#scoreWrapBtn').onclick = showStatusDiagnostic;
 // ==========================================================================
 const KB = [
   [/phishing|estafa|sms falso/, 'El phishing usa mensajes falsos para robar tus claves. Nunca abras enlaces urgentes.'],
-  [/ransomware|secuestro|cifrado/, 'El ransomware cifra tus archivos. Mantén siempre copias de seguridad desconectadas.'],
-  [/ddos|denegaci/, 'Un DDoS satura los servidores con tráfico basura para tirar el servicio.'],
-  [/fuerza bruta|diccionario/, 'La fuerza bruta prueba miles de contraseñas. Usa claves largas de 16 caracteres.'],
-  [/sql|inyecci[oó]n sql|sqli/, 'La inyección SQL busca insertar comandos maliciosos en formularios para robar o destruir bases de datos.'],
-  [/zero-?day|dia cero|cero d[ií]as/, 'Un Zero-Day es una vulnerabilidad desconocida y sin parche de seguridad disponible que los atacantes explotan.'],
-  [/mitm|man-in-the-middle|hombre en el medio/, 'El ataque Man-in-the-Middle intercepta paquetes de red en redes públicas no seguras.'],
-  [/spyware|keylogger|esp[ií]a/, 'El spyware graba tus teclas y pantallas para recopilar contraseñas y datos bancarios.'],
-  [/cryptojack|miner[ií]a|cripto/, 'El cryptojacking secuestra tu CPU y GPU para minar criptomonedas en secreto.'],
-  [/xss|cross-site/, 'XSS inyecta scripts en sitios confiables para robar cookies de sesión de los navegadores.'],
-  [/dns|spoofing/, 'El spoofing de DNS falsea la resolución de nombres para llevarte a páginas clonadas idénticas.'],
-  [/vpn|t[uú]nel/, 'Una VPN cifra tu conexión para proteger tu privacidad en redes públicas.'],
-  [/jarvis|qui[eé]n eres/, 'Soy Jarvis 2.0, tu copiloto de ciberseguridad. Te ayudo a monitorear y proteger tus dispositivos.']
+  [/ransomware|secuestro|cifrado/, 'El ransomware cifra tus archivos. MantÃ©n siempre copias de seguridad desconectadas.'],
+  [/ddos|denegaci/, 'Un DDoS satura los servidores con trÃ¡fico basura para tirar el servicio.'],
+  [/fuerza bruta|diccionario/, 'La fuerza bruta prueba miles de contraseÃ±as. Usa claves largas de 16 caracteres.'],
+  [/sql|inyecci[oÃ³]n sql|sqli/, 'La inyecciÃ³n SQL busca insertar comandos maliciosos en formularios para robar o destruir bases de datos.'],
+  [/zero-?day|dia cero|cero d[iÃ­]as/, 'Un Zero-Day es una vulnerabilidad desconocida y sin parche de seguridad disponible que los atacantes explotan.'],
+  [/mitm|man-in-the-middle|hombre en el medio/, 'El ataque Man-in-the-Middle intercepta paquetes de red en redes pÃºblicas no seguras.'],
+  [/spyware|keylogger|esp[iÃ­]a/, 'El spyware graba tus teclas y pantallas para recopilar contraseÃ±as y datos bancarios.'],
+  [/cryptojack|miner[iÃ­]a|cripto/, 'El cryptojacking secuestra tu CPU y GPU para minar criptomonedas en secreto.'],
+  [/xss|cross-site/, 'XSS inyecta scripts en sitios confiables para robar cookies de sesiÃ³n de los navegadores.'],
+  [/dns|spoofing/, 'El spoofing de DNS falsea la resoluciÃ³n de nombres para llevarte a pÃ¡ginas clonadas idÃ©nticas.'],
+  [/vpn|t[uÃº]nel/, 'Una VPN cifra tu conexiÃ³n para proteger tu privacidad en redes pÃºblicas.'],
+  [/jarvis|qui[eÃ©]n eres/, 'Soy Jarvis 2.0, tu copiloto de ciberseguridad. Te ayudo a monitorear y proteger tus dispositivos.']
 ];
 
 function processCommand(cmdText) {
@@ -2378,7 +2402,7 @@ if (SpeechRec) {
   rec.onend = () => $('#mic').classList.remove('rec');
   rec.onresult = e => {
     const transcript = e.results[0][0].transcript;
-    $('#bubble').textContent = `«${transcript}»`;
+    $('#bubble').textContent = `Â«${transcript}Â»`;
     processCommand(transcript);
   };
   $('#mic').onclick = () => { initAudio(); rec.start(); };
@@ -2391,7 +2415,7 @@ const CHAT_LOG = [];
 function openChatSheet() {
   say('Chat con Jarvis abierto.');
   if (CHAT_LOG.length === 0) {
-    CHAT_LOG.push({ sender: 'jarvis', text: `Hola, ${S.name}. ¿Qué duda de ciberseguridad tienes?` });
+    CHAT_LOG.push({ sender: 'jarvis', text: `Hola, ${S.name}. Â¿QuÃ© duda de ciberseguridad tienes?` });
   }
 
   const renderMsgs = () => {
@@ -2403,7 +2427,7 @@ function openChatSheet() {
     stream.scrollTop = stream.scrollHeight;
   };
 
-  sheet('🤖 Chat con Jarvis AI', `
+  sheet('ðŸ¤– Chat con Jarvis AI', `
     <div class="chat-stream" id="chatStream"></div>
     <input id="chatInput" placeholder="Pregunta sobre phishing, claves, vpn..." autocomplete="off">
     <button class="btn" id="btnSendChat">Enviar</button>
@@ -2419,7 +2443,7 @@ function openChatSheet() {
     renderMsgs();
 
     const match = KB.find(k => k[0].test(val.toLowerCase()));
-    const reply = match ? match[1] : `Revisa tus contraseñas y mantén tus dispositivos actualizados.`;
+    const reply = match ? match[1] : `Revisa tus contraseÃ±as y mantÃ©n tus dispositivos actualizados.`;
     
     setTimeout(() => {
       CHAT_LOG.push({ sender: 'jarvis', text: reply });
