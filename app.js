@@ -1218,12 +1218,110 @@ $('#btnClearLogs').onclick = () => {
 // 11. CIBER-ACADEMIA & DESAFÍO INTERACTIVO
 // ==========================================================================
 const TIPS = [
-  ['🔑', 'Claves de Alta Entropía', 'Usa frases de 16 caracteres y no repitas claves.'],
-  ['🛡️', '2FA Seguro', 'Prefiere aplicaciones autenticadoras sobre SMS.'],
-  ['🎣', 'Detección de Phishing', 'Desconfía de la urgencia y revisa el remitente.'],
-  ['📶', 'Wi-Fi Público Seguro', 'Navega siempre con VPN en redes públicas.'],
-  ['🔄', 'Parcheo de Zero-Days', 'Mantén actualizados tus dispositivos y aplicaciones.'],
-  ['💾', 'Copias de Seguridad', 'Realiza respaldos offline para protegerte del Ransomware.']
+  {
+    icon: '🔑',
+    title: 'Claves de Alta Entropía',
+    desc: 'Crea contraseñas de mínimo 16 caracteres combinando mayúsculas, minúsculas, números y símbolos. Nunca repitas la misma clave en distintos servicios.',
+    tag: 'CONTRASEÑAS',
+    examples: [
+      { bad: true,  text: '"carlos123" — Solo 8 chars, nombre común → se crackea en segundos' },
+      { bad: false, text: '"Tr0nador_Azul#2026!Galaxia" — 26 chars, mixto → imposible por fuerza bruta' },
+      { bad: false, text: 'Usa un gestor como Bitwarden o 1Password para no memorizar nada' },
+      { bad: true,  text: 'Anotar contraseñas en un papel o bloc de notas del PC → riesgo físico' }
+    ],
+    voice: 'Claves de alta entropía. Usa mínimo 16 caracteres con mayúsculas, números y símbolos. Nunca repitas contraseñas.'
+  },
+  {
+    icon: '🛡️',
+    title: '2FA Seguro',
+    desc: 'La autenticación de dos factores añade una segunda capa de seguridad. Aunque roben tu contraseña, no podrán entrar sin el segundo factor.',
+    tag: '2FA',
+    examples: [
+      { bad: true,  text: '2FA por SMS → vulnerable a SIM-Swapping (clonan tu número)' },
+      { bad: false, text: 'Google Authenticator / Authy → código temporal cada 30 seg, sin internet' },
+      { bad: false, text: 'Llave física YubiKey → el método más seguro disponible hoy' },
+      { bad: false, text: 'Activa 2FA en: Gmail, Instagram, banco online, GitHub, WhatsApp' }
+    ],
+    voice: 'Autenticación de dos factores. Usa apps autenticadoras en lugar de SMS para evitar ataques de clonación de SIM.'
+  },
+  {
+    icon: '🎣',
+    title: 'Detección de Phishing',
+    desc: 'El phishing suplanta identidades de empresas o personas de confianza para robar tus datos. Aprende a identificarlo antes de hacer clic.',
+    tag: 'PHISHING',
+    examples: [
+      { bad: true,  text: '"Tu cuenta fue SUSPENDIDA, verifica ahora: http://banco-alerta.xyz" → URL falsa + urgencia' },
+      { bad: true,  text: 'Correo de soporte@paypa1.com (con el número 1) → dominio falso' },
+      { bad: false, text: 'Verifica siempre el remitente completo, no solo el nombre visible' },
+      { bad: false, text: 'Ante dudas, entra directamente al sitio oficial escribiendo la URL a mano' }
+    ],
+    voice: 'Detección de phishing. Desconfía siempre de la urgencia y verifica el remitente real del correo antes de hacer clic en cualquier enlace.'
+  },
+  {
+    icon: '📶',
+    title: 'Wi-Fi Público Seguro',
+    desc: 'Las redes públicas (cafeterías, aeropuertos, centros comerciales) no están cifradas. Un atacante en la misma red puede interceptar tu tráfico.',
+    tag: 'WI-FI',
+    examples: [
+      { bad: true,  text: 'Conectarse al Wi-Fi "CafeteriaLibre" y entrar al banco sin VPN' },
+      { bad: true,  text: '"Airport_Free_WiFi" puede ser un punto de acceso falso (Evil Twin Attack)' },
+      { bad: false, text: 'Activa tu VPN antes de conectarte a cualquier red pública' },
+      { bad: false, text: 'Usa datos móviles para transacciones bancarias o trabajo sensible' }
+    ],
+    voice: 'Wi-Fi público. Activa siempre una VPN antes de conectarte a redes públicas. Nunca hagas operaciones bancarias sin VPN activa.'
+  },
+  {
+    icon: '🔄',
+    title: 'Parcheo de Zero-Days',
+    desc: 'Los Zero-Days son vulnerabilidades explotadas antes de que exista un parche. Mantener el software actualizado reduce drásticamente la superficie de ataque.',
+    tag: 'ACTUALIZACIONES',
+    examples: [
+      { bad: true,  text: 'Windows sin actualizar desde hace 6 meses → expuesto a EternalBlue (WannaCry)' },
+      { bad: true,  text: 'Ignorar la actualización del router → acceso remoto sin autorización' },
+      { bad: false, text: 'Activa actualizaciones automáticas en tu OS, navegador y apps' },
+      { bad: false, text: 'Revisa CVE mitre.org para conocer vulnerabilidades recientes de tus apps' }
+    ],
+    voice: 'Parcheo de Zero-Days. Mantén siempre actualizados tu sistema operativo, navegador y aplicaciones. Las actualizaciones corrigen vulnerabilidades críticas.'
+  },
+  {
+    icon: '💾',
+    title: 'Copias de Seguridad',
+    desc: 'Un backup correcto es tu mejor defensa ante ransomware, fallos de hardware o borrado accidental. Sigue la regla 3-2-1.',
+    tag: 'BACKUPS',
+    examples: [
+      { bad: false, text: 'Regla 3-2-1: 3 copias, en 2 soportes distintos, 1 fuera de casa/oficina' },
+      { bad: false, text: 'Google Drive / OneDrive para documentos de trabajo (nube automática)' },
+      { bad: false, text: 'Disco duro externo cifrado con VeraCrypt para datos sensibles' },
+      { bad: true,  text: 'Backup conectado siempre al PC → el ransomware también lo cifra' }
+    ],
+    voice: 'Copias de seguridad. Aplica la regla 3-2-1: tres copias en dos soportes distintos, con una copia fuera de casa. Un backup offline resiste el ransomware.'
+  },
+  {
+    icon: '🔒',
+    title: 'Cifrado de Dispositivos',
+    desc: 'Cifrar tu disco duro o móvil garantiza que nadie pueda acceder a tus datos si te roban el dispositivo, aunque lo conecten a otro equipo.',
+    tag: 'CIFRADO',
+    examples: [
+      { bad: false, text: 'Windows: activa BitLocker (Panel de Control → Cifrado de unidad)' },
+      { bad: false, text: 'Mac: activa FileVault (Preferencias → Seguridad → FileVault)' },
+      { bad: false, text: 'Android / iOS: el cifrado está activo por defecto con pantalla de bloqueo activada' },
+      { bad: true,  text: 'PC sin cifrar robado → los datos son accesibles conectando el disco a otro equipo' }
+    ],
+    voice: 'Cifrado de dispositivos. Activa BitLocker en Windows o FileVault en Mac para proteger tus datos ante robo físico.'
+  },
+  {
+    icon: '🕵️',
+    title: 'Privacidad en Redes Sociales',
+    desc: 'La sobreexposición en redes sociales facilita ataques de ingeniería social, spear-phishing y robo de identidad.',
+    tag: 'PRIVACIDAD',
+    examples: [
+      { bad: true,  text: 'Publicar foto del pasaporte, ticket de viaje o tarjeta de crédito → robo de identidad directo' },
+      { bad: true,  text: 'Perfil público con fecha de nacimiento, teléfono y ciudad → datos para hackear cuentas' },
+      { bad: false, text: 'Configura tus perfiles como privados y revisa quién te sigue' },
+      { bad: false, text: 'Usa correos alias (SimpleLogin, AnonAddy) para registros en webs de terceros' }
+    ],
+    voice: 'Privacidad en redes sociales. No publiques información personal sensible. Configura tus perfiles como privados y usa alias de correo para registros.'
+  }
 ];
 
 function renderTips() {
@@ -1231,24 +1329,45 @@ function renderTips() {
   if (!list) return;
   list.innerHTML = TIPS.map((t, k) => `
     <li data-k="${k}">
-      <span class="ic">${t[0]}</span>
+      <span class="ic">${t.icon}</span>
       <div class="tx">
-        <b>${t[1]}</b>
-        <span>Toca para escuchar explicación</span>
+        <b>${t.title}</b>
+        <span>${t.desc.substring(0, 52)}…</span>
       </div>
-      <span class="arrow-tag">TUTOR</span>
+      <span class="arrow-tag">${t.tag}</span>
     </li>
   `).join('');
 
   $$('#tipList li').forEach(li => {
     li.onclick = () => {
       const item = TIPS[+li.dataset.k];
-      sheet(`${item[0]} ${item[1]}`, `
-        <p>${item[2]}</p>
-        <button class="btn" onclick="say('${item[1]}. ${item[2]}')">🔊 Escuchar a Jarvis</button>
-        <button class="btn alt" onclick="closeSheet()">Cerrar</button>
+      const examplesHtml = item.examples.map(ex => `
+        <div style="display:flex; gap:10px; align-items:flex-start; padding:8px 10px; border-radius:8px; margin-bottom:6px;
+          background:${ex.bad ? 'rgba(255,42,109,0.1)' : 'rgba(57,255,122,0.1)'};
+          border-left:3px solid ${ex.bad ? 'var(--danger)' : 'var(--accent)'}">
+          <span style="font-size:15px; flex-shrink:0">${ex.bad ? '❌' : '✅'}</span>
+          <span style="font-size:12px; color:var(--text-muted); line-height:1.4">${ex.text}</span>
+        </div>
+      `).join('');
+
+      sheet(`${item.icon} ${item.title}`, `
+        <div class="threat-modal-content">
+          <div class="threat-info-box" style="margin-bottom:14px">
+            <div class="box-badge">${item.tag}</div>
+            <p style="font-size:13px; line-height:1.5; color:var(--text-muted)">${item.desc}</p>
+          </div>
+          <div style="margin-bottom:14px">
+            <b style="font-size:12px; color:var(--primary); text-transform:uppercase; letter-spacing:1px">⚡ Ejemplos Prácticos</b>
+            <div style="margin-top:8px">${examplesHtml}</div>
+          </div>
+          <div class="modal-actions-row">
+            <button class="btn" id="tipVoiceBtn">🔊 Escuchar a Jarvis</button>
+            <button class="btn alt" onclick="closeSheet()">Cerrar</button>
+          </div>
+        </div>
       `);
-      say(`${item[1]}. ${item[2]}`);
+      say(item.voice);
+      $('#tipVoiceBtn').onclick = () => say(item.voice);
     };
   });
 }
