@@ -496,13 +496,102 @@ function calcScore() {
 // 8. DISPOSITIVOS & TOPOLOGÍA DE RED
 // ==========================================================================
 const D = [
-  { n: 'Smartphone Operador', i: '📱', ip: '192.168.1.12', port: '8080 (TLS)', r: 0, m: 'Protegido con clave biométrica y sandbox activo.' },
-  { n: 'Estación Laptop Pro', i: '💻', ip: '192.168.1.20', port: '443 (HTTPS)', r: 0, m: 'EDR y firewall cuántico activos.' },
-  { n: 'Gateway Wi-Fi 6', i: '📡', ip: '192.168.1.1', port: '80 (Inseguro)', r: 1, m: 'Firmware con parche pendiente CVE-2025-4109.', fix: 'Inyectar Parche Cuántico' },
-  { n: 'Smart TV QLED', i: '📺', ip: '192.168.1.31', port: '8008 (Cast)', r: 0, m: 'Tráfico aislado en VLAN de invitados.' },
-  { n: 'Cámara IP Perímetro', i: '📷', ip: '192.168.1.45', port: '554 (RTSP)', r: 2, m: 'Credencial por defecto «admin/1234». Riesgo de botnet.', fix: 'Rotar Credencial a SHA-256' },
-  { n: 'Smartwatch Ultra', i: '⌚', ip: '192.168.1.52', port: 'BLE Encrypted', r: 0, m: 'Enlace cifrado con teléfono.' },
-  { n: 'Servidor NAS Backup', i: '💾', ip: '192.168.1.80', port: '445 (SMBv1)', r: 1, m: 'Protocolo SMBv1 vulnerable a WannaCry.', fix: 'Actualizar a SMBv3 Cifrado' }
+  {
+    n: 'Smartphone Operador',
+    i: '📱',
+    ip: '192.168.1.12',
+    port: '8080 (TLS)',
+    mac: 'E4:5F:01:28:C2:11',
+    os: 'Android 15 · Sandbox',
+    r: 0,
+    state: 'done',
+    m: 'Protegido con clave biométrica, sandbox activo y cifrado en reposo.',
+    fix: 'Validación de integridad OK'
+  },
+  {
+    n: 'Estación Laptop Pro',
+    i: '💻',
+    ip: '192.168.1.20',
+    port: '443 (HTTPS)',
+    mac: '3C:22:FB:8A:44:90',
+    os: 'Windows 11 Pro · EDR',
+    r: 0,
+    state: 'done',
+    m: 'EDR y firewall cuántico activos. Firmware TPM 2.0 validado.',
+    fix: 'Protección Endpoint activa'
+  },
+  {
+    n: 'Gateway Wi-Fi 6',
+    i: '📡',
+    ip: '192.168.1.1',
+    port: '80 (HTTP Inseguro)',
+    mac: '00:1A:2B:6C:88:12',
+    os: 'OpenWrt 23.05',
+    r: 1,
+    state: 'done',
+    m: 'Panel de administración en HTTP sin cifrar y parche pendiente CVE-2025-4109.',
+    fix: 'Inyectar Parche Cuántico y Forzar HTTPS'
+  },
+  {
+    n: 'Smart TV QLED',
+    i: '📺',
+    ip: '192.168.1.31',
+    port: '8008 (Cast)',
+    mac: '74:D0:2B:F1:09:A5',
+    os: 'Tizen OS 7.0',
+    r: 0,
+    state: 'done',
+    m: 'Tráfico multimedia aislado en VLAN de invitados sin acceso a la LAN privada.',
+    fix: 'Aislamiento VLAN verificado'
+  },
+  {
+    n: 'Cámara IP Perímetro',
+    i: '📷',
+    ip: '192.168.1.45',
+    port: '554 (RTSP Abierto)',
+    mac: 'A0:B1:C2:D3:E4:F5',
+    os: 'Embedded Linux 4.9',
+    r: 2,
+    state: 'done',
+    m: 'Credencial por defecto de fábrica «admin/1234» detectada. Riesgo crítico de botnet Mirai.',
+    fix: 'Rotar Credencial a SHA-256 y Cifrar RTSP'
+  },
+  {
+    n: 'Smartwatch Ultra',
+    i: '⌚',
+    ip: '192.168.1.52',
+    port: 'BLE Encrypted v5.3',
+    mac: '58:CB:52:80:11:F2',
+    os: 'WatchOS Tactical 10',
+    r: 0,
+    state: 'done',
+    m: 'Enlace BLE cifrado mediante intercambio de llaves ECDH con el smartphone principal.',
+    fix: 'Enlace seguro verificado'
+  },
+  {
+    n: 'Servidor NAS Backup',
+    i: '💾',
+    ip: '192.168.1.80',
+    port: '445 (SMBv1 Legado)',
+    mac: '90:09:D0:33:66:BB',
+    os: 'TrueNAS Core 13.0',
+    r: 1,
+    state: 'done',
+    m: 'Protocolo SMBv1 vulnerable a exploit EternalBlue (WannaCry) habilitado.',
+    fix: 'Migrar a SMBv3 Cifrado con Firma Digital'
+  },
+  {
+    n: 'Asistente IoT Domótico',
+    i: '🎙️',
+    ip: '192.168.1.95',
+    port: '1883 (MQTT Abierto)',
+    mac: '60:01:94:4A:2C:19',
+    os: 'ESP32 FreeRTOS v4',
+    r: 1,
+    state: 'done',
+    m: 'Broker MQTT escuchando sin autenticación TLS en la red interna.',
+    fix: 'Habilitar MQTTS con Certificados X.509'
+  }
 ];
 
 const RISK_TEXTS = ['SEGURO', 'VULNERABILIDAD MEDIA', 'RIESGO CRÍTICO'];
@@ -513,12 +602,17 @@ function renderDevices() {
   if (!list) return;
   list.innerHTML = D.map((d, k) => `
     <li data-k="${k}">
+      <span class="dev-num-badge">#0${k + 1}</span>
       <span class="ic">${d.i}</span>
       <div class="tx">
         <b>${d.n}</b>
-        <span>${d.ip} · ${d.state === undefined ? 'Sin escanear' : d.state === 'sc' ? 'Escaneando puertos…' : RISK_TEXTS[d.r]}</span>
+        <span>${d.ip} · ${d.port} · ${d.os}</span>
       </div>
-      <i class="dot ${d.state === 'sc' ? 'sc' : d.state === undefined ? '' : d.r === 0 ? 'ok' : d.r === 1 ? 'mid' : 'hi'}"></i>
+      <div class="dev-status-wrap">
+        <span class="dev-status-pill ${d.state === 'sc' ? 'sc' : d.r === 0 ? 'ok' : d.r === 1 ? 'mid' : 'hi'}">
+          ${d.state === 'sc' ? 'Escaneando…' : RISK_TEXTS[d.r]}
+        </span>
+      </div>
     </li>
   `).join('');
 
@@ -568,28 +662,67 @@ function scanDevices() {
 
 function showDeviceDetail(k) {
   const d = D[k];
-  if (d.state !== 'done') return;
-  sheet(`${d.i} ${d.n}`, `
-    <p><b>IP Local:</b> <code>${d.ip}</code><br><b>Puerto:</b> ${d.port}<br><b>Estado:</b> <b style="color:var(--${d.r === 0 ? 'accent' : d.r === 1 ? 'warn' : 'danger'})">${RISK_TEXTS[d.r]}</b></p>
-    <p>${d.m}</p>
-    ${d.r > 0 ? `<button class="btn" id="btnPatchDev">${d.fix}</button>` : ''}
-    <button class="btn alt" onclick="closeSheet()">Cerrar</button>
+  sheet(`${d.i} #${k + 1 < 10 ? '0' : ''}${k + 1} ${d.n}`, `
+    <div class="threat-modal-content">
+      <div class="threat-meta-grid">
+        <div class="t-meta-item">
+          <span class="m-lbl">DIRECCIÓN IP</span>
+          <b class="m-val"><code>${d.ip}</code></b>
+        </div>
+        <div class="t-meta-item">
+          <span class="m-lbl">PUERTO / PROTOCOLO</span>
+          <b class="m-val">${d.port}</b>
+        </div>
+        <div class="t-meta-item">
+          <span class="m-lbl">DIRECCIÓN MAC</span>
+          <b class="m-val"><code>${d.mac}</code></b>
+        </div>
+        <div class="t-meta-item">
+          <span class="m-lbl">SISTEMA OPERATIVO</span>
+          <b class="m-val">${d.os}</b>
+        </div>
+      </div>
+
+      <div class="threat-info-box">
+        <div class="box-badge">DIAGNÓSTICO TÁCTICO</div>
+        <p>${d.m}</p>
+      </div>
+
+      <div class="threat-solution-box" style="border-color: var(--${d.r === 0 ? 'accent' : d.r === 1 ? 'warn' : 'danger'})">
+        <div class="solution-header">
+          <span class="sol-icon">${d.r === 0 ? '🛡️' : '⚠️'}</span>
+          <b style="color: var(--${d.r === 0 ? 'accent' : d.r === 1 ? 'warn' : 'danger'})">
+            ESTADO: ${RISK_TEXTS[d.r]}
+          </b>
+        </div>
+        <p>${d.r === 0 ? 'Este dispositivo cumple con las directivas de blindaje y cifrado activo.' : 'Vulnerabilidad detectada. Aplica el parche táctico a continuación para mitigar vectores de intrusión.'}</p>
+      </div>
+
+      <div class="modal-actions-row">
+        ${d.r > 0 ? `<button class="btn" id="btnPatchDev">🛠️ ${d.fix}</button>` : `<button class="btn" id="btnDevAudio">🔊 Diagnóstico por Voz</button>`}
+        <button class="btn alt" onclick="closeSheet()">Cerrar</button>
+      </div>
+    </div>
   `);
 
   if (d.r > 0) {
-    say(`${d.n}. Estado: ${RISK_TEXTS[d.r]}.`);
+    say(`${d.n}. Estado: ${RISK_TEXTS[d.r]}. ${d.m}`);
     $('#btnPatchDev').onclick = () => {
       d.r = 0;
-      d.m = 'Vulnerabilidad mitigada. Puerto protegido.';
+      d.m = 'Vulnerabilidad mitigada con éxito. Puerto protegido y cifrado activo.';
       renderDevices();
       calcScore();
       closeSheet();
       SFX.success();
-      say(`Parche aplicado a ${d.n}.`);
+      say(`Parche aplicado a ${d.n}. Dispositivo blindado.`);
       notifyIsland(`${d.n} Reparado`, '✅');
     };
   } else {
-    say(`${d.n}. Equipo seguro.`);
+    say(`${d.n}. Dispositivo seguro.`);
+    const btnAudio = $('#btnDevAudio');
+    if (btnAudio) {
+      btnAudio.onclick = () => say(`${d.n}. IP ${d.ip}. Puerto ${d.port}. ${d.m}`);
+    }
   }
 }
 $('#btnDevScan').onclick = () => scanDevices();
@@ -1004,6 +1137,7 @@ $('#btnEmpPulse').onclick = () => {
 function renderLog() {
   const formatLi = (e, k) => `
     <li data-k="${k}">
+      <span class="dev-num-badge">#${k + 1 < 10 ? '0' : ''}${k + 1}</span>
       <span class="ic">${e.k.ic}</span>
       <div class="tx">
         <b>${e.k.n} (${e.o.c})</b>
