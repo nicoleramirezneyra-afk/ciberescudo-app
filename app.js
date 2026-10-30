@@ -1861,26 +1861,308 @@ function darkWebSheet() {
 
 // D. Telemetría & Estadísticas
 function statsSheet() {
-  say(`Telemetría: ${S.blocked} ataques bloqueados en total.`);
+  say(`Telemetría cuántica. ${S.blocked} ataques bloqueados. Selecciona el tipo de gráfico.`);
+
+  // Build stats data from LOG
+  const typeCounts = THREAT_TYPES.map(k => ({
+    name: k.n, icon: k.ic, color: k.col,
+    count: LOG.filter(l => l.k && l.k.n === k.n).length
+  }));
+  const total = typeCounts.reduce((s, t) => s + t.count, 0) || 1;
+
+  // Build time-series: last 12 slots of ~30s each from LOG timestamps
+  const now = Date.now();
+  const SLOTS = 10;
+  const slotMs = 60000; // 1 min per slot
+  const timeSeries = Array.from({ length: SLOTS }, (_, i) => {
+    const slotEnd = now - (SLOTS - 1 - i) * slotMs;
+    const slotStart = slotEnd - slotMs;
+    return LOG.filter(l => {
+      if (!l.ts) return false;
+      return l.ts >= slotStart && l.ts < slotEnd;
+    }).length;
+  });
+  // If LOG has no timestamps, fake a curve from S.blocked
+  const hasTs = LOG.some(l => l.ts);
+  const lineData = hasTs ? timeSeries : Array.from({ length: SLOTS }, (_, i) =>
+    Math.max(0, Math.round(Math.sin(i * 0.7) * 3 + S.blocked / SLOTS + Math.random() * 2))
+  );
+
   sheet('📊 Telemetría & Gráficos Cuánticos', `
-    <p>Ataques interceptados por vector</p>
-    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px">
-      ${THREAT_TYPES.map(k => {
-        const count = LOG.filter(l => l.k.n === k.n).length;
-        const pct = Math.min(100, count * 15 + 10);
-        return `
-          <div>
-            <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:2px">
-              <span>${k.ic} ${k.n}</span>
-              <b>${count}</b>
-            </div>
-            <div class="barwrap-cyber"><div class="bar-fill" style="width:${pct}%; background:${k.col}"></div></div>
-          </div>
-        `;
-      }).join('')}
+    <div style="text-align:center; margin-bottom:12px">
+      <div style="display:inline-flex; gap:4px; background:rgba(255,255,255,0.06); border-radius:10px; padding:4px">
+        <button class="chart-tab-btn on" data-chart="bar"  style="padding:6px 14px; border-radius:7px; font-size:12px; font-weight:700; border:none; cursor:pointer; background:var(--accent); color:#000">📊 Barras</button>
+        <button class="chart-tab-btn"     data-chart="pie"  style="padding:6px 14px; border-radius:7px; font-size:12px; font-weight:700; border:none; cursor:pointer; background:transparent; color:var(--text-muted)">🥧 Pastel</button>
+        <button class="chart-tab-btn"     data-chart="line" style="padding:6px 14px; border-radius:7px; font-size:12px; font-weight:700; border:none; cursor:pointer; background:transparent; color:var(--text-muted)">📈 Línea</button>
+      </div>
     </div>
-    <button class="btn alt" onclick="closeSheet()">Cerrar</button>
+
+    <!-- Summary pills -->
+    <div style="display:flex; gap:8px; margin-bottom:14px; justify-content:center">
+      <div style="background:rgba(0,240,255,0.12); border:1px solid var(--accent); border-radius:8px; padding:6px 12px; text-align:center">
+        <b style="font-size:18px; color:var(--accent)">${S.blocked}</b>
+        <p style="font-size:10px; color:var(--text-muted); margin:0">BLOQUEADOS</p>
+      </div>
+      <div style="background:rgba(57,255,122,0.12); border:1px solid #39ff7a; border-radius:8px; padding:6px 12px; text-align:center">
+        <b style="font-size:18px; color:#39ff7a">${S.score}</b>
+        <p style="font-size:10px; color:var(--text-muted); margin:0">SCORE</p>
+      </div>
+      <div style="background:rgba(255,180,59,0.12); border:1px solid var(--warn); border-radius:8px; padding:6px 12px; text-align:center">
+        <b style="font-size:18px; color:var(--warn)">${THREAT_TYPES.length}</b>
+        <p style="font-size:10px; color:var(--text-muted); margin:0">VECTORES</p>
+      </div>
+    </div>
+
+    <canvas id="statsCanvas" width="300" height="220" style="width:100%; border-radius:10px; background:rgba(0,0,0,0.3)"></canvas>
+    <div id="chartLegend" style="margin-top:10px"></div>
+    <button class="btn alt" onclick="closeSheet()" style="margin-top:12px">Cerrar</button>
   `);
+
+  const canvas = document.getElementById('statsCanvas');
+  const ctx = canvas.getContext('2d');
+  let currentChart = 'bar';
+
+  function setCanvasSize() {
+    const w = canvas.parentElement.offsetWidth - 32;
+    canvas.width = w;
+    canvas.height = 220;
+  }
+  setCanvasSize();
+
+  function drawBarChart() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const W = canvas.width, H = canvas.height;
+    const pad = { l: 30, r: 10, t: 16, b: 40 };
+    const chartW = W - pad.l - pad.r;
+    const chartH = H - pad.t - pad.b;
+    const maxVal = Math.max(...typeCounts.map(t => t.count), 1);
+    const barW = (chartW / typeCounts.length) * 0.65;
+    const gap = (chartW / typeCounts.length) * 0.35;
+
+    // Grid lines
+    for (let i = 0; i <= 4; i++) {
+      const y = pad.t + chartH - (i / 4) * chartH;
+      ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
+      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.font = '9px monospace';
+      ctx.textAlign = 'right';
+      ctx.fillText(Math.round((i / 4) * maxVal), pad.l - 4, y + 3);
+    }
+
+    typeCounts.forEach((t, i) => {
+      const x = pad.l + i * (barW + gap) + gap / 2;
+      const barH = (t.count / maxVal) * chartH;
+      const y = pad.t + chartH - barH;
+
+      // Glow
+      const grd = ctx.createLinearGradient(x, y, x, pad.t + chartH);
+      grd.addColorStop(0, t.color);
+      grd.addColorStop(1, t.color + '33');
+      ctx.fillStyle = grd;
+      ctx.shadowColor = t.color;
+      ctx.shadowBlur = 10;
+      ctx.beginPath();
+      ctx.roundRect(x, y, barW, barH, [4, 4, 0, 0]);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Count on top
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 10px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(t.count, x + barW / 2, y - 4);
+
+      // Icon + label below
+      ctx.font = '13px serif';
+      ctx.fillText(t.icon, x + barW / 2, pad.t + chartH + 14);
+      ctx.font = '8px monospace';
+      ctx.fillStyle = 'rgba(255,255,255,0.5)';
+      const shortName = t.name.split(' ').slice(-1)[0].substring(0, 6);
+      ctx.fillText(shortName, x + barW / 2, pad.t + chartH + 26);
+    });
+
+    document.getElementById('chartLegend').innerHTML = typeCounts.map(t =>
+      `<span style="display:inline-flex;align-items:center;gap:4px;margin:3px 6px 3px 0;font-size:11px;color:var(--text-muted)">
+        <span style="width:8px;height:8px;border-radius:2px;background:${t.color};display:inline-block;box-shadow:0 0 4px ${t.color}"></span>
+        ${t.name}: <b style="color:#fff">${t.count}</b>
+      </span>`
+    ).join('');
+  }
+
+  function drawPieChart() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const W = canvas.width, H = canvas.height;
+    const cx = W * 0.38, cy = H / 2, R = Math.min(cx, H / 2) - 14;
+    const dataWithDefault = total <= typeCounts.reduce((s,t)=>s+t.count,0) && typeCounts.some(t=>t.count>0)
+      ? typeCounts : typeCounts.map((t,i)=>({...t, count: i+1}));
+    const tot = dataWithDefault.reduce((s,t)=>s+t.count,0);
+
+    let startAngle = -Math.PI / 2;
+    dataWithDefault.forEach(t => {
+      const slice = (t.count / tot) * 2 * Math.PI;
+      const mid = startAngle + slice / 2;
+
+      // Shadow/glow
+      ctx.shadowColor = t.color;
+      ctx.shadowBlur = 12;
+      ctx.fillStyle = t.color;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, R, startAngle, startAngle + slice);
+      ctx.closePath();
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Separator
+      ctx.strokeStyle = 'rgba(0,0,0,0.8)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Label % if slice big enough
+      if (slice > 0.25) {
+        const lx = cx + Math.cos(mid) * R * 0.62;
+        const ly = cy + Math.sin(mid) * R * 0.62;
+        ctx.fillStyle = '#000';
+        ctx.font = 'bold 9px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(Math.round((t.count / tot) * 100) + '%', lx, ly + 3);
+      }
+      startAngle += slice;
+    });
+
+    // Donut hole
+    ctx.fillStyle = '#0a0a14';
+    ctx.shadowBlur = 0;
+    ctx.beginPath();
+    ctx.arc(cx, cy, R * 0.42, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.fillStyle = 'rgba(0,240,255,0.9)';
+    ctx.font = 'bold 13px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(S.blocked, cx, cy + 1);
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.font = '8px monospace';
+    ctx.fillText('total', cx, cy + 11);
+
+    // Legend on right
+    const legX = W * 0.68;
+    dataWithDefault.forEach((t, i) => {
+      const ly = 20 + i * 22;
+      ctx.fillStyle = t.color;
+      ctx.shadowColor = t.color;
+      ctx.shadowBlur = 6;
+      ctx.beginPath();
+      ctx.roundRect(legX, ly, 8, 8, 3);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = 'rgba(255,255,255,0.8)';
+      ctx.font = '9px monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText(t.name.length > 12 ? t.name.slice(0,12)+'…' : t.name, legX + 12, ly + 8);
+      ctx.fillStyle = 'rgba(255,255,255,0.45)';
+      ctx.fillText(t.count + ' ataques', legX + 12, ly + 18);
+    });
+
+    document.getElementById('chartLegend').innerHTML = '';
+  }
+
+  function drawLineChart() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const W = canvas.width, H = canvas.height;
+    const pad = { l: 28, r: 12, t: 16, b: 36 };
+    const chartW = W - pad.l - pad.r;
+    const chartH = H - pad.t - pad.b;
+    const maxVal = Math.max(...lineData, 1);
+
+    // Grid
+    for (let i = 0; i <= 4; i++) {
+      const y = pad.t + chartH - (i / 4) * chartH;
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
+      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.font = '9px monospace';
+      ctx.textAlign = 'right';
+      ctx.fillText(Math.round((i / 4) * maxVal), pad.l - 4, y + 3);
+    }
+
+    const pts = lineData.map((v, i) => ({
+      x: pad.l + (i / (SLOTS - 1)) * chartW,
+      y: pad.t + chartH - (v / maxVal) * chartH
+    }));
+
+    // Fill area under line
+    const grad = ctx.createLinearGradient(0, pad.t, 0, pad.t + chartH);
+    grad.addColorStop(0, 'rgba(0,240,255,0.35)');
+    grad.addColorStop(1, 'rgba(0,240,255,0.0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pad.t + chartH);
+    pts.forEach(p => ctx.lineTo(p.x, p.y));
+    ctx.lineTo(pts[pts.length - 1].x, pad.t + chartH);
+    ctx.closePath();
+    ctx.fill();
+
+    // Line
+    ctx.strokeStyle = '#00f0ff';
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = '#00f0ff';
+    ctx.shadowBlur = 10;
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    pts.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Dots + values
+    pts.forEach((p, i) => {
+      ctx.fillStyle = '#00f0ff';
+      ctx.shadowColor = '#00f0ff';
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 3.5, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      if (lineData[i] > 0) {
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 9px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(lineData[i], p.x, p.y - 7);
+      }
+      // X label
+      ctx.fillStyle = 'rgba(255,255,255,0.35)';
+      ctx.font = '8px monospace';
+      ctx.fillText('T-' + (SLOTS - i), p.x, pad.t + chartH + 14);
+    });
+
+    document.getElementById('chartLegend').innerHTML =
+      `<p style="font-size:11px;color:var(--text-muted);text-align:center;margin:0">
+        Ataques bloqueados en los últimos ${SLOTS} minutos · ${S.blocked} total
+      </p>`;
+  }
+
+  function drawChart(type) {
+    currentChart = type;
+    if (type === 'bar') drawBarChart();
+    else if (type === 'pie') drawPieChart();
+    else if (type === 'line') drawLineChart();
+
+    // Update tab styles
+    document.querySelectorAll('.chart-tab-btn').forEach(b => {
+      const active = b.dataset.chart === type;
+      b.style.background = active ? 'var(--accent)' : 'transparent';
+      b.style.color = active ? '#000' : 'var(--text-muted)';
+    });
+  }
+
+  // Wire up tab buttons
+  document.querySelectorAll('.chart-tab-btn').forEach(btn => {
+    btn.onclick = () => drawChart(btn.dataset.chart);
+  });
+
+  drawChart('bar');
 }
 
 // E. Informe Forense
