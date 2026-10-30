@@ -1253,84 +1253,348 @@ function renderTips() {
   });
 }
 
-// Ciber-Quiz Gamificado
-const QUIZ_QUESTIONS = [
-  {
-    q: 'Recibes un SMS urgente del banco pidiendo verificar tu clave. ¿Qué haces?',
-    opts: ['Hago clic en el enlace', 'Entro por la app oficial del banco', 'Reenvío el mensaje'],
-    ans: 1,
-    exp: 'Correcto. Nunca abras enlaces de mensajes urgentes.'
+// Ciber-Quiz Gamificado por Niveles
+const QUIZ_LEVELS = {
+  basico: {
+    label: '🟢 Básico',
+    color: '#39ff7a',
+    desc: 'Conceptos esenciales de ciberseguridad para principiantes.',
+    questions: [
+      {
+        q: 'Recibes un SMS urgente del banco pidiendo verificar tu clave. ¿Qué haces?',
+        opts: ['Hago clic en el enlace', 'Entro por la app oficial del banco', 'Reenvío el mensaje a mis contactos'],
+        ans: 1,
+        exp: 'Nunca abras enlaces de mensajes urgentes. Siempre usa la app oficial o llama al banco directamente.'
+      },
+      {
+        q: '¿Cuál de estas contraseñas es la más segura?',
+        opts: ['123456', 'MiPerro2020', 'Xk#9!mQ@rL2'],
+        ans: 2,
+        exp: 'Una contraseña segura combina mayúsculas, minúsculas, números y símbolos especiales.'
+      },
+      {
+        q: '¿Qué significa HTTPS en una dirección web?',
+        opts: ['El sitio es famoso', 'La conexión está cifrada y es más segura', 'El sitio tiene publicidad'],
+        ans: 1,
+        exp: 'HTTPS cifra la comunicación entre tu navegador y el servidor, protegiendo tus datos.'
+      },
+      {
+        q: '¿Qué es el phishing?',
+        opts: ['Un tipo de antivirus', 'Un ataque que suplanta identidades para robar datos', 'Un protocolo de red'],
+        ans: 1,
+        exp: 'El phishing engaña a las víctimas haciéndose pasar por entidades confiables para robar información.'
+      },
+      {
+        q: 'Usas la misma contraseña en todos tus servicios. ¿Esto es?',
+        opts: ['Práctico y seguro', 'Muy peligroso: si roban una, todas quedan expuestas', 'Normal y aceptado'],
+        ans: 1,
+        exp: 'Reutilizar contraseñas es una vulnerabilidad crítica. Usa un gestor de contraseñas.'
+      },
+      {
+        q: '¿Qué debes hacer si encuentras un USB en la calle?',
+        opts: ['Conectarlo para ver qué contiene', 'No conectarlo: puede contener malware', 'Dárselo a un compañero'],
+        ans: 1,
+        exp: 'Los USB abandonados son un vector clásico de ataque. Pueden ejecutar código malicioso al conectarse.'
+      },
+      {
+        q: '¿Cuál es la mejor práctica para las actualizaciones de software?',
+        opts: ['Ignorarlas para no perder tiempo', 'Instalarlas cuando puedas, no son urgentes', 'Instalarlas cuanto antes: corrigen vulnerabilidades'],
+        ans: 2,
+        exp: 'Las actualizaciones parchean vulnerabilidades conocidas que los atacantes explotan activamente.'
+      },
+      {
+        q: '¿Qué es un antivirus?',
+        opts: ['Un programa que detecta y elimina malware', 'Una app de limpieza de archivos', 'Un firewall de red'],
+        ans: 0,
+        exp: 'Un antivirus monitorea, detecta y elimina software malicioso de tu dispositivo.'
+      },
+      {
+        q: 'Recibes un email de un desconocido con un archivo adjunto. ¿Qué haces?',
+        opts: ['Abro el adjunto para ver de qué trata', 'Lo elimino sin abrirlo', 'Lo reenvío a mis contactos'],
+        ans: 1,
+        exp: 'Los adjuntos de desconocidos pueden contener ransomware, troyanos u otro malware peligroso.'
+      },
+      {
+        q: '¿Qué es la autenticación de dos factores (2FA)?',
+        opts: ['Usar dos contraseñas distintas', 'Verificar tu identidad con un segundo método además de la contraseña', 'Tener dos cuentas de correo'],
+        ans: 1,
+        exp: '2FA añade una capa extra de seguridad: aunque roben tu contraseña, necesitan el segundo factor.'
+      }
+    ]
   },
-  {
-    q: '¿Qué contraseña es más resistente a un ataque de fuerza bruta?',
-    opts: ['Carlos123456*', 'Tr0nador_Azul#2026!Galaxia', 'Admin@2025'],
-    ans: 1,
-    exp: 'Correcto. La longitud de 26 caracteres la hace impenetrable.'
+  intermedio: {
+    label: '🟡 Intermedio',
+    color: '#ffb43b',
+    desc: 'Vectores de ataque, protocolos y defensa táctica.',
+    questions: [
+      {
+        q: '¿Qué tipo de ataque intercepta la comunicación entre dos partes sin que lo sepan?',
+        opts: ['DDoS', 'Man-in-the-Middle (MitM)', 'SQL Injection'],
+        ans: 1,
+        exp: 'Un ataque MitM intercepta y puede modificar la comunicación entre dos partes en tiempo real.'
+      },
+      {
+        q: '¿Cuál método de 2FA es el más seguro frente a un ataque de SIM-Swapping?',
+        opts: ['Código por SMS', 'Llamada telefónica', 'App autenticadora o llave física FIDO2'],
+        ans: 2,
+        exp: 'Las apps autenticadoras y llaves físicas no dependen de la línea celular, evitando el SIM-Swapping.'
+      },
+      {
+        q: 'Un atacante inyecta código SQL en un formulario web. ¿Cuál es la mejor defensa?',
+        opts: ['Usar HTTPS', 'Validar y sanitizar todas las entradas del usuario', 'Cambiar el puerto del servidor'],
+        ans: 1,
+        exp: 'La validación de entradas y el uso de consultas parametrizadas son las defensas clave contra SQL Injection.'
+      },
+      {
+        q: '¿Qué es un ataque de fuerza bruta?',
+        opts: ['Un ataque físico al servidor', 'Probar millones de contraseñas hasta dar con la correcta', 'Infectar la red con ransomware'],
+        ans: 1,
+        exp: 'Los ataques de fuerza bruta prueban combinaciones masivas de credenciales. La 2FA y límites de intentos los mitigan.'
+      },
+      {
+        q: '¿Qué es el cifrado de extremo a extremo (E2EE)?',
+        opts: ['Cifrar solo el disco duro', 'Solo el emisor y receptor pueden leer los mensajes', 'Cifrar el correo pero no los archivos'],
+        ans: 1,
+        exp: 'El E2EE garantiza que ni el proveedor del servicio puede leer el contenido de los mensajes.'
+      },
+      {
+        q: '¿Cuál es el puerto predeterminado de HTTPS?',
+        opts: ['80', '443', '8080'],
+        ans: 1,
+        exp: 'El puerto 443 es el estándar para HTTPS (TLS/SSL). El 80 es HTTP sin cifrar.'
+      },
+      {
+        q: '¿Qué es un CVE?',
+        opts: ['Un tipo de virus informático', 'Identificador único para vulnerabilidades públicamente conocidas', 'Un certificado de seguridad web'],
+        ans: 1,
+        exp: 'CVE (Common Vulnerabilities and Exposures) es un sistema estándar para identificar vulnerabilidades de seguridad.'
+      },
+      {
+        q: '¿Qué hace un firewall de capa de aplicación (WAF)?',
+        opts: ['Bloquea el tráfico de red a nivel de puertos', 'Filtra y monitorea tráfico HTTP/S analizando el contenido', 'Cifra las comunicaciones de la red'],
+        ans: 1,
+        exp: 'Un WAF inspecciona el contenido HTTP para bloquear ataques como XSS, SQLi y CSRF.'
+      },
+      {
+        q: 'Encuentras que tu red WiFi usa cifrado WEP. ¿Cuál es el riesgo?',
+        opts: ['Ninguno, WEP es moderno', 'WEP es obsoleto y se crackea en minutos', 'Solo afecta velocidad de conexión'],
+        ans: 1,
+        exp: 'WEP tiene vulnerabilidades críticas. Debes migrar a WPA3 o mínimo WPA2-AES.'
+      },
+      {
+        q: '¿Qué es un certificado digital SSL/TLS?',
+        opts: ['Un programa antivirus', 'Documento que autentica la identidad de un sitio web y cifra la conexión', 'Una contraseña del servidor'],
+        ans: 1,
+        exp: 'Los certificados SSL/TLS verifican que el servidor es quien dice ser y establecen una conexión cifrada.'
+      }
+    ]
   },
-  {
-    q: '¿Cuál método de 2FA es el más seguro frente a SIM-Swapping?',
-    opts: ['Código por SMS', 'Llamada telefónica', 'App autenticadora o llave física'],
-    ans: 2,
-    exp: 'Correcto. Las apps de autenticación no dependen de la línea celular.'
+  avanzado: {
+    label: '🔴 Avanzado',
+    color: '#ff2a6d',
+    desc: 'Exploits, forense digital, APT y defensa en profundidad.',
+    questions: [
+      {
+        q: '¿Qué técnica usa un atacante APT para mantener acceso persistente sin ser detectado?',
+        opts: ['Spam masivo de correos', 'Implantación de rootkits y backdoors a nivel kernel', 'Ataques DDoS volumétricos'],
+        ans: 1,
+        exp: 'Los APTs utilizan rootkits de kernel y backdoors cifradas para mantener acceso silencioso por meses o años.'
+      },
+      {
+        q: '¿Qué describe mejor un ataque de "Zero-Day"?',
+        opts: ['Un ataque que ocurre a medianoche', 'Explotación de una vulnerabilidad desconocida para el proveedor y sin parche disponible', 'Un virus que borra datos al instalar'],
+        ans: 1,
+        exp: 'Un Zero-Day explota fallos desconocidos. Entre CVE publicado y parche aplicado existe una ventana crítica de exposición.'
+      },
+      {
+        q: '¿Cuál es la diferencia entre un IDS y un IPS?',
+        opts: ['No hay diferencia, son sinónimos', 'El IDS solo detecta; el IPS detecta y bloquea activamente', 'El IPS es solo para redes WiFi'],
+        ans: 1,
+        exp: 'IDS (Intrusion Detection System) alerta. IPS (Intrusion Prevention System) además bloquea el tráfico malicioso automáticamente.'
+      },
+      {
+        q: 'En forense digital, ¿qué es la cadena de custodia?',
+        opts: ['Una red de cibercriminales', 'Registro documentado de quién accede a la evidencia digital y cuándo', 'El historial del navegador del atacante'],
+        ans: 1,
+        exp: 'La cadena de custodia garantiza la integridad de la evidencia digital para que sea admisible en procesos legales.'
+      },
+      {
+        q: '¿Qué es un ataque de "Pass-the-Hash" en entornos Windows?',
+        opts: ['Enviar spam con archivos hash', 'Usar el hash NTLM de una contraseña para autenticarse sin conocer la contraseña real', 'Crackear contraseñas con rainbow tables'],
+        ans: 1,
+        exp: 'Pass-the-Hash reutiliza el hash NTLM capturado para autenticarse lateralmente en la red sin necesitar la contraseña en texto claro.'
+      },
+      {
+        q: '¿Qué es el "lateral movement" en un ciberataque?',
+        opts: ['Atacar desde distintos países simultáneamente', 'Moverse de sistema en sistema dentro de la red comprometida para escalar privilegios', 'Actualizar el malware durante el ataque'],
+        ans: 1,
+        exp: 'El movimiento lateral permite al atacante expandirse dentro de la red comprometida hacia sistemas de mayor valor.'
+      },
+      {
+        q: '¿Qué protocolo es más vulnerable a ataques de intercepción si no está cifrado?',
+        opts: ['HTTPS', 'SSH', 'Telnet'],
+        ans: 2,
+        exp: 'Telnet transmite datos en texto plano, incluyendo credenciales. Debe reemplazarse siempre por SSH.'
+      },
+      {
+        q: '¿Qué es el "OSINT" en ciberseguridad ofensiva?',
+        opts: ['Un tipo de malware avanzado', 'Recopilación de inteligencia desde fuentes públicas para reconocimiento del objetivo', 'Un protocolo de cifrado gubernamental'],
+        ans: 1,
+        exp: 'OSINT (Open Source Intelligence) reúne información pública sobre el objetivo: redes sociales, DNS, WHOIS, etc.'
+      },
+      {
+        q: '¿Cuál ataque busca saturar el ancho de banda con tráfico SYN/UDP masivo?',
+        opts: ['SQL Injection', 'Cross-Site Scripting (XSS)', 'DDoS Volumétrico'],
+        ans: 2,
+        exp: 'Los DDoS volumétricos inundan la red con paquetes SYN/UDP para agotar el ancho de banda y tumbar servicios.'
+      },
+      {
+        q: '¿Qué framework estándar se usa para mapear tácticas y técnicas de atacantes reales?',
+        opts: ['ISO 27001', 'MITRE ATT&CK', 'OWASP Top 10'],
+        ans: 1,
+        exp: 'MITRE ATT&CK es una base de conocimiento global con tácticas, técnicas y procedimientos (TTPs) de actores de amenaza reales.'
+      }
+    ]
   }
-];
+};
 
 function startQuiz() {
   initAudio();
-  say('Iniciando test de ciberseguridad.');
+  say('Selecciona el nivel del test de ciberseguridad.');
+  sheet('🎮 DESAFÍO CIBER-DEFENSOR', `
+    <p style="text-align:center; color:var(--text-muted); font-size:13px; margin-bottom:16px">Elige tu nivel de dificultad. Cada nivel tiene 10 preguntas.</p>
+    <div style="display:flex; flex-direction:column; gap:10px">
+      <button class="btn quiz-level-btn" data-level="basico" style="border-color:#39ff7a; background:rgba(57,255,122,0.1); text-align:left; padding:14px">
+        <span style="font-size:18px">🟢</span>
+        <div style="display:inline-block; margin-left:10px">
+          <b style="color:#39ff7a; font-size:14px">BÁSICO</b>
+          <p style="margin:2px 0 0; font-size:12px; color:var(--text-muted)">Conceptos esenciales de ciberseguridad</p>
+        </div>
+      </button>
+      <button class="btn quiz-level-btn" data-level="intermedio" style="border-color:#ffb43b; background:rgba(255,180,59,0.1); text-align:left; padding:14px">
+        <span style="font-size:18px">🟡</span>
+        <div style="display:inline-block; margin-left:10px">
+          <b style="color:#ffb43b; font-size:14px">INTERMEDIO</b>
+          <p style="margin:2px 0 0; font-size:12px; color:var(--text-muted)">Vectores de ataque, protocolos y defensa táctica</p>
+        </div>
+      </button>
+      <button class="btn quiz-level-btn" data-level="avanzado" style="border-color:#ff2a6d; background:rgba(255,42,109,0.1); text-align:left; padding:14px">
+        <span style="font-size:18px">🔴</span>
+        <div style="display:inline-block; margin-left:10px">
+          <b style="color:#ff2a6d; font-size:14px">AVANZADO</b>
+          <p style="margin:2px 0 0; font-size:12px; color:var(--text-muted)">Exploits, forense digital, APT y MITRE ATT&CK</p>
+        </div>
+      </button>
+    </div>
+  `);
+
+  $$('.quiz-level-btn').forEach(btn => {
+    btn.onclick = () => {
+      const level = btn.dataset.level;
+      runQuizLevel(level);
+    };
+  });
+}
+
+function runQuizLevel(levelKey) {
+  const level = QUIZ_LEVELS[levelKey];
+  const questions = level.questions;
+  initAudio();
+  say(`Nivel ${levelKey}. ${questions.length} preguntas. ¡Comienza!`);
   let curQ = 0, scoreQuiz = 0;
+
   function renderQ() {
-    const q = QUIZ_QUESTIONS[curQ];
-    sheet(`🎯 Desafío (${curQ + 1}/${QUIZ_QUESTIONS.length})`, `
-      <p style="font-size:14px; color:#fff; font-weight:600">${q.q}</p>
+    const q = questions[curQ];
+    const progress = Math.round(((curQ) / questions.length) * 100);
+    sheet(`${level.label} · Pregunta ${curQ + 1}/${questions.length}`, `
+      <div style="margin-bottom:10px">
+        <div style="background:rgba(255,255,255,0.08); border-radius:6px; height:5px; overflow:hidden">
+          <div style="height:100%; width:${progress}%; background:${level.color}; border-radius:6px; transition:width 0.4s"></div>
+        </div>
+        <span style="font-size:11px; color:var(--text-muted)">${progress}% completado · ${scoreQuiz} correctas</span>
+      </div>
+      <p style="font-size:14px; color:#fff; font-weight:600; line-height:1.4; margin-bottom:14px">${q.q}</p>
       ${q.opts.map((opt, i) => `
-        <button class="btn alt opt-btn" data-idx="${i}" style="margin-bottom:8px; text-align:left">${i + 1}. ${opt}</button>
+        <button class="btn alt opt-btn" data-idx="${i}" style="margin-bottom:8px; text-align:left; width:100%; border-color:rgba(255,255,255,0.15)">${i + 1}. ${opt}</button>
       `).join('')}
     `);
 
     $$('.opt-btn').forEach(btn => {
       btn.onclick = () => {
         const chosen = +btn.dataset.idx;
+        $$('.opt-btn').forEach(b => b.disabled = true);
         if (chosen === q.ans) {
           scoreQuiz++;
           SFX.success();
-          btn.style.borderColor = 'var(--accent)';
-          btn.style.background = 'rgba(57, 255, 122, 0.2)';
+          btn.style.borderColor = '#39ff7a';
+          btn.style.background = 'rgba(57,255,122,0.2)';
+          btn.innerHTML = '✅ ' + btn.innerHTML;
           say(q.exp);
         } else {
           SFX.alarm();
-          btn.style.borderColor = 'var(--danger)';
-          btn.style.background = 'rgba(255, 42, 109, 0.2)';
+          btn.style.borderColor = '#ff2a6d';
+          btn.style.background = 'rgba(255,42,109,0.2)';
+          btn.innerHTML = '❌ ' + btn.innerHTML;
+          // highlight correct
+          const correctBtn = $$('.opt-btn')[q.ans];
+          if (correctBtn) {
+            correctBtn.style.borderColor = '#39ff7a';
+            correctBtn.style.background = 'rgba(57,255,122,0.15)';
+          }
           say('Incorrecto. ' + q.exp);
         }
         setTimeout(() => {
           curQ++;
-          if (curQ < QUIZ_QUESTIONS.length) {
+          if (curQ < questions.length) {
             renderQ();
           } else {
-            showQuizResult(scoreQuiz);
+            showQuizResult(scoreQuiz, questions.length, level);
           }
-        }, 1100);
+        }, 1300);
       };
     });
   }
   renderQ();
 }
+
 $('#startQuizBtn').onclick = startQuiz;
 
-function showQuizResult(score) {
-  const total = QUIZ_QUESTIONS.length;
+function showQuizResult(score, total, level) {
+  const pct = Math.round((score / total) * 100);
   const isPerfect = score === total;
-  sheet(`🏆 Resultado del Test`, `
-    <p style="text-align:center; font-size:24px; font-weight:700; color:var(--primary)">${score} / ${total} Correctas</p>
-    <p style="text-align:center">${isPerfect ? '¡Excelente! Rango Ciber-Defensor Legendario alcanzado.' : 'Test completado. Revisa las recomendaciones en Academia.'}</p>
-    <button class="btn" onclick="closeSheet()">Finalizar</button>
+  const rankMap = [
+    { min: 90, rank: '🏆 Ciber-Defensor Legendario', color: '#ffd700' },
+    { min: 70, rank: '🥇 Experto en Seguridad', color: '#39ff7a' },
+    { min: 50, rank: '🥈 Analista Táctico', color: '#00f0ff' },
+    { min: 30, rank: '🥉 Aprendiz Ciber', color: '#ffb43b' },
+    { min: 0,  rank: '📚 Novato — ¡Sigue Aprendiendo!', color: '#ff2a6d' }
+  ];
+  const rankData = rankMap.find(r => pct >= r.min);
+  const emoji = isPerfect ? '🎉' : pct >= 70 ? '💪' : '📖';
+
+  sheet(`🏆 Resultado — ${level.label}`, `
+    <div style="text-align:center; padding:10px 0">
+      <div style="font-size:48px; margin-bottom:8px">${emoji}</div>
+      <p style="font-size:28px; font-weight:800; color:${rankData.color}; margin:0">${score} / ${total}</p>
+      <p style="font-size:13px; color:var(--text-muted); margin:4px 0 12px">Aciertos en nivel ${level.label}</p>
+      <div style="background:rgba(255,255,255,0.07); border-radius:10px; height:10px; overflow:hidden; margin:0 10px 12px">
+        <div style="height:100%; width:${pct}%; background:${rankData.color}; border-radius:10px; transition:width 0.6s"></div>
+      </div>
+      <b style="color:${rankData.color}; font-size:15px">${rankData.rank}</b>
+      <p style="font-size:12px; color:var(--text-muted); margin:10px 0 16px">
+        ${isPerfect ? '¡Perfecto! Has dominado este nivel. Intenta el siguiente reto.' : pct >= 70 ? 'Excelente desempeño. Revisa las preguntas falladas en Academia.' : '¡Sigue practicando! La ciberseguridad se aprende con repetición.'}
+      </p>
+      <div style="display:flex; gap:8px; justify-content:center">
+        <button class="btn" onclick="startQuiz()">🔄 Otro Nivel</button>
+        <button class="btn alt" onclick="closeSheet()">Cerrar</button>
+      </div>
+    </div>
   `);
   if (isPerfect) {
     SFX.success();
-    say(`¡Puntaje perfecto! ${score} de ${total}.`);
+    say(`¡Puntaje perfecto en nivel ${level.label}! ${score} de ${total}. Rango: ${rankData.rank.replace(/[^\w\s]/g, '')}.`);
   } else {
-    say(`Test completado con ${score} aciertos.`);
+    say(`Test completado. ${score} de ${total} aciertos. ${rankData.rank.replace(/[^\w\s]/g, '')}.`);
   }
 }
 
